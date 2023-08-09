@@ -65,7 +65,7 @@ public class UserAppService : IUserAppService
 
     public async Task<PaginatedResult<GetUserDto>> GetPaginatedAsync(FindUserFilter userFilter)
     {
-        var query = _context.Users.AsQueryable();
+        var query = _context.Users.AsNoTracking().AsQueryable();
         query = GetFilteredQuery(query, userFilter);
         var totalRecords = await query.CountAsync();
         var users = await query.Paginate(userFilter).ToListAsync();

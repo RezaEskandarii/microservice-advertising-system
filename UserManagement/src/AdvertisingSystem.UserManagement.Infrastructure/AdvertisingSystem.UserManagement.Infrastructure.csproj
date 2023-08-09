@@ -30,4 +30,8 @@
     <Reference Include="Microsoft.Extensions.Logging.Console" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AdvertisingSystem.UserManagement.Application\AdvertisingSystem.UserManagement.Application.csproj" />
+    <ProjectReference Include="..\AdvertisingSystem.UserManagement.Contract\AdvertisingSystem.UserManagement.Contract.csproj" />
+  </ItemGroup>
+
 </Project>
