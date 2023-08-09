@@ -8,6 +8,5 @@ public class UserConfiguration: IEntityTypeConfiguration<AppUser>
 {
     public void Configure(EntityTypeBuilder<AppUser> builder)
     {
-        throw new NotImplementedException();
     }
 }

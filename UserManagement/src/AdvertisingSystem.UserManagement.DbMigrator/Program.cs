@@ -10,7 +10,8 @@ class Program
     {
         IConfiguration configuration = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).Build();
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 
         //setup our DI
         var serviceCollection = new ServiceCollection();
@@ -24,8 +25,7 @@ class Program
         {
             var services = scope.ServiceProvider;
             var logger = services.GetRequiredService<ILogger<Program>>();
-
-
+            
             try
             {
                 logger.LogInformation("Applying available migrations...");
