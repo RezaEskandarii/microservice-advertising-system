@@ -9,11 +9,13 @@
   <ItemGroup>
     <ProjectReference Include="..\AdvertisingSystem.UserManagement.Contract\AdvertisingSystem.UserManagement.Contract.csproj" />
     <ProjectReference Include="..\AdvertisingSystem.UserManagement.Domain\AdvertisingSystem.UserManagement.Domain.csproj" />
+    <ProjectReference Include="..\AdvertisingSystem.UserManagement.Infrastructure\AdvertisingSystem.UserManagement.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

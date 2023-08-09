@@ -1,34 +1,133 @@
 ﻿using AdvertisingSystem.UserManagement.Contract.Dtos.User;
 using AdvertisingSystem.UserManagement.Contract.Interfaces;
+using AdvertisingSystem.UserManagement.Domain.Entities;
+using AdvertisingSystem.UserManagement.Infrastructure;
+using AdvertisingSystem.UserManagement.Shared;
 using AdvertisingSystem.UserManagement.Shared.Enums;
+using AdvertisingSystem.UserManagement.Shared.Exceptions;
+using AdvertisingSystem.UserManagement.Shared.ExtensionMethods;
 using AdvertisingSystem.UserManagement.Shared.Filters;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisingSystem.UserManagement.Application.Services;
 
 public class UserAppService : IUserAppService
 {
-    public Task<GetUserDto> CreateAsync(CreateUserDto userDto)
+    private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<AppRole> _roleManager;
+    private readonly IMapper _mapper;
+    private readonly ApplicationDbContext _context;
+
+    public UserAppService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper,
+        ApplicationDbContext context)
     {
-        throw new NotImplementedException();
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _mapper = mapper;
+        _context = context;
     }
 
-    public Task<GetUserDto> UpdateAsync(string id, UpdateUserDto userDto)
+    public async Task<GetUserDto> CreateAsync(CreateUserDto userDto)
     {
-        throw new NotImplementedException();
+        await ThrowIfEmailDuplicatedAsync(userDto.Email);
+        ThrowIfPhoneNumberDuplicated(userDto.PhoneNumber);
+        ThrowIfCellNumberDuplicated(userDto.CellNumber);
+
+        var appUser = _mapper.Map<AppUser>(userDto);
+        appUser.UserName = userDto.Email;
+        var result = await _userManager.CreateAsync(appUser);
+        await _userManager.AddPasswordAsync(appUser, userDto.Password);
+        return await FindByUserNameAsync(userDto.Email);
     }
 
-    public Task<GetUserDto> FindAsync(string id)
+    public async Task<GetUserDto> FindByUserNameAsync(string username)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByNameAsync(username);
+        return _mapper.Map<GetUserDto>(user);
     }
 
-    public Task<GetUserDto> GetPaginatedAsync(FindUserFilter userFilter)
+    public async Task<GetUserDto> UpdateAsync(string id, UpdateUserDto userDto)
     {
-        throw new NotImplementedException();
+        var appUser = await _userManager.FindByIdAsync(id);
+        _mapper.Map(userDto, appUser);
+        await _userManager.UpdateAsync(appUser);
+
+        return await FindAsync(id);
     }
 
-    public Task ChangeStatusAsync(string id, UserStatuses status)
+    public async Task<GetUserDto> FindAsync(string id)
     {
-        throw new NotImplementedException();
+        var appUser = await _userManager.FindByIdAsync(id);
+        return _mapper.Map<GetUserDto>(appUser);
     }
+
+    public async Task<PaginatedResult<GetUserDto>> GetPaginatedAsync(FindUserFilter userFilter)
+    {
+        var query = _context.Users.AsQueryable();
+        query = GetFilteredQuery(query, userFilter);
+        var totalRecords = await query.CountAsync();
+        var users = await query.Paginate(userFilter).ToListAsync();
+
+        return new PaginatedResult<GetUserDto>()
+        {
+            Items = _mapper.Map<ICollection<GetUserDto>>(users),
+            PageNumber = userFilter.PageNumber,
+            PageSize = userFilter.PageSize,
+            TotalCount = totalRecords
+        };
+    }
+
+
+    public async Task ChangeStatusAsync(string id, UserStatuses status)
+    {
+        var appUser = await _userManager.FindByIdAsync(id);
+        appUser.Status = status;
+        await _userManager.UpdateAsync(appUser);
+    }
+
+
+    #region Private
+
+    private IQueryable<AppUser> GetFilteredQuery(IQueryable<AppUser> query, FindUserFilter userFilter)
+    {
+        if (!string.IsNullOrWhiteSpace(userFilter.Id))
+        {
+            query = query.Where(x => x.Id == userFilter.Id);
+        }
+
+        return query;
+    }
+
+    private async Task ThrowIfEmailDuplicatedAsync(string email)
+    {
+        var appUser = await _userManager.FindByNameAsync(email);
+        if (appUser != null)
+        {
+            throw new DuplicatedUserException(email);
+        }
+    }
+
+    private void ThrowIfPhoneNumberDuplicated(string cellNumber)
+    {
+        if (string.IsNullOrWhiteSpace(cellNumber)) return;
+        var appUser = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == cellNumber);
+        if (appUser != null)
+        {
+            throw new DuplicatedUserException(cellNumber);
+        }
+    }
+
+    private void ThrowIfCellNumberDuplicated(string cellNumber)
+    {
+        if (string.IsNullOrWhiteSpace(cellNumber)) return;
+        var appUser = _userManager.Users.FirstOrDefault(x => x.CellNumber == cellNumber);
+        if (appUser != null)
+        {
+            throw new DuplicatedUserException(cellNumber);
+        }
+    }
+
+    #endregion
 }
