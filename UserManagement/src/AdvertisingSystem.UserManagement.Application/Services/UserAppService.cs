@@ -37,6 +37,7 @@ public class UserAppService : IUserAppService
 
         var appUser = _mapper.Map<AppUser>(userDto);
         appUser.UserName = userDto.Email;
+       
         var result = await _userManager.CreateAsync(appUser);
         await _userManager.AddPasswordAsync(appUser, userDto.Password);
         return await FindByUserNameAsync(userDto.Email);

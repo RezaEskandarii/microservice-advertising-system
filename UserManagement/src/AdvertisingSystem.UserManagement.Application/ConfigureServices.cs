@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
+using System.Security.Claims;
 using AdvertisingSystem.UserManagement.Application.Services;
 using AdvertisingSystem.UserManagement.Contract.Interfaces;
+using AdvertisingSystem.UserManagement.Domain.Entities;
 using AdvertisingSystem.UserManagement.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 
 namespace AdvertisingSystem.UserManagement.Application;
 
@@ -12,8 +15,19 @@ public static class ConfigureServices
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddInfrastructureServices(configuration);
-        services.AddAutoMapper(Assembly.LoadFrom("AdvertisingSystem.UserManagement.Application.Profiles"));
+        services.AddAutoMapper(Assembly.Load("AdvertisingSystem.UserManagement.Application"));
 
+        services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Name;
+                options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
+                options.ClaimsIdentity.EmailClaimType = ClaimTypes.Email;
+                options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
+                
+                options.Password.RequiredLength = 8;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
         services.AddScoped<IUserAppService, UserAppService>();
     }
 }

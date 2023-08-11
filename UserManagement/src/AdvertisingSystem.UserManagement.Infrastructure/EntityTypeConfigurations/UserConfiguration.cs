@@ -14,5 +14,6 @@ public class UserConfiguration : IEntityTypeConfiguration<AppUser>
         builder.Property(x => x.Email).HasMaxLength(30);
         builder.Property(x => x.PhoneNumber).HasMaxLength(15);
         builder.Property(x => x.CellNumber).HasMaxLength(15);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }
