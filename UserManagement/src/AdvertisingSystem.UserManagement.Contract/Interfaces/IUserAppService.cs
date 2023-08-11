@@ -10,6 +10,7 @@ public interface IUserAppService
     Task<GetUserDto> CreateAsync(CreateUserDto userDto);
     Task<GetUserDto> UpdateAsync(string id, UpdateUserDto userDto);
     Task<GetUserDto?> FindAsync(string id);
+    Task<bool> IsInRoleAsync(string username, string roleName);
     Task<PaginatedResult<GetUserDto>> GetPaginatedAsync(FindUserFilter userFilter);
     Task ChangeStatusAsync(string id, UserStatuses status);
     Task<GetUserDto?> FindByUserNameAsync(string username);

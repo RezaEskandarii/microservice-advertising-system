@@ -74,6 +74,12 @@ public class UserAppService : IUserAppService
         return _mapper.Map<GetUserDto>(appUser);
     }
 
+    public async Task<bool> IsInRoleAsync(string username, string roleName)
+    {
+        var appUser = await _userManager.FindByNameAsync(username);
+        return await _userManager.IsInRoleAsync(appUser, roleName);
+    }
+
     public async Task<PaginatedResult<GetUserDto>> GetPaginatedAsync(FindUserFilter userFilter)
     {
         var query = _context.Users.AsNoTracking().AsQueryable();
