@@ -20,7 +20,4 @@ public class ApiResponse
     public string Message { get; set; }
     public HttpStatusCode StatusCode { get; set; }
     public DateTime DateTime { get; set; } = DateTime.Now;
-
-    public bool Success => (StatusCode == HttpStatusCode.OK || StatusCode == HttpStatusCode.Created) &&
-                           ErrorMessages.Count == 0;
 }

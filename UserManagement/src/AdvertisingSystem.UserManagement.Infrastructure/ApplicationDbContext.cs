@@ -19,6 +19,12 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string>
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    public override int SaveChanges()
+    {
+        SetCreateAndUpdateFields();
+        return base.SaveChanges();
+    }
+
 
     #region DbSets
 
