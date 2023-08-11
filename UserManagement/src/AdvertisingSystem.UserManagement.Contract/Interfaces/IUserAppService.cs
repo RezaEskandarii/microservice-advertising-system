@@ -12,5 +12,5 @@ public interface IUserAppService
     Task<GetUserDto> FindAsync(string id);
     Task<PaginatedResult<GetUserDto>> GetPaginatedAsync(FindUserFilter userFilter);
     Task ChangeStatusAsync(string id, UserStatuses status);
-    Task<GetUserDto> FindByUserNameAsync(string username);
+    Task<GetUserDto?> FindByUserNameAsync(string username);
 }

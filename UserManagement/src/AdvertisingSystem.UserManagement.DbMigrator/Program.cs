@@ -1,5 +1,5 @@
-﻿using AdvertisingSystem.UserManagement.DbMigrator;
-using AdvertisingSystem.UserManagement.Infrastructure;
+﻿using AdvertisingSystem.UserManagement.Application;
+using AdvertisingSystem.UserManagement.DbMigrator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,12 +25,13 @@ class Program
         {
             var services = scope.ServiceProvider;
             var logger = services.GetRequiredService<ILogger<Program>>();
-            
+
             try
             {
                 logger.LogInformation("Applying available migrations...");
 
                 DbInitializer.ApplyMigrations(services).Wait();
+                DbInitializer.SeedAsync(services).Wait();
 
                 logger.LogInformation("Migrations done!");
             }
@@ -46,6 +47,6 @@ class Program
 
     private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddInfrastructureServices(configuration);
+        services.AddApplicationServices(configuration);
     }
 }

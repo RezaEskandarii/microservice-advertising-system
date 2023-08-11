@@ -1,6 +1,7 @@
 ﻿using AdvertisingSystem.UserManagement.Api.ViewModels;
 using AdvertisingSystem.UserManagement.Contract.Dtos.User;
 using AdvertisingSystem.UserManagement.Contract.Interfaces;
+using AdvertisingSystem.UserManagement.Shared.Constants;
 using AdvertisingSystem.UserManagement.Shared.Enums;
 using AdvertisingSystem.UserManagement.Shared.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,15 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [HttpPost("SignUp")]
+    public async Task<IActionResult> SignUpAsync(CreateUserDto userDto)
+    {
+        userDto.Role = UserRoles.Client;
+        var createdUser = await _userService.CreateAsync(userDto);
+        var apiResponse = new ApiResponse { Item = createdUser };
+        return Ok(apiResponse);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateUserDto userDto)
     {
@@ -25,6 +35,7 @@ public class UserController : ControllerBase
         var apiResponse = new ApiResponse { Item = createdUser };
         return Ok(apiResponse);
     }
+
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(string id, UpdateUserDto userDto)

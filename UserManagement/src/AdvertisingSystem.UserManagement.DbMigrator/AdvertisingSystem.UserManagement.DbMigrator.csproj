@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AdvertisingSystem.UserManagement.Application\AdvertisingSystem.UserManagement.Application.csproj" />
+    <ProjectReference Include="..\AdvertisingSystem.UserManagement.Contract\AdvertisingSystem.UserManagement.Contract.csproj" />
     <ProjectReference Include="..\AdvertisingSystem.UserManagement.Infrastructure\AdvertisingSystem.UserManagement.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,6 @@
-﻿namespace AdvertisingSystem.UserManagement.Contract.Dtos.User;
+﻿using System.Text.Json.Serialization;
+
+namespace AdvertisingSystem.UserManagement.Contract.Dtos.User;
 
 using System.ComponentModel.DataAnnotations;
 
@@ -28,4 +30,7 @@ public class CreateUserDto
     [Required(ErrorMessage = "Confirm password is required.")]
     [Compare("Password", ErrorMessage = "Passwords do not match.")]
     public string ConfirmPassword { get; set; }
+
+    [JsonIgnore]
+    public string Role { get; set; }
 }

@@ -13,7 +13,7 @@ public class ErrorHandlingMiddleware
 
     public ErrorHandlingMiddleware(RequestDelegate next)
     {
-        this._next = next;
+        _next = next;
     }
 
     public async Task Invoke(HttpContext context)
@@ -28,32 +28,21 @@ public class ErrorHandlingMiddleware
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         var statusCode = HttpStatusCode.InternalServerError;
-        const string defaultErrorMessage = "please try again";
+        const string defaultErrorMessage = "Please try again";
         var errorMessages = new List<string>();
 
-        switch (ex)
+        if (ex is BusinessException exception)
         {
-            // check if the exception is of a specific type and update the status code and message accordingly
-            case BusinessException exception:
-            {
-                statusCode = HttpStatusCode.BadRequest;
-                if (exception.Errors.Any())
-                {
-                    errorMessages = exception.Errors.ToList();
-                }
-                else
-                {
-                    errorMessages.Add(exception.Message);
-                }
-
-                break;
-            }
+            statusCode = HttpStatusCode.BadRequest;
+            errorMessages = exception.Errors.Any()
+                ? exception.Errors.ToList()
+                : new List<string> { exception.Message };
         }
 
-        if (!errorMessages.Any())
+        if (errorMessages.Count == 0)
         {
             errorMessages.Add(defaultErrorMessage);
         }
@@ -70,10 +59,10 @@ public class ErrorHandlingMiddleware
 
         var respObj = JsonSerializer.Serialize(new ApiResponse(statusCode)
         {
-            ErrorMessages = errorMessages,
+            ErrorMessages = errorMessages
         }, serializeOptions);
 
-        return context.Response.WriteAsync(respObj);
+        await context.Response.WriteAsync(respObj);
     }
 
     private static void LogExceptions(Exception exception, HttpContext context)
@@ -81,27 +70,28 @@ public class ErrorHandlingMiddleware
         var logStr = new StringBuilder();
         var requestIp = context.Connection.RemoteIpAddress;
         var currentDateTime = DateTime.Now;
+
         logStr.Append(NextLine);
-        logStr.Append($"############## User: {GetCurrentUser(context)} # IP:{requestIp} ###########################");
+        logStr.Append($"######### User: {GetCurrentUser(context)} # IP:{requestIp} ##############");
         logStr.Append(NextLine);
         logStr.Append($"######### DateTime: {currentDateTime} ## LocalDateTim: {currentDateTime} ###");
         logStr.Append(NextLine);
-        logStr.Append($"############################# Route: {context.Request.Path} #################################");
+        logStr.Append($"##### Route: {context.Request.Path} #########");
         logStr.Append(NextLine);
-        logStr.Append($"############################# QueryParams: {GetQueryParams(context)} ########################");
+        logStr.Append($"################ QueryParams: {GetQueryParams(context)} #######");
         logStr.Append(NextLine);
         logStr.Append($"### ExceptionMessage: {exception.Message}###");
         logStr.Append(NextLine);
         logStr.Append(exception.StackTrace);
         logStr.Append(NextLine);
-        logStr.Append("########################################## END ###############################################");
+        logStr.Append("######## END #############");
         logStr.Append(NextLine);
     }
 
     private static string? GetCurrentUser(HttpContext context)
     {
         var currentUser = " unauthenticated user ";
-        if (context.User is { Identity: not null })
+        if (context.User?.Identity != null)
         {
             currentUser = $" {context.User.Identity.Name} ";
         }

@@ -37,13 +37,23 @@ public class UserAppService : IUserAppService
 
         var appUser = _mapper.Map<AppUser>(userDto);
         appUser.UserName = userDto.Email;
-       
+
         var result = await _userManager.CreateAsync(appUser);
-        await _userManager.AddPasswordAsync(appUser, userDto.Password);
-        return await FindByUserNameAsync(userDto.Email);
+        if (result.Succeeded)
+        {
+            await _userManager.AddPasswordAsync(appUser, userDto.Password);
+            // Assign the user to the role
+            await AddToRoleAsync(appUser, userDto.Role);
+            return await FindByUserNameAsync(userDto.Email);
+        }
+        else
+        {
+            var errorMessage = string.Join("\n", result.Errors);
+            throw new Exception(errorMessage);
+        }
     }
 
-    public async Task<GetUserDto> FindByUserNameAsync(string username)
+    public async Task<GetUserDto?> FindByUserNameAsync(string username)
     {
         var user = await _userManager.FindByNameAsync(username);
         return _mapper.Map<GetUserDto>(user);
@@ -128,6 +138,14 @@ public class UserAppService : IUserAppService
         {
             throw new DuplicatedUserException(cellNumber);
         }
+    }
+
+    private async Task AddToRoleAsync(AppUser appUser, string roleName)
+    {
+        var role = await _roleManager.FindByNameAsync(roleName);
+        if (role == null)
+            await _roleManager.CreateAsync(new() { Name = roleName, DisplayName = roleName });
+        await _userManager.AddToRoleAsync(appUser, roleName);
     }
 
     #endregion
