@@ -9,7 +9,7 @@ public interface IUserAppService
 {
     Task<GetUserDto> CreateAsync(CreateUserDto userDto);
     Task<GetUserDto> UpdateAsync(string id, UpdateUserDto userDto);
-    Task<GetUserDto> FindAsync(string id);
+    Task<GetUserDto?> FindAsync(string id);
     Task<PaginatedResult<GetUserDto>> GetPaginatedAsync(FindUserFilter userFilter);
     Task ChangeStatusAsync(string id, UserStatuses status);
     Task<GetUserDto?> FindByUserNameAsync(string username);

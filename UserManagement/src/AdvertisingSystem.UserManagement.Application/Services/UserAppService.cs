@@ -68,7 +68,7 @@ public class UserAppService : IUserAppService
         return await FindAsync(id);
     }
 
-    public async Task<GetUserDto> FindAsync(string id)
+    public async Task<GetUserDto?> FindAsync(string id)
     {
         var appUser = await _userManager.FindByIdAsync(id);
         return _mapper.Map<GetUserDto>(appUser);
