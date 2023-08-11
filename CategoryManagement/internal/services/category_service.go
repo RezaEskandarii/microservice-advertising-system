@@ -13,10 +13,6 @@ func NewCategoryService(repo CategoryRepository) *CategoryService {
 	}
 }
 
-func (s *CategoryService) CreateTable() error {
-	return s.repo.CreateTable()
-}
-
 func (s *CategoryService) DeleteCategory(id int) error {
 	return s.repo.DeleteCategory(id)
 }

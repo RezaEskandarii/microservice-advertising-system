@@ -6,7 +6,6 @@ import (
 )
 
 type CategoryRepository interface {
-	CreateTable() error
 	DeleteCategory(id int) error
 	FindByID(id int) (*Category, error)
 	FindAll() ([]Category, error)
@@ -19,22 +18,6 @@ type CategoryPostgresRepository struct {
 // NewCategoryPostgresRepository{
 func NewCategoryPostgresRepository(db *sql.DB) *CategoryPostgresRepository {
 	return &CategoryPostgresRepository{db: db}
-}
-
-// CreateTable
-func (r *CategoryPostgresRepository) CreateTable() error {
-	createTableQuery := `
-		CREATE TABLE IF NOT EXISTS categories (
-			id SERIAL PRIMARY KEY,
-			name VARCHAR(255) NOT NULL,
-			parent_id INTEGER REFERENCES categories(id)
-		)
-	`
-	_, err := r.db.Exec(createTableQuery)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // DeleteCategory
@@ -51,7 +34,7 @@ func (r *CategoryPostgresRepository) FindByID(id int) (*Category, error) {
 	category := &Category{}
 	err := r.db.QueryRow("SELECT id, name FROM categories WHERE id = $1", id).Scan(&category.ID, &category.Name)
 	if err != nil {
-		return nil, err
+		return nil, handleNoRowsError(err)
 	}
 
 	subcategories, err := r.findSubcategories(category.ID)
@@ -95,7 +78,7 @@ func (r *CategoryPostgresRepository) FindAll() ([]Category, error) {
 func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category, error) {
 	rows, err := r.db.Query("SELECT id, name FROM categories WHERE parent_id = $1", parentID)
 	if err != nil {
-		return nil, err
+		return nil, handleNoRowsError(err)
 	}
 	defer rows.Close()
 
@@ -117,4 +100,11 @@ func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category
 	}
 
 	return subcategories, nil
+}
+
+func handleNoRowsError(err error) error {
+	if err == sql.ErrNoRows {
+		return nil
+	}
+	return err
 }
