@@ -8,6 +8,8 @@ import (
 type CategoryRepository interface {
 	DeleteCategory(id int) error
 	FindByID(id int) (*Category, error)
+	Create(category *Category) (*Category, error)
+	Update(id int, category *Category) (*Category, error)
 	FindAll() ([]Category, error)
 }
 
@@ -18,6 +20,24 @@ type CategoryPostgresRepository struct {
 // NewCategoryPostgresRepository{
 func NewCategoryPostgresRepository(db *sql.DB) *CategoryPostgresRepository {
 	return &CategoryPostgresRepository{db: db}
+}
+
+func (r *CategoryPostgresRepository) Create(category *Category) (*Category, error) {
+	query := "INSERT INTO categories (name,parent_id) VALUES ($1,$2) RETURNING id"
+	err := r.db.QueryRow(query, category.Name, category.ParentID).Scan(&category.ID)
+	if err != nil {
+		return nil, err
+	}
+	return category, nil
+}
+
+func (r *CategoryPostgresRepository) Update(id int, category *Category) (*Category, error) {
+	query := "UPDATE categories SET name = $1 WHERE id = $2 RETURNING id"
+	err := r.db.QueryRow(query, category.Name, id).Scan(&category.ID)
+	if err != nil {
+		return nil, err
+	}
+	return category, nil
 }
 
 // DeleteCategory

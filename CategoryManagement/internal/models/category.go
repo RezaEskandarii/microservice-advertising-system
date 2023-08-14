@@ -2,6 +2,7 @@ package models
 
 type Category struct {
 	ID            int
-	Name          string
-	Subcategories []Category
+	Name          string `json:"name"`
+	ParentID      int
+	Subcategories []Category `json:"subcategories"`
 }

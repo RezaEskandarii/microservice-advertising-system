@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AdvertisingSystem.UserManagement.Infrastructure.Services;
+using AdvertisingSystem.UserManagement.Shared.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,9 +15,16 @@ public static class ConfigureServices
         services.AddLogging(options => options.AddConsole())
             .AddSingleton<IConfiguration>(configuration);
 
+        services.AddSingleton<ISecretManager, SecretManager>();
+
+        // Build the service provider.
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+        // Get an instance of the interface from the service provider.
+        var secretManager = serviceProvider.GetService<ISecretManager>();
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+            options.UseNpgsql(secretManager.GetConnectionStringAsync().Result,
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
 

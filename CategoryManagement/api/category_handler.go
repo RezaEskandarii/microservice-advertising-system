@@ -1,8 +1,10 @@
 package api
 
 import (
+	"category-management/internal/models"
 	. "category-management/internal/services"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -18,7 +20,61 @@ func (h *CategoryAPIHandler) RegisterRoutes(service *CategoryService) {
 	// Set up HTTP routes and corresponding handlers
 	http.HandleFunc("/api/v1/categories/delete", h.deleteCategoryHandler)
 	http.HandleFunc("/api/v1/categories/", h.findByIDHandler)
+	http.HandleFunc("/api/v1/categories/create", h.CreateCategoryHandler)
+	http.HandleFunc("/api/v1/categories/update/", h.UpdateCategoryHandler)
 	http.HandleFunc("/api/v1/categories", h.findAllHandler)
+}
+
+func (h *CategoryAPIHandler) CreateCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	if strings.ToUpper(r.Method) == "POST" {
+		// Parse the request body
+		var category models.Category
+		err := json.NewDecoder(r.Body).Decode(&category)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(w, "Error parsing request body: %v", err)
+			return
+		}
+
+		// Create the category
+		cat, err := h.service.Create(&category)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintf(w, "Error creating category: %v", err)
+			return
+		}
+
+		// Return success response
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, cat)
+	}
+}
+
+func (h *CategoryAPIHandler) UpdateCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	if strings.ToUpper(r.Method) == "PUT" {
+		// Parse the request body
+		var category models.Category
+		err := json.NewDecoder(r.Body).Decode(&category)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(w, "Error parsing request body: %v", err)
+			return
+		}
+
+		id := extractCategoryID(r)
+
+		// Create the category
+		cat, err := h.service.Update(id, &category)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintf(w, "Error creating category: %v", err)
+			return
+		}
+
+		// Return success response
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, cat)
+	}
 }
 
 func (h *CategoryAPIHandler) deleteCategoryHandler(w http.ResponseWriter, r *http.Request) {

@@ -19,8 +19,7 @@ class Program
         ConfigureServices(serviceCollection, configuration);
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
-
-
+        
         using (var scope = serviceProvider.CreateScope())
         {
             var services = scope.ServiceProvider;
