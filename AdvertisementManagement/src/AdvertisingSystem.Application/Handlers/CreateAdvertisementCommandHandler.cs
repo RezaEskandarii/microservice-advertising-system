@@ -1,5 +1,7 @@
+using System.Text.Json;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Contract.Interfaces;
+using AdvertisingSystem.Domain.DomainEvents;
 using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Domain.ValueObjects;
 using MediatR;
@@ -23,8 +25,9 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, command.Price,
             new CreateDate(command.CreatedAt), new UpdateDate(command.UpdatedAt), new ExpiryDate(command.ExpiresAt),
             command.Address, command.CategoryId);
-        await _advertisementRepository.AddAsync(advertisement);
+        var result = await _advertisementRepository.AddAsync(advertisement);
 
-        // await _eventPublisher.PublishAsync(new AdvertisementCreatedEvent(advertisement.Id, advertisement.Title));
+        var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(result));
+        await _eventPublisher.PublishAsync(@event, "advertisements", "ad_events", "email_queue");
     }
 }
