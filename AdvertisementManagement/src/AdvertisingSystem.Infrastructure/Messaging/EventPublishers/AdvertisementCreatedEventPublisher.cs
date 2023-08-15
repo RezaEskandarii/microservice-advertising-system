@@ -15,7 +15,6 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
         _secretManager = secretManager;
     }
 
-
     public Task PublishAsync(IDomainEvent @event, string routingKey, string exchange, string queue)
     {
         try
@@ -49,12 +48,7 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
             var body = Encoding.UTF8.GetBytes(message);
 
             // Publish the message to the exchange
-            channel.BasicPublish(
-                exchange: exchange, // exchange name
-                routingKey: routingKey, // routing key
-                basicProperties: properties,
-                body: body
-            );
+            channel.BasicPublish(exchange, routingKey, properties, body);
         }
         catch (Exception e)
         {

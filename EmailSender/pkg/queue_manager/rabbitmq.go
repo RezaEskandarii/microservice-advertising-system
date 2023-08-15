@@ -1,11 +1,14 @@
 package queue_manager
 
 import (
+	"category-management/internal/models"
 	"category-management/pkg/email_sender"
 	"category-management/pkg/secret_manager"
+	"encoding/json"
 	"fmt"
 	"github.com/streadway/amqp"
 	"log"
+	"strconv"
 )
 
 type QueueManager struct {
@@ -20,7 +23,7 @@ func New(sm *secret_manager.SecretManager, em email_sender.EmailSender) QueueMan
 	}
 }
 
-func (q QueueManager) Listen() {
+func (q *QueueManager) Listen() {
 
 	fmt.Println("start to listen to events")
 
@@ -99,17 +102,25 @@ func (q QueueManager) Listen() {
 	// Start consuming messages
 
 	for msg := range msgs {
-		// Process the message
-		body := string(msg.Body)
-		log.Printf("Received message: %s", body)
+		q.sendEmail(msg)
+	}
 
-		// Check if the event is "OnAdvertisementAdded"
-		if msg.RoutingKey == "ad_events.OnAdvertisementAdded" {
+}
 
+func (q *QueueManager) sendEmail(msg amqp.Delivery) {
+	// Process the message
+	body := string(msg.Body)
+	log.Printf("Received message: %s", body)
+
+	// Check if the event is "OnAdvertisementAdded"
+	if msg.RoutingKey == "ad_events.OnAdvertisementAdded" {
+
+		var ad = toAdvertisement(body)
+		if ad != nil {
 			request := email_sender.SendEmailRequest{
-				Subject:    "",
-				Body:       body,
-				Attachment: nil,
+				Subject: "Your ad has been successfully registered.",
+				Body:    fmt.Sprintf("Your ad has been successfully registered., ad titile is %s", ad.Title),
+				To:      ad.UserEmail,
 			}
 			// Send email
 			err := q.EmailSender.Send(request)
@@ -118,5 +129,23 @@ func (q QueueManager) Listen() {
 			}
 		}
 	}
+}
 
+// toAdvertisement convert given message into advertisement struct
+func toAdvertisement(jsonStr string) *models.Advertisement {
+	var result models.Advertisement
+
+	unquotedStr, err := strconv.Unquote(jsonStr)
+	if err != nil {
+		log.Printf("Error in decode utf8 json %s", err.Error())
+		return nil
+	}
+
+	err = json.Unmarshal([]byte(unquotedStr), &result)
+	if err != nil {
+		log.Printf("Error in decode utf8 json %s", err.Error())
+		return nil
+	}
+
+	return &result
 }
