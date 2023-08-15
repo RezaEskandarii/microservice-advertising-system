@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace AdvertisingSystem.Application.UseCases.Queries;
 
-public class GetAdvertisementQuery
+public class GetAdvertisementQuery : IRequest
 {
-    
+    public long Id { get; set; }
 }

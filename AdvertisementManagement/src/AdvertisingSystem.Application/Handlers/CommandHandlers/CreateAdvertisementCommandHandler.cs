@@ -6,7 +6,7 @@ using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Domain.ValueObjects;
 using MediatR;
 
-namespace AdvertisingSystem.Application.Handlers;
+namespace AdvertisingSystem.Application.Handlers.CommandHandlers;
 
 public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertisementCommand>
 {
@@ -23,11 +23,11 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
     public async Task Handle(CreateAdvertisementCommand command, CancellationToken cancellationToken)
     {
         var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, command.Price,
-            new CreateDate(command.CreatedAt), new UpdateDate(command.UpdatedAt), new ExpiryDate(command.ExpiresAt),
+            new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
             command.Address, command.CategoryId);
         var result = await _advertisementRepository.AddAsync(advertisement);
 
         var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(result));
-        await _eventPublisher.PublishAsync(@event, "advertisements", "ad_events", "email_queue");
+        await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
     }
 }
