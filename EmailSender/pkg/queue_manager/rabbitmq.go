@@ -3,6 +3,7 @@ package queue_manager
 import (
 	"category-management/pkg/email_sender"
 	"category-management/pkg/secret_manager"
+	"fmt"
 	"github.com/streadway/amqp"
 	"log"
 )
@@ -20,13 +21,17 @@ func New(sm *secret_manager.SecretManager, em email_sender.EmailSender) *QueueMa
 }
 
 func (q *QueueManager) Listen() {
+
+	fmt.Println("start to listen to events")
+
 	// RabbitMQ connection string
 	connString := "amqp://guest:guest@localhost:5672/"
 
 	// Connect to RabbitMQ
 	conn, err := amqp.Dial(connString)
 	if err != nil {
-		log.Fatalf("Failed to connect to RabbitMQ: %s", err)
+		log.Printf("Failed to connect to RabbitMQ: %s", err)
+		return
 	}
 	defer conn.Close()
 
@@ -34,6 +39,7 @@ func (q *QueueManager) Listen() {
 	ch, err := conn.Channel()
 	if err != nil {
 		log.Fatalf("Failed to open a channel: %s", err)
+		return
 	}
 	defer ch.Close()
 
@@ -52,7 +58,7 @@ func (q *QueueManager) Listen() {
 	}
 
 	// Declare the queue
-	q, err := ch.QueueDeclare(
+	declaredQueue, err := ch.QueueDeclare(
 		"email_queue", // queue name
 		true,          // durable
 		false,         // auto-deleted
@@ -66,11 +72,11 @@ func (q *QueueManager) Listen() {
 
 	// Bind the queue to the exchange
 	err = ch.QueueBind(
-		q.Name,           // queue name
-		"advertisements", // routing key
-		"ad_events.*",    // exchange name
-		false,            // no-wait
-		nil,              // arguments
+		declaredQueue.Name, // queue name
+		"advertisements",   // routing key
+		"ad_events.*",      // exchange name
+		false,              // no-wait
+		nil,                // arguments
 	)
 	if err != nil {
 		log.Fatalf("Failed to bind the queue: %s", err)
@@ -78,13 +84,13 @@ func (q *QueueManager) Listen() {
 
 	// Consume messages from the queue
 	msgs, err := ch.Consume(
-		q.Name, // queue name
-		"",     // consumer name
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // arguments
+		declaredQueue.Name, // queue name
+		"",                 // consumer name
+		true,               // auto-ack
+		false,              // exclusive
+		false,              // no-local
+		false,              // no-wait
+		nil,                // arguments
 	)
 	if err != nil {
 		log.Fatalf("Failed to register a consumer: %s", err)

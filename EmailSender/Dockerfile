@@ -18,7 +18,7 @@ RUN go build -o app
 
 # Set the environment variables
 ENV RABBITMQ_CONNECTION_STRING="amqp://guest:guest@rabbitmq:5672/"
-ENV EMAIL_SERVICE_API_KEY="your-email-service-api-key"
+ENV EMAIL_SERVICE_API_KEY="email-service-api-key"
 
 # Expose the port on which the application listens
 EXPOSE 8080

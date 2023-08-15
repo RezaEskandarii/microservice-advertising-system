@@ -23,6 +23,7 @@ func (a App) Run(portNumber int) {
 	var queueManager = queue_manager.New(&secretManager, emailSender)
 
 	go queueManager.Listen()
+
 	log.Printf("application started at: %d", portNumber)
 	// Start the HTTP server
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", portNumber), nil))
