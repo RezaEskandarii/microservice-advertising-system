@@ -13,14 +13,14 @@ type QueueManager struct {
 	EmailSender  email_sender.EmailSender
 }
 
-func New(sm *secret_manager.SecretManager, em email_sender.EmailSender) *QueueManager {
-	return &QueueManager{
+func New(sm *secret_manager.SecretManager, em email_sender.EmailSender) QueueManager {
+	return QueueManager{
 		SecretManger: sm,
 		EmailSender:  em,
 	}
 }
 
-func (q *QueueManager) Listen() {
+func (q QueueManager) Listen() {
 
 	fmt.Println("start to listen to events")
 
@@ -45,13 +45,13 @@ func (q *QueueManager) Listen() {
 
 	// Declare the exchange
 	err = ch.ExchangeDeclare(
-		"advertisements", // exchange name
-		"topic",          // exchange type
-		true,             // durable
-		false,            // auto-deleted
-		false,            // internal
-		false,            // no-wait
-		nil,              // arguments
+		"ad_events", // exchange name
+		"topic",     // exchange type
+		true,        // durable
+		false,       // auto-deleted
+		false,       // internal
+		false,       // no-wait
+		nil,         // arguments
 	)
 	if err != nil {
 		log.Fatalf("Failed to declare the exchange: %s", err)
@@ -72,11 +72,11 @@ func (q *QueueManager) Listen() {
 
 	// Bind the queue to the exchange
 	err = ch.QueueBind(
-		declaredQueue.Name, // queue name
-		"advertisements",   // routing key
-		"ad_events.*",      // exchange name
-		false,              // no-wait
-		nil,                // arguments
+		declaredQueue.Name,               // queue name
+		"ad_events.OnAdvertisementAdded", // routing key
+		"ad_events",                      // exchange name
+		false,                            // no-wait
+		nil,                              // arguments
 	)
 	if err != nil {
 		log.Fatalf("Failed to bind the queue: %s", err)
@@ -96,22 +96,27 @@ func (q *QueueManager) Listen() {
 		log.Fatalf("Failed to register a consumer: %s", err)
 	}
 
-	go func() {
-		for msg := range msgs {
-			// Process the message
-			body := string(msg.Body)
-			log.Printf("Received message: %s", body)
+	// Start consuming messages
 
-			// Check if the event is "OnAdvertisementAdded"
-			if msg.RoutingKey == "ad_events.OnAdvertisementAdded" {
-				// Send email
-				q.EmailSender.Send(email_sender.SendEmailRequest{
-					Subject:    "",
-					Body:       body,
-					Attachment: nil,
-				})
+	for msg := range msgs {
+		// Process the message
+		body := string(msg.Body)
+		log.Printf("Received message: %s", body)
+
+		// Check if the event is "OnAdvertisementAdded"
+		if msg.RoutingKey == "ad_events.OnAdvertisementAdded" {
+
+			request := email_sender.SendEmailRequest{
+				Subject:    "",
+				Body:       body,
+				Attachment: nil,
+			}
+			// Send email
+			err := q.EmailSender.Send(request)
+			if err != nil {
+				return
 			}
 		}
-	}()
+	}
 
 }

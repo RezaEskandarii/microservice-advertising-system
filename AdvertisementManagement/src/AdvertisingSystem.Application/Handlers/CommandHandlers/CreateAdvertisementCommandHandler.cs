@@ -27,7 +27,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
             command.Address, command.CategoryId);
         var result = await _advertisementRepository.AddAsync(advertisement);
 
-        var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(result));
+        var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(new { Title = result.Title }));
         await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
     }
 }

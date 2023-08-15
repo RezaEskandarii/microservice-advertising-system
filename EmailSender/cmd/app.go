@@ -18,9 +18,16 @@ func NewApp() *App {
 
 func (a App) Run(portNumber int) {
 
-	var secretManager = secret_manager.SecretManager{}
-	var emailSender = email_sender.EmailSenderImpl{}
-	var queueManager = queue_manager.New(&secretManager, emailSender)
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println(r)
+			return
+		}
+	}()
+
+	secretManager := secret_manager.SecretManager{}
+	emailSender := email_sender.EmailSenderImpl{}
+	queueManager := queue_manager.New(&secretManager, emailSender)
 
 	go queueManager.Listen()
 
