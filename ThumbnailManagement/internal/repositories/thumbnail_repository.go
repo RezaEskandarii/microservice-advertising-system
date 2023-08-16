@@ -15,17 +15,17 @@ type ThumbnailRepository interface {
 	FindAll(categoryID int) ([]Thumbnail, error)
 }
 
-type PostgreSQLRepository struct {
+type PostgreSQLThumbnailRepository struct {
 	db *sql.DB
 }
 
-func NewPostgreSQLRepository(db *sql.DB) *PostgreSQLRepository {
-	return &PostgreSQLRepository{
+func NewPostgreSQLRepository(db *sql.DB) *PostgreSQLThumbnailRepository {
+	return &PostgreSQLThumbnailRepository{
 		db: db,
 	}
 }
 
-func (r *PostgreSQLRepository) DeleteThumbnail(id int) error {
+func (r *PostgreSQLThumbnailRepository) DeleteThumbnail(id int) error {
 	query := "DELETE FROM thumbnails WHERE id =  $1"
 	_, err := r.db.Exec(query, id)
 	if err != nil {
@@ -34,7 +34,7 @@ func (r *PostgreSQLRepository) DeleteThumbnail(id int) error {
 	return nil
 }
 
-func (r *PostgreSQLRepository) FindByID(id int) (*Thumbnail, error) {
+func (r *PostgreSQLThumbnailRepository) FindByID(id int) (*Thumbnail, error) {
 	query := "SELECT id, image_name, image_bucket, image_bytes, advertisement_id FROM thumbnails WHERE id =  $1"
 	row := r.db.QueryRow(query, id)
 
@@ -50,7 +50,7 @@ func (r *PostgreSQLRepository) FindByID(id int) (*Thumbnail, error) {
 	return thumbnail, nil
 }
 
-func (r *PostgreSQLRepository) Create(thumbnail *Thumbnail) (*Thumbnail, error) {
+func (r *PostgreSQLThumbnailRepository) Create(thumbnail *Thumbnail) (*Thumbnail, error) {
 	query := "INSERT INTO thumbnails (image_name, image_bucket, image_bytes, advertisement_id) VALUES ( $1,  $2,  $3,  $4) RETURNING id"
 	err := r.db.QueryRow(query, thumbnail.ImageName, thumbnail.ImageBucket, thumbnail.ImageBytes, thumbnail.AdvertisementID).Scan(&thumbnail.ID)
 	if err != nil {
@@ -60,7 +60,7 @@ func (r *PostgreSQLRepository) Create(thumbnail *Thumbnail) (*Thumbnail, error) 
 	return thumbnail, nil
 }
 
-func (r *PostgreSQLRepository) Update(id int, thumbnail *Thumbnail) (*Thumbnail, error) {
+func (r *PostgreSQLThumbnailRepository) Update(id int, thumbnail *Thumbnail) (*Thumbnail, error) {
 	query := "UPDATE thumbnails SET image_name =  $1, image_bucket =  $2, image_bytes =  $3, advertisement_id =  $4 WHERE id =  $5"
 	_, err := r.db.Exec(query, thumbnail.ImageName, thumbnail.ImageBucket, thumbnail.ImageBytes, thumbnail.AdvertisementID, id)
 	if err != nil {
@@ -71,7 +71,7 @@ func (r *PostgreSQLRepository) Update(id int, thumbnail *Thumbnail) (*Thumbnail,
 	return thumbnail, nil
 }
 
-func (r *PostgreSQLRepository) FindAll(categoryID int) ([]Thumbnail, error) {
+func (r *PostgreSQLThumbnailRepository) FindAll(categoryID int) ([]Thumbnail, error) {
 	query := "SELECT id, image_name, image_bucket, image_bytes, advertisement_id FROM thumbnails WHERE category_id =  $1"
 	rows, err := r.db.Query(query, categoryID)
 	if err != nil {
