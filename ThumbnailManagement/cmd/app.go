@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"thumbnail-management/grpc"
+	"thumbnail-management/internal/repositories"
 	"thumbnail-management/internal/services"
 	"thumbnail-management/pkg/secret_manager"
 )
@@ -23,18 +24,11 @@ func (a App) Run(portNumber int) {
 	dbName := "advertisement_thumbnails"
 
 	ctx := context.Background()
-	sdn, err := secretManager.Get(ctx, "thumbnails_db_full_connection")
-	if err != nil {
-		panic(err.Error())
-	}
-	createDBSdn, err := secretManager.Get(ctx, "thumbnails_db_base_connection")
-	if err != nil {
-		panic(err.Error())
-	}
-	a.createDatabase(dbName, fmt.Sprintf("%s", createDBSdn))
+
+	a.createDatabase(dbName, fmt.Sprintf("%s", secretManager.GetConnectionString(ctx, "")))
 
 	// Connect to PostgreSQL
-	db, err := sql.Open("postgres", fmt.Sprintf("%s", sdn))
+	db, err := sql.Open("postgres", fmt.Sprintf("%s", secretManager.GetConnectionString(ctx, "advertisement_thumbnails")))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,11 +36,14 @@ func (a App) Run(portNumber int) {
 
 	a.createThumbnailsTable(db)
 
-	sm, err := services.NewStorageManager("", "", "")
+	sm, err := services.NewStorageManager("127.0.0.1:9000", "minioadmin", "minioadmin")
 	if err != nil {
 		//	panic(err.Error())
 	}
-	fs := grpc.NewFleServer(sm)
+
+	thumbnailRepo := repositories.NewPostgreSQLRepository(db)
+	thumbnailService := services.NewThumbnailService(thumbnailRepo, sm)
+	fs := grpc.NewFleServer(thumbnailService)
 
 	fs.Start("5002")
 
@@ -82,7 +79,7 @@ func (a App) createDatabase(dbName string, sdn string) error {
 func (a App) createThumbnailsTable(db *sql.DB) error {
 	createTableQuery := `
 	CREATE TABLE IF NOT EXISTS thumbnails (
-			id INT AUTO_INCREMENT PRIMARY KEY,
+			id SERIAL PRIMARY KEY  ,
 			image_name VARCHAR(255),
 			image_bucket VARCHAR(255),
 			advertisement_id INT

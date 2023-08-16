@@ -13,10 +13,10 @@ import (
 
 type FileServer struct {
 	pb.FileServiceServer
-	thumbnailService services.ThumbnailService
+	thumbnailService *services.ThumbnailService
 }
 
-func NewFleServer(ts services.ThumbnailService) FileServer {
+func NewFleServer(ts *services.ThumbnailService) FileServer {
 	return FileServer{
 		thumbnailService: ts,
 	}
@@ -55,7 +55,7 @@ func (s *FileServer) Start(port string) {
 	}
 
 	// Start the gRPC server
-	fmt.Println("gRPC server is running on port 50051")
+	fmt.Println("gRPC server is running on port " + port)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}

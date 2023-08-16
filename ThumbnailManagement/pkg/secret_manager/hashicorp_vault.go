@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	vault "github.com/hashicorp/vault/api"
+	"strings"
 	env "thumbnail-management/pkg/env_manager"
 )
 
@@ -23,7 +24,7 @@ func New() *SecretManager {
 	client, err := vault.NewClient(config)
 
 	if err != nil {
-		panic(err.Error())
+		///	panic(err.Error())
 	}
 
 	client.SetToken(env.GetFromDotENV("vault_token"))
@@ -59,4 +60,14 @@ func (s *SecretManager) Get(ctx context.Context, key string) (interface{}, error
 
 	return value, nil
 
+}
+
+func (s *SecretManager) GetConnectionString(ctx context.Context, dbName string) string {
+	// TODO: read from hashicorp vault
+
+	db := fmt.Sprintf(" dbname=%s ", dbName)
+	if strings.TrimSpace(dbName) == "" {
+		db = ""
+	}
+	return fmt.Sprintf("user=postgres password=boofhichkas %s host=127.0.0.1 port=5432 sslmode=disable", db)
 }
