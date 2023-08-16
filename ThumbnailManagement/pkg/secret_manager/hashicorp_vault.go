@@ -1,15 +1,15 @@
 package secret_manager
 
 import (
-	env "category-management/pkg/env_manager"
 	"context"
 	"fmt"
 	vault "github.com/hashicorp/vault/api"
+	env "thumbnail-management/pkg/env_manager"
 )
 
 var (
 	mountPath  = "secret"
-	secretPath = "category-microservice"
+	secretPath = "thumbnail-microservice"
 )
 
 type SecretManager struct {

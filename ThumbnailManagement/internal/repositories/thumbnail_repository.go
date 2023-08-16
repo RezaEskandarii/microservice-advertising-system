@@ -12,7 +12,7 @@ type ThumbnailRepository interface {
 	FindByID(id int) (*Thumbnail, error)
 	Create(Thumbnail *Thumbnail) (*Thumbnail, error)
 	Update(id int, Thumbnail *Thumbnail) (*Thumbnail, error)
-	FindAll(categoryID int) ([]Thumbnail, error)
+	FindAll(advertisementID int) ([]Thumbnail, error)
 }
 
 type PostgreSQLThumbnailRepository struct {
@@ -71,9 +71,9 @@ func (r *PostgreSQLThumbnailRepository) Update(id int, thumbnail *Thumbnail) (*T
 	return thumbnail, nil
 }
 
-func (r *PostgreSQLThumbnailRepository) FindAll(categoryID int) ([]Thumbnail, error) {
-	query := "SELECT id, image_name, image_bucket, image_bytes, advertisement_id FROM thumbnails WHERE category_id =  $1"
-	rows, err := r.db.Query(query, categoryID)
+func (r *PostgreSQLThumbnailRepository) FindAll(advertisementID int) ([]Thumbnail, error) {
+	query := "SELECT id, image_name, image_bucket, image_bytes, advertisement_id FROM thumbnails WHERE advertisement_id =  $1"
+	rows, err := r.db.Query(query, advertisementID)
 	if err != nil {
 		return nil, err
 	}

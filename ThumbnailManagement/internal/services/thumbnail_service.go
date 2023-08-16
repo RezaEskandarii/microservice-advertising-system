@@ -31,6 +31,6 @@ func (s *ThumbnailService) UpdateThumbnail(id int, thumbnail *Thumbnail) (*Thumb
 	return s.thumbnailRepository.Update(id, thumbnail)
 }
 
-func (s *ThumbnailService) GetThumbnailsByCategory(categoryID int) ([]Thumbnail, error) {
-	return s.thumbnailRepository.FindAll(categoryID)
+func (s *ThumbnailService) GetThumbnailsByAdvertisementID(advertisementID int) ([]Thumbnail, error) {
+	return s.thumbnailRepository.FindAll(advertisementID)
 }
