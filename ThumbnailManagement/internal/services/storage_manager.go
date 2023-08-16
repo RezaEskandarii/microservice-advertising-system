@@ -26,7 +26,7 @@ type StorageManagerImpl struct {
 func NewStorageManager(endpoint string, accessKey string, secretKey string) (StorageManager, error) {
 	minioClient, err := minio.New(endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(accessKey, secretKey, ""),
-		Secure: true,
+		Secure: false,
 	})
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (s *StorageManagerImpl) EnsureBucketExists(bucketName string) error {
 
 func (s *StorageManagerImpl) UploadFile(bucketName string, objectName string, fileBytes []byte) error {
 	ctx := context.Background()
-
+	s.EnsureBucketExists(bucketName)
 	_, err := s.minioClient.PutObject(ctx, bucketName, objectName, bytes.NewReader(fileBytes), int64(len(fileBytes)), minio.PutObjectOptions{})
 	if err != nil {
 		return err

@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"log"
 	"thumbnail-management/grpc"
-	"thumbnail-management/internal/repositories"
-	"thumbnail-management/internal/services"
 	"thumbnail-management/pkg/secret_manager"
 )
 
@@ -36,14 +34,7 @@ func (a App) Run(portNumber int) {
 
 	a.createThumbnailsTable(db)
 
-	sm, err := services.NewStorageManager("127.0.0.1:9000", "minioadmin", "minioadmin")
-	if err != nil {
-		//	panic(err.Error())
-	}
-
-	thumbnailRepo := repositories.NewPostgreSQLRepository(db)
-	thumbnailService := services.NewThumbnailService(thumbnailRepo, sm)
-	fs := grpc.NewFleServer(thumbnailService)
+	fs := grpc.NewFleServer()
 
 	fs.Start("5002")
 

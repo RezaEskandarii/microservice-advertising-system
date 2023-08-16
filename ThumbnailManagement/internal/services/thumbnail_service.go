@@ -36,8 +36,9 @@ func (s *ThumbnailService) GetThumbnailByID(id int) (*Thumbnail, error) {
 }
 
 func (s *ThumbnailService) CreateThumbnail(thumbnail *Thumbnail) (*Thumbnail, error) {
+	thumbnail.ImageBucket = BucketName
 	result, err := s.thumbnailRepository.Create(thumbnail)
-	if err == nil {
+	if err == nil && thumbnail.ImageBytes != nil {
 		s.storageManager.UploadFile(BucketName, thumbnail.ImageName, thumbnail.ImageBytes)
 	}
 	return result, err

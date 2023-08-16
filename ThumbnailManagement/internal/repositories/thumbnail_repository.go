@@ -51,8 +51,8 @@ func (r *PostgreSQLThumbnailRepository) FindByID(id int) (*Thumbnail, error) {
 }
 
 func (r *PostgreSQLThumbnailRepository) Create(thumbnail *Thumbnail) (*Thumbnail, error) {
-	query := "INSERT INTO thumbnails (image_name, image_bucket, image_bytes, advertisement_id) VALUES ( $1,  $2,  $3,  $4) RETURNING id"
-	err := r.db.QueryRow(query, thumbnail.ImageName, thumbnail.ImageBucket, thumbnail.ImageBytes, thumbnail.AdvertisementID).Scan(&thumbnail.ID)
+	query := "INSERT INTO thumbnails (image_name, image_bucket, advertisement_id) VALUES ( $1,  $2,  $3) RETURNING id"
+	err := r.db.QueryRow(query, thumbnail.ImageName, thumbnail.ImageBucket, thumbnail.AdvertisementID).Scan(&thumbnail.ID)
 	if err != nil {
 		return nil, err
 	}
