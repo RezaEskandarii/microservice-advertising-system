@@ -18,8 +18,4 @@
     <ProjectReference Include="..\AdvertisingSystem.Infrastructure\AdvertisingSystem.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="GrpcOut\" />
-  </ItemGroup>
-
 </Project>

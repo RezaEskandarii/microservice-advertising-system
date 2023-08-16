@@ -10,6 +10,7 @@ public class CreateAdvertisementCommand : IRequest
     public string Description { get; set; }
     public decimal Price { get; set; }
     public DateTime ExpiresAt { get; set; }
-    public Address Address { get; set; }
+    public Address? Address { get; set; }
     public int CategoryId { get; set; }
+    public ICollection<byte[]?>? Thumbnails { get; set; } = new List<byte[]?>();
 }

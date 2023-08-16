@@ -16,8 +16,16 @@ public class AdvertisementController : BaseController
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateAsync([FromBody] CreateAdvertisementCommand command)
+    public async Task<ActionResult> CreateAsync([FromForm] CreateAdvertisementCommand command,
+        [FromForm] List<IFormFile> thumbnails)
     {
+        foreach (var thumbnail in thumbnails)
+        {
+            using var memoryStream = new MemoryStream();
+            await thumbnail.CopyToAsync(memoryStream);
+            command.Thumbnails.Add(memoryStream.ToArray());
+        }
+
         await _mediator.Send(command);
         return Ok();
     }

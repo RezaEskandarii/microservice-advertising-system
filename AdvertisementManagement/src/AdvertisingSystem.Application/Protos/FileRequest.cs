@@ -1,5 +1,7 @@
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using File;
+using Grpc.Net.Client;
 
 namespace AdvertisingSystem.Application.Grpc;
 
@@ -31,4 +33,6 @@ public interface IFileService
 {
     [OperationContract]
     Task<FileResponse> UploadFile(FileRequest request);
+
+    
 }

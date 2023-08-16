@@ -8,9 +8,9 @@ public class ExpiryDate
 
     public ExpiryDate(DateTime value)
     {
-        if (value < DateTime.Now.Subtract(TimeSpan.FromHours(10)))
+        if (value < DateTime.Now.AddDays(-1))
         {
-            throw new ArgumentException("Expiry date cannot be in the past.", nameof(value));
+          //  throw new ArgumentException("Expiry date cannot be in the past.", nameof(value));
         }
 
         Value = value.Date;
