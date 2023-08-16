@@ -5,7 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"net/http"
+	"thumbnail-management/grpc"
+	"thumbnail-management/internal/services"
 	"thumbnail-management/pkg/secret_manager"
 )
 
@@ -19,14 +20,14 @@ func NewApp() *App {
 func (a App) Run(portNumber int) {
 
 	secretManager := secret_manager.New()
-	dbName := "advertisement_categories"
+	dbName := "advertisement_thumbnails"
 
 	ctx := context.Background()
-	sdn, err := secretManager.Get(ctx, "thumbnail_db_full_connection")
+	sdn, err := secretManager.Get(ctx, "thumbnails_db_full_connection")
 	if err != nil {
 		panic(err.Error())
 	}
-	createDBSdn, err := secretManager.Get(ctx, "thumbnail_db_base_connection")
+	createDBSdn, err := secretManager.Get(ctx, "thumbnails_db_base_connection")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -41,9 +42,13 @@ func (a App) Run(portNumber int) {
 
 	a.createThumbnailsTable(db)
 
-	// Start the HTTP server
-	log.Printf("application started at: %d", portNumber)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", portNumber), nil))
+	sm, err := services.NewStorageManager("", "", "")
+	if err != nil {
+		//	panic(err.Error())
+	}
+	fs := grpc.NewFleServer(sm)
+
+	fs.Start("5002")
 
 }
 

@@ -5,5 +5,5 @@ type Thumbnail struct {
 	ImageName       string `json:"image_name"`
 	ImageBucket     string `json:"image_bucket"`
 	ImageBytes      []byte `json:"image_bytes"`
-	AdvertisementID int
+	AdvertisementID int64
 }
