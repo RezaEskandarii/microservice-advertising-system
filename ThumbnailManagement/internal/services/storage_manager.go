@@ -15,10 +15,12 @@ type StorageManager interface {
 	UploadFile(bucketName string, objectName string, fileBytes []byte) error
 	DownloadFile(bucketName string, objectName string, filePath string) error
 	GetDirectLink(bucketName string, objectName string) (string, error)
+	RemoveFile(bucketName string, objectName string) error
 }
 
 type StorageManagerImpl struct {
 	minioClient *minio.Client
+	StorageManager
 }
 
 func NewStorageManager(endpoint string, accessKey string, secretKey string) (StorageManager, error) {
@@ -90,4 +92,16 @@ func (s *StorageManagerImpl) GetDirectLink(bucketName string, objectName string)
 	}
 
 	return presignedURL.String(), nil
+}
+
+func (s *StorageManagerImpl) RemoveFile(bucketName string, objectName string) error {
+	ctx := context.Background()
+
+	err := s.minioClient.RemoveObject(ctx, bucketName, objectName, minio.RemoveObjectOptions{})
+	if err != nil {
+		return err
+	}
+
+	log.Println("File removed successfully.")
+	return nil
 }
