@@ -1,0 +1,21 @@
+syntax = "proto3";
+//option go_package = "thumbnail-management/grpc";
+/// 
+
+package file;
+
+service FileService {
+  rpc UploadFile(FileRequest) returns (FileResponse) {}
+}
+
+message FileRequest {
+  bytes file_content = 1;
+  string file_name = 2;
+  int64 advertisement_id = 3;
+}
+
+message FileResponse {
+  bool success = 1;
+  string message = 2;
+}
+

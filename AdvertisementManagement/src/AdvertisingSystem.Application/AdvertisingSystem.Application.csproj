@@ -7,12 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.24.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AdvertisingSystem.Domain\AdvertisingSystem.Domain.csproj" />
     <ProjectReference Include="..\AdvertisingSystem.Infrastructure\AdvertisingSystem.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GrpcOut\" />
   </ItemGroup>
 
 </Project>
