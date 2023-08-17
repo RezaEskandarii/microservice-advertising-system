@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure;
+namespace AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
 
 public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string>
 {

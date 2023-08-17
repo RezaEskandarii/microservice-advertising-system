@@ -2,6 +2,7 @@
 using AdvertisingSystem.UserManagement.Contract.Interfaces;
 using AdvertisingSystem.UserManagement.Domain.Entities;
 using AdvertisingSystem.UserManagement.Infrastructure;
+using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
 using AdvertisingSystem.UserManagement.Shared;
 using AdvertisingSystem.UserManagement.Shared.Enums;
 using AdvertisingSystem.UserManagement.Shared.Exceptions;

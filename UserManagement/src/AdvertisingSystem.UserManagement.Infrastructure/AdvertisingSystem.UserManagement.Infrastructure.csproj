@@ -33,6 +33,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Persistence\Repositories\" />
+    <Folder Include="ValueConverters\" />
   </ItemGroup>
 
 </Project>

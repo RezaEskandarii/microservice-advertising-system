@@ -4,6 +4,7 @@ using AdvertisingSystem.UserManagement.Application.Services;
 using AdvertisingSystem.UserManagement.Contract.Interfaces;
 using AdvertisingSystem.UserManagement.Domain.Entities;
 using AdvertisingSystem.UserManagement.Infrastructure;
+using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;

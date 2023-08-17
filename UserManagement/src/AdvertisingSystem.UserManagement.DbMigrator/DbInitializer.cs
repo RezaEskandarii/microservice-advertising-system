@@ -1,6 +1,7 @@
 ﻿using AdvertisingSystem.UserManagement.Contract.Dtos.User;
 using AdvertisingSystem.UserManagement.Contract.Interfaces;
 using AdvertisingSystem.UserManagement.Infrastructure;
+using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
 using AdvertisingSystem.UserManagement.Shared.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

@@ -22,4 +22,9 @@
     <PackageReference Include="OpenIddict" Version="4.7.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\CommandHandlers\" />
+    <Folder Include="Handlers\QueryHandlers\" />
+  </ItemGroup>
+
 </Project>
