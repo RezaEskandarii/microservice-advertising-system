@@ -1,4 +1,6 @@
-﻿using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
+﻿using AdvertisingSystem.UserManagement.Domain.Interfaces;
+using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
+using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Repositories;
 using AdvertisingSystem.UserManagement.Infrastructure.Services;
 using AdvertisingSystem.UserManagement.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,7 @@ public static class ConfigureServices
         services.AddLogging(options => options.AddConsole())
             .AddSingleton<IConfiguration>(configuration);
 
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddSingleton<ISecretManager, SecretManager>();
 
         // Build the service provider.

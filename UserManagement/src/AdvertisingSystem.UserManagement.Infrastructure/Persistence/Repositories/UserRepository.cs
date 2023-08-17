@@ -3,19 +3,22 @@ using AdvertisingSystem.UserManagement.Domain.Interfaces;
 using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
 using AdvertisingSystem.UserManagement.Shared;
 using AdvertisingSystem.UserManagement.Shared.Enums;
+using AdvertisingSystem.UserManagement.Shared.ExtensionMethods;
 using AdvertisingSystem.UserManagement.Shared.Filters;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisingSystem.UserManagement.Infrastructure.Persistence.Repositories;
-
-
 
 public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-    public UserRepository(ApplicationDbContext dbContext)
+    public UserRepository(ApplicationDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
+        _mapper = mapper;
     }
 
     public async Task<AppUser> CreateAsync(AppUser user)
@@ -25,16 +28,13 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<AppUser> UpdateAsync(string id, AppUser user)
+    public async Task<AppUser?> UpdateAsync(string id, AppUser user)
     {
         var existingUser = await _dbContext.Users.FindAsync(id);
-        if (existingUser != null)
-        {
-            existingUser.FirstName = user.FirstName;
-            existingUser.Email = user.Email;
-            // Update other properties as needed
-            await _dbContext.SaveChangesAsync();
-        }
+        if (existingUser == null) return existingUser;
+        _mapper.Map(user, existingUser);
+        await _dbContext.SaveChangesAsync();
+
         return existingUser;
     }
 
@@ -43,14 +43,25 @@ public class UserRepository : IUserRepository
         return await _dbContext.Users.FindAsync(id);
     }
 
-    public async Task<bool> IsInRoleAsync(string username, string roleName)
+    public async Task<bool> IsInRoleAsync(string userId, string roleName)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
         if (user == null)
         {
+            // User not found
             return false;
         }
-        return user.Roles.Contains(roleName);
+
+        var role = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+        if (role == null)
+        {
+            // Role not found
+            return false;
+        }
+
+        var userRole =
+            await _dbContext.UserRoles.FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == role.Id);
+        return userRole != null;
     }
 
     public async Task<PaginatedResult<AppUser>> GetPaginatedAsync(FindUserFilter userFilter)
@@ -58,30 +69,19 @@ public class UserRepository : IUserRepository
         var query = _dbContext.Users.AsQueryable();
 
         // Apply filtering
-        if (!string.IsNullOrEmpty(userFilter.Name))
+        if (!string.IsNullOrEmpty(userFilter.Id))
         {
-            query = query.Where(u => u.Name.Contains(userFilter.Name));
+            query = query.Where(u => u.FirstName.Contains(userFilter.FirstName));
         }
 
-        // Apply sorting
-        switch (userFilter.SortBy)
+        var totalRecords = await query.CountAsync();
+        return new PaginatedResult<AppUser>()
         {
-            case SortBy.Name:
-                query = query.OrderBy(u => u.Name);
-                break;
-            // Add more cases as needed
-            default:
-                query = query.OrderBy(u => u.UserName);
-                break;
-        }
-
-        // Apply pagination
-        var totalItems = await query.CountAsync();
-        var users = await query.Skip(userFilter.PageNumber * userFilter.PageSize)
-                               .Take(userFilter.PageSize)
-                               .ToListAsync();
-
-        return new PaginatedResult<AppUser>(users, totalItems);
+            Items = await query.Paginate(userFilter).ToListAsync(),
+            PageNumber = userFilter.PageNumber,
+            PageSize = userFilter.PageSize,
+            TotalCount = totalRecords
+        };
     }
 
     public async Task ChangeStatusAsync(string id, UserStatuses status)
