@@ -17,7 +17,6 @@
   <ItemGroup>
     <Folder Include="DomainEvents\" />
     <Folder Include="Specifications\" />
-    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
 </Project>
