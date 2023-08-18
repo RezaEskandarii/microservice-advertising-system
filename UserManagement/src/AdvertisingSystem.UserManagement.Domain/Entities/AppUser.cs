@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AdvertisingSystem.UserManagement.Domain.ValueObjects;
+using Microsoft.AspNetCore.Identity;
 using AdvertisingSystem.UserManagement.Shared.Enums;
 
 namespace AdvertisingSystem.UserManagement.Domain.Entities;
 
-public class AppUser : IdentityUser<string>
+public class AppUser : UserAggregatedRoot
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string CellNumber { get; set; }
-    public string Address { get; set; }
+    public FirstName FirstName { get; set; }
+    public LastName LastName { get; set; }
+    public PhoneNumber CellNumber { get; set; }
+    public Address? Address { get; set; }
     public UserStatuses Status { get; set; }
 }

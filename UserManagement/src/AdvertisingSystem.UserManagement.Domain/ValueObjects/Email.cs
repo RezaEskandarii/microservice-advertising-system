@@ -18,7 +18,7 @@ public class Email
     private bool IsValidEmail(string email)
     {
         // Regular expression pattern for email validation
-        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+        var pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
 
         return Regex.IsMatch(email, pattern);
     }

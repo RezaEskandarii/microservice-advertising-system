@@ -1,4 +1,5 @@
 ﻿using AdvertisingSystem.UserManagement.Domain.Entities;
+using AdvertisingSystem.UserManagement.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,19 +50,19 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
         var entries = ChangeTracker
             .Entries()
-            .Where(e => e is { Entity: EntityBase, State: EntityState.Added or EntityState.Modified });
+            .Where(e => e is { Entity: IAggregateRoot<string>, State: EntityState.Added or EntityState.Modified });
 
         foreach (var entityEntry in entries)
         {
             switch (entityEntry.State)
             {
                 case EntityState.Added:
-                    ((EntityBase)entityEntry.Entity).CreatedAt = DateTime.Now;
-                    ((EntityBase)entityEntry.Entity).UpdatedAt = DateTime.Now;
+                    ((IAggregateRoot<string>)entityEntry.Entity).CreatedAt = new CreatedAt(DateTime.Now);
+                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = new UpdatedAt(DateTime.Now);
 
                     break;
                 case EntityState.Modified:
-                    ((EntityBase)entityEntry.Entity).UpdatedAt = DateTime.Now;
+                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = new UpdatedAt(DateTime.Now);
                     break;
             }
         }

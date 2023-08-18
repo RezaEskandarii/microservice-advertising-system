@@ -71,7 +71,7 @@ public class UserRepository : IUserRepository
         // Apply filtering
         if (!string.IsNullOrEmpty(userFilter.Id))
         {
-            query = query.Where(u => u.FirstName.Contains(userFilter.FirstName));
+            query = query.Where(u => u.FirstName.Value.Contains(userFilter.FirstName));
         }
 
         var totalRecords = await query.CountAsync();
