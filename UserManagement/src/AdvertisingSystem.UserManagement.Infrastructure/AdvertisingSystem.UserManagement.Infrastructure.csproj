@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>AdvertisingSystem.Identity.Infrastructure</AssemblyName>
+    <RootNamespace>AdvertisingSystem.Identity.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AdvertisingSystem.UserManagement.Domain\AdvertisingSystem.UserManagement.Domain.csproj" />
+    <ProjectReference Include="..\AdvertisingSystem.Identity.Domain\AdvertisingSystem.Identity.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

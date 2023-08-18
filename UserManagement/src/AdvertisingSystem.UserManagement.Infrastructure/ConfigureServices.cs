@@ -1,14 +1,14 @@
-﻿using AdvertisingSystem.UserManagement.Domain.Interfaces;
-using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
-using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Repositories;
-using AdvertisingSystem.UserManagement.Infrastructure.Services;
-using AdvertisingSystem.UserManagement.Shared.Interfaces;
+﻿using AdvertisingSystem.Identity.Domain.Interfaces;
+using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
+using AdvertisingSystem.Identity.Infrastructure.Persistence.Repositories;
+using AdvertisingSystem.Identity.Infrastructure.Services;
+using AdvertisingSystem.Identity.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure;
+namespace AdvertisingSystem.Identity.Infrastructure;
 
 public static class ConfigureServices
 {

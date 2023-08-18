@@ -1,14 +1,14 @@
-using AdvertisingSystem.UserManagement.Domain.Entities;
-using AdvertisingSystem.UserManagement.Domain.Interfaces;
-using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
-using AdvertisingSystem.UserManagement.Shared;
-using AdvertisingSystem.UserManagement.Shared.Enums;
-using AdvertisingSystem.UserManagement.Shared.ExtensionMethods;
-using AdvertisingSystem.UserManagement.Shared.Filters;
+using AdvertisingSystem.Identity.Domain.Entities;
+using AdvertisingSystem.Identity.Domain.Interfaces;
+using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
+using AdvertisingSystem.Identity.Shared;
+using AdvertisingSystem.Identity.Shared.Enums;
+using AdvertisingSystem.Identity.Shared.Filters;
+using AdvertisingSystem.Identity.Shared.ExtensionMethods;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure.Persistence.Repositories;
+namespace AdvertisingSystem.Identity.Infrastructure.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {

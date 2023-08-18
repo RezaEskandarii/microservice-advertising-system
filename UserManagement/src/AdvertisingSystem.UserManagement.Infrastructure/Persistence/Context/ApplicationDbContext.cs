@@ -1,9 +1,9 @@
-﻿using AdvertisingSystem.UserManagement.Domain.Entities;
-using AdvertisingSystem.UserManagement.Domain.ValueObjects;
+﻿using AdvertisingSystem.Identity.Domain.Entities;
+using AdvertisingSystem.Identity.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
+namespace AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 
 public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string>
 {

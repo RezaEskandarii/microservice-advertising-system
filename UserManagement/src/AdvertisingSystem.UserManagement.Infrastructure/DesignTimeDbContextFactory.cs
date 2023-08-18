@@ -1,9 +1,9 @@
-﻿using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
+﻿using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure;
+namespace AdvertisingSystem.Identity.Infrastructure;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {

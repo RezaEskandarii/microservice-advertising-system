@@ -1,8 +1,8 @@
-﻿using AdvertisingSystem.UserManagement.Domain.ValueObjects;
+﻿using AdvertisingSystem.Identity.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure.Persistence.ValueConverters;
+namespace AdvertisingSystem.Identity.Infrastructure.Persistence.ValueConverters;
 
 public class AddressConverter : ValueConverter<Address, string>
 {

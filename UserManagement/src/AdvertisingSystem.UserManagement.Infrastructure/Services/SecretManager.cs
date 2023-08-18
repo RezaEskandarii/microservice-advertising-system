@@ -1,10 +1,10 @@
-﻿using AdvertisingSystem.UserManagement.Shared.Interfaces;
+﻿using AdvertisingSystem.Identity.Shared.Interfaces;
 using Microsoft.Extensions.Configuration;
 using VaultSharp;
 using VaultSharp.V1.AuthMethods.Token;
 using VaultSharp.V1.Commons;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure.Services;
+namespace AdvertisingSystem.Identity.Infrastructure.Services;
 
 public class SecretManager : ISecretManager
 {

@@ -1,5 +1,5 @@
-﻿using AdvertisingSystem.UserManagement.Application;
-using AdvertisingSystem.UserManagement.DbMigrator;
+﻿using AdvertisingSystem.Identity.Application;
+using AdvertisingSystem.Identity.DbMigrator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

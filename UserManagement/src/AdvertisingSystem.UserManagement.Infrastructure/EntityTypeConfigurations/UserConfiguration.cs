@@ -1,9 +1,9 @@
-﻿using AdvertisingSystem.UserManagement.Domain.Entities;
-using AdvertisingSystem.UserManagement.Infrastructure.Persistence.ValueConverters;
+﻿using AdvertisingSystem.Identity.Domain.Entities;
+using AdvertisingSystem.Identity.Infrastructure.Persistence.ValueConverters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdvertisingSystem.UserManagement.Infrastructure.EntityTypeConfigurations;
+namespace AdvertisingSystem.Identity.Infrastructure.EntityTypeConfigurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<AppUser>
 {
