@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\CommandHandlers\" />
     <Folder Include="Handlers\QueryHandlers\" />
   </ItemGroup>
 

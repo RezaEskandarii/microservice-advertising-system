@@ -1,7 +1,6 @@
 ﻿using AdvertisingSystem.UserManagement.Contract.Dtos.User;
 using AdvertisingSystem.UserManagement.Contract.Interfaces;
 using AdvertisingSystem.UserManagement.Domain.Entities;
-using AdvertisingSystem.UserManagement.Infrastructure;
 using AdvertisingSystem.UserManagement.Infrastructure.Persistence.Context;
 using AdvertisingSystem.UserManagement.Shared;
 using AdvertisingSystem.UserManagement.Shared.Enums;
@@ -16,10 +15,10 @@ namespace AdvertisingSystem.UserManagement.Application.Services;
 
 public class UserAppService : IUserAppService
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly RoleManager<AppRole> _roleManager;
-    private readonly IMapper _mapper;
     private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly RoleManager<AppRole> _roleManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public UserAppService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper,
         ApplicationDbContext context)
@@ -47,11 +46,9 @@ public class UserAppService : IUserAppService
             await AddToRoleAsync(appUser, userDto.Role);
             return await FindByUserNameAsync(userDto.Email);
         }
-        else
-        {
-            var errorMessage = string.Join("\n", result.Errors);
-            throw new Exception(errorMessage);
-        }
+
+        var errorMessage = string.Join("\n", result.Errors);
+        throw new Exception(errorMessage);
     }
 
     public async Task<GetUserDto?> FindByUserNameAsync(string username)
@@ -88,7 +85,7 @@ public class UserAppService : IUserAppService
         var totalRecords = await query.CountAsync();
         var users = await query.Paginate(userFilter).ToListAsync();
 
-        return new PaginatedResult<GetUserDto>()
+        return new PaginatedResult<GetUserDto>
         {
             Items = _mapper.Map<ICollection<GetUserDto>>(users),
             PageNumber = userFilter.PageNumber,
@@ -110,10 +107,7 @@ public class UserAppService : IUserAppService
 
     private IQueryable<AppUser> GetFilteredQuery(IQueryable<AppUser> query, FindUserFilter userFilter)
     {
-        if (!string.IsNullOrWhiteSpace(userFilter.Id))
-        {
-            query = query.Where(x => x.Id == userFilter.Id);
-        }
+        if (!string.IsNullOrWhiteSpace(userFilter.Id)) query = query.Where(x => x.Id == userFilter.Id);
 
         return query;
     }
@@ -121,37 +115,28 @@ public class UserAppService : IUserAppService
     private async Task ThrowIfEmailDuplicatedAsync(string email)
     {
         var appUser = await _userManager.FindByNameAsync(email);
-        if (appUser != null)
-        {
-            throw new DuplicatedUserException(email);
-        }
+        if (appUser != null) throw new DuplicatedUserException(email);
     }
 
     private void ThrowIfPhoneNumberDuplicated(string cellNumber)
     {
         if (string.IsNullOrWhiteSpace(cellNumber)) return;
         var appUser = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == cellNumber);
-        if (appUser != null)
-        {
-            throw new DuplicatedUserException(cellNumber);
-        }
+        if (appUser != null) throw new DuplicatedUserException(cellNumber);
     }
 
     private void ThrowIfCellNumberDuplicated(string cellNumber)
     {
         if (string.IsNullOrWhiteSpace(cellNumber)) return;
         var appUser = _userManager.Users.FirstOrDefault(x => x.CellNumber == cellNumber);
-        if (appUser != null)
-        {
-            throw new DuplicatedUserException(cellNumber);
-        }
+        if (appUser != null) throw new DuplicatedUserException(cellNumber);
     }
 
     private async Task AddToRoleAsync(AppUser appUser, string roleName)
     {
         var role = await _roleManager.FindByNameAsync(roleName);
         if (role == null)
-            await _roleManager.CreateAsync(new() { Name = roleName, DisplayName = roleName });
+            await _roleManager.CreateAsync(new AppRole { Name = roleName, DisplayName = roleName });
         await _userManager.AddToRoleAsync(appUser, roleName);
     }
 
