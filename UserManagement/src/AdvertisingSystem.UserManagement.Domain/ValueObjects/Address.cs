@@ -21,7 +21,7 @@ public class Address
     {
         unchecked
         {
-            int hash = 17;
+            var hash = 17;
             hash = hash * 23 + (Street?.GetHashCode() ?? 0);
             hash = hash * 23 + (City?.GetHashCode() ?? 0);
             hash = hash * 23 + (State?.GetHashCode() ?? 0);

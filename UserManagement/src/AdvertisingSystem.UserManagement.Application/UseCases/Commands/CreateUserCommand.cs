@@ -1,9 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using AdvertisingSystem.UserManagement.Application.UseCases.Queries;
+using AdvertisingSystem.UserManagement.Domain.ValueObjects;
+using MediatR;
 
 namespace AdvertisingSystem.UserManagement.Application.UseCases.Commands;
 
-public class CreateUserCommand
+public class CreateUserCommand : IRequest<GetUser>
 {
     [Required(ErrorMessage = "First name is required.")]
     public string FirstName { get; set; }
@@ -15,7 +18,7 @@ public class CreateUserCommand
     public string CellNumber { get; set; }
 
     [Required(ErrorMessage = "Address is required.")]
-    public string Address { get; set; }
+    public Address? Address { get; set; }
 
     [Required(ErrorMessage = "Email is required.")]
     [EmailAddress(ErrorMessage = "Invalid email address.")]

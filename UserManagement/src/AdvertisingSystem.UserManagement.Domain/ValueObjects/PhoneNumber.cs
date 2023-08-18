@@ -2,9 +2,9 @@
 
 public class PhoneNumber
 {
-    public readonly string Value;
+    public readonly string? Value;
 
-    public PhoneNumber(string value)
+    public PhoneNumber(string? value)
     {
         Value = value;
     }

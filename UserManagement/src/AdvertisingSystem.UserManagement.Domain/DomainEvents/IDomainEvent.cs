@@ -2,5 +2,5 @@
 
 public interface IDomainEvent
 {
-    
+    public object Data { get; }
 }
