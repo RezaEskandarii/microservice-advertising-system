@@ -25,6 +25,8 @@ public class LastName
 
     public static bool operator ==(LastName lastName1, LastName lastName2)
     {
+        if (lastName1 is null || lastName2 is null)
+            return false;
         return lastName1.Equals(lastName2) || lastName1.Value == lastName2.Value;
     }
 

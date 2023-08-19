@@ -21,6 +21,6 @@ public abstract class UserAggregatedRoot : IdentityUser<string>,IAggregateRoot<s
     }
 
     public string Id { get; set; }
-    public CreatedAt CreatedAt { get; set; }
-    public UpdatedAt UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

@@ -13,6 +13,11 @@ public static class ConfigureServices
 {
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddMediatR(mediatRServiceConfiguration =>
+        {
+            mediatRServiceConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+        });
+
         services.AddInfrastructureServices(configuration);
         services.AddAutoMapper(Assembly.Load("AdvertisingSystem.Identity.Application"));
 
@@ -22,7 +27,7 @@ public static class ConfigureServices
                 options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
                 options.ClaimsIdentity.EmailClaimType = ClaimTypes.Email;
                 options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
-                
+
                 options.Password.RequiredLength = 8;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()

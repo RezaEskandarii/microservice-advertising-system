@@ -25,7 +25,14 @@ public class PhoneNumber
 
     public static bool operator ==(PhoneNumber phoneNumber1, PhoneNumber phoneNumber2)
     {
+        if (phoneNumber1 is null || phoneNumber2 is null)
+        {
+            return false;
+        }
+        
         return phoneNumber1.Equals(phoneNumber2) || phoneNumber1.Value == phoneNumber2.Value;
+
+        return true;
     }
 
     public static bool operator !=(PhoneNumber phoneNumber1, PhoneNumber phoneNumber2)

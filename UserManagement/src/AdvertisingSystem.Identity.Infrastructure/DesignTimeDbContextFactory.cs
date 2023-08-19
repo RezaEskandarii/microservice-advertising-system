@@ -1,7 +1,9 @@
 ﻿using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
+using AdvertisingSystem.Identity.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AdvertisingSystem.Identity.Infrastructure;
 
@@ -15,10 +17,13 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
             .Build();
 
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        var connectionString =
-            configuration.GetConnectionString("DefaultConnection");
 
-        builder.UseNpgsql(connectionString);
+        var serviceProvider = new ServiceCollection()
+         
+            .BuildServiceProvider();
+        var secretManager = serviceProvider.GetRequiredService<ISecretManager>();
+
+        builder.UseNpgsql(secretManager.GetConnectionStringAsync().Result);
 
         return new ApplicationDbContext(builder.Options);
     }

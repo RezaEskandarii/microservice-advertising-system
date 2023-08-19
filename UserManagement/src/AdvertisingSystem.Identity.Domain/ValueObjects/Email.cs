@@ -37,9 +37,14 @@ public class Email
         return Value.GetHashCode();
     }
 
-    public static bool operator ==(Email email1, Email email2)
+    public static bool operator ==(Email left, Email right)
     {
-        return email1.Equals(email2) || email2.Value == email2.Value;
+        if (left is null || right is null)
+        {
+            return false;
+        }
+
+        return left.Equals(right) || right.Value == right.Value;
     }
 
     public static bool operator !=(Email email1, Email email2)

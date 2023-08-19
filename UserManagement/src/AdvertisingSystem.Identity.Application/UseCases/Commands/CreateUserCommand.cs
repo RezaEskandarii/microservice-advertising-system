@@ -34,5 +34,5 @@ public class CreateUserCommand : IRequest<GetUser>
     public string ConfirmPassword { get; set; }
 
     [JsonIgnore]
-    public string Role { get; set; }
+    public string? Role { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using AdvertisingSystem.Identity.Domain.Entities;
 using AdvertisingSystem.Identity.Domain.ValueObjects;
+using AdvertisingSystem.Identity.Infrastructure.EntityTypeConfigurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +40,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.ApplyConfiguration(new UserConfiguration());
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
@@ -57,12 +59,12 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string>
             switch (entityEntry.State)
             {
                 case EntityState.Added:
-                    ((IAggregateRoot<string>)entityEntry.Entity).CreatedAt = new CreatedAt(DateTime.Now);
-                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = new UpdatedAt(DateTime.Now);
+                    ((IAggregateRoot<string>)entityEntry.Entity).CreatedAt = DateTime.Now;
+                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = DateTime.Now;
 
                     break;
                 case EntityState.Modified:
-                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = new UpdatedAt(DateTime.Now);
+                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = DateTime.Now;
                     break;
             }
         }

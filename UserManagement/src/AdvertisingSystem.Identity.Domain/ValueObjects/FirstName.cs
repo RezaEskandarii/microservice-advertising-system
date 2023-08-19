@@ -25,6 +25,11 @@ public class FirstName
 
     public static bool operator ==(FirstName firstName1, FirstName firstName2)
     {
+        if (firstName1 is null || firstName2 is null)
+        {
+            return false;
+        }
+
         return firstName1.Equals(firstName2) || firstName1.Value == firstName2.Value;
     }
 

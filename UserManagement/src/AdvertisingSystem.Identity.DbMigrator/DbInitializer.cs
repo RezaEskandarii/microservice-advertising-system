@@ -18,14 +18,14 @@ public class DbInitializer
 
     public static async Task SeedAsync(IServiceProvider provider)
     {
-        // var userService = provider.GetRequiredService<IUserAppService>();
+        var context = provider.GetRequiredService<ApplicationDbContext>();
         // const string email = "admin@admin.com";
-        // var appUser = await userService.FindByUserNameAsync(email);
+        // var appUser = await context.Users.FirstOrDefaultAsync(x => x.Email.Value == email);
         // if (appUser == null)
         // {
-        //     var adminUser = new CreateUserDto()
+        //     var adminUser = new AppUser()
         //     {
-        //         Email = email,
+        //         Email = new Email(email),
         //         Password = "Reza@@@@1111",
         //         ConfirmPassword = "Reza@@@@1111",
         //         FirstName = "super admin",
@@ -36,6 +36,5 @@ public class DbInitializer
         //         Role = UserRoles.SuperAdmin
         //     };
         //     await userService.CreateAsync(adminUser);
-        // }
     }
 }
