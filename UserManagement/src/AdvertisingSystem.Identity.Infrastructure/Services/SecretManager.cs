@@ -23,7 +23,8 @@ public class SecretManager : ISecretManager
     {
         try
         {
-            Secret<SecretData> secret = await _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync("");
+            Secret<SecretData> secret = await _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(
+                "microservice-project", null, "secret");
 
             if (secret != null && secret.Data != null && secret.Data.Data.TryGetValue(secretKey, out var value))
             {
@@ -40,6 +41,6 @@ public class SecretManager : ISecretManager
 
     public async Task<string?> GetConnectionStringAsync()
     {
-        return await ReadSecretAsync("DBConnectionString");
+        return await ReadSecretAsync("IdentityDBConnectionString");
     }
 }

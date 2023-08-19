@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.Identity.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.Identity.Contract", "src\AdvertisingSystem.Identity.Contract\AdvertisingSystem.Identity.Contract.csproj", "{6E7E16C0-67F3-4D83-9024-8C5CED8C92D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.UserManagement.DbMigrator", "src\AdvertisingSystem.UserManagement.DbMigrator\AdvertisingSystem.UserManagement.DbMigrator.csproj", "{73C4EE71-9DC3-4C4C-9AC8-43D36D75D18D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.Identity.DbMigrator", "src\AdvertisingSystem.Identity.DbMigrator\AdvertisingSystem.Identity.DbMigrator.csproj", "{73C4EE71-9DC3-4C4C-9AC8-43D36D75D18D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.Identity.Domain", "src\AdvertisingSystem.Identity.Domain\AdvertisingSystem.Identity.Domain.csproj", "{3D1BA52B-0B4D-4D14-8539-CC7E7ABCFCB7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.UserManagement.Infrastructure", "src\AdvertisingSystem.UserManagement.Infrastructure\AdvertisingSystem.UserManagement.Infrastructure.csproj", "{0582D27F-2BA8-4612-8AEA-CDF0A190F5FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.Identity.Infrastructure", "src\AdvertisingSystem.Identity.Infrastructure\AdvertisingSystem.Identity.Infrastructure.csproj", "{0582D27F-2BA8-4612-8AEA-CDF0A190F5FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingSystem.Identity.Shared", "src\AdvertisingSystem.Identity.Shared\AdvertisingSystem.Identity.Shared.csproj", "{11FB6791-9E77-4157-841E-1B38674D548A}"
 EndProject

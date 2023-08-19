@@ -47,36 +47,36 @@ public class UserController : ControllerBase
         return Ok(new ApiResponse { Item = updatedUser });
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> FindAsync(string id)
-    {
-        var user = await _userService.FindAsync(id);
-        if (user == null)
-            return NotFound();
-        return Ok(new ApiResponse { Item = user });
-    }
+    // [HttpGet("{id}")]
+    // public async Task<IActionResult> FindAsync(string id)
+    // {
+    //     var user = await _userService.FindAsync(id);
+    //     if (user == null)
+    //         return NotFound();
+    //     return Ok(new ApiResponse { Item = user });
+    // }
 
-    [HttpGet]
-    public async Task<IActionResult> GetPaginatedAsync([FromQuery] FindUserFilter userFilter)
-    {
-        var paginatedResult = await _userService.GetPaginatedAsync(userFilter);
-        return Ok(new ApiResponse { Item = paginatedResult });
-    }
+    // [HttpGet]
+    // public async Task<IActionResult> GetPaginatedAsync([FromQuery] FindUserFilter userFilter)
+    // {
+    //     var paginatedResult = await _userService.GetPaginatedAsync(userFilter);
+    //     return Ok(new ApiResponse { Item = paginatedResult });
+    // }
+    //
+    // [HttpPut("{id}/status")]
+    // public async Task<IActionResult> ChangeStatusAsync(string id, ChangeS)
+    // {
+    //     await _userService.ChangeStatusAsync(id, status);
+    //     return Ok(new ApiResponse());
+    // }
 
-    [HttpPut("{id}/status")]
-    public async Task<IActionResult> ChangeStatusAsync(string id, UserStatuses status)
-    {
-        await _userService.ChangeStatusAsync(id, status);
-        return Ok(new ApiResponse());
-    }
-
-    [HttpGet("username/{username}")]
-    public async Task<IActionResult> FindByUserNameAsync(string username)
-    {
-        var user = await _userService.FindByUserNameAsync(username);
-        if (user == null)
-            return NotFound();
-
-        return Ok(new ApiResponse { Item = user });
-    }
+    // [HttpGet("username/{username}")]
+    // public async Task<IActionResult> FindByUserNameAsync(string username)
+    // {
+    //     var user = await _userService.FindByUserNameAsync(username);
+    //     if (user == null)
+    //         return NotFound();
+    //
+    //     return Ok(new ApiResponse { Item = user });
+    // }
 }
