@@ -14,8 +14,10 @@ public class AppUser : UserAggregatedRoot
     public PhoneNumber CellNumber { get; set; }
     public Address? Address { get; set; }
     public UserStatuses Status { get; set; }
+    public Email Email { get; set; }
 
-    public static AppUser CreateNew(FirstName firstName, LastName lastName, PhoneNumber cellNumber, Address? address,
+    public static AppUser CreateNew(FirstName firstName, LastName lastName, PhoneNumber cellNumber, Email email,
+        Address? address,
         UserStatuses status)
     {
         return new AppUser()
@@ -23,6 +25,7 @@ public class AppUser : UserAggregatedRoot
             FirstName = firstName,
             LastName = lastName,
             CellNumber = cellNumber,
+            Email = email,
             Address = address,
             Status = status,
         };

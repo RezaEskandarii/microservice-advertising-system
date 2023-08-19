@@ -20,8 +20,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUs
     public async Task<GetUser> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
         var appUser = AppUser.CreateNew(new(command.FirstName), new(command.LastName),
-            new(command.PhoneNumber), command.Address, UserStatuses.Enable);
-        
+            new(command.PhoneNumber), new(command.Email), command.Address, UserStatuses.Enable);
+
         var result = await _repository.CreateAsync(appUser);
         appUser.AddDomainEvent(new UserCreatedEvent(appUser));
         return new GetUser();
