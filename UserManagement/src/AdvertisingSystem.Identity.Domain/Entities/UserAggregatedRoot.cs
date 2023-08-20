@@ -19,8 +19,7 @@ public abstract class UserAggregatedRoot : IdentityUser<string>,IAggregateRoot<s
     {
         _domainEvents.Clear();
     }
-
-    public string Id { get; set; }
+    
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

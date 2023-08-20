@@ -28,28 +28,21 @@ public class UserService : IUserService
 
     public async Task<AppUser> CreateAsync(AppUser user, string password)
     {
-        try
+        await ThrowIfEmailDuplicatedAsync(user.Email);
+        await ThrowIfPhoneNumberDuplicatedAsync(new PhoneNumber(user.PhoneNumber));
+
+        var result = await _userManager.CreateAsync(user, password);
+        if (result.Succeeded)
         {
-            await ThrowIfEmailDuplicatedAsync(user.Email);
-            await ThrowIfPhoneNumberDuplicatedAsync(new PhoneNumber(user.PhoneNumber));
-     
-            var result = await _userManager.CreateAsync(user, password);
-            if (result.Succeeded)
-            {
-                await _userManager.AddPasswordAsync(user, password);
-                await AddToRoleAsync(user.Email.Value, UserRoles.Customer);
-                return user;
-            }
-            else
-            {
-                // Handle creation failure
-                throw new Exception(string.Join("\n", result.Errors));
-            }
+            await _userManager.AddPasswordAsync(user, password);
+            await AddToRoleAsync(user.Email.Value, UserRoles.Customer);
+
+            return user;
         }
-        catch (Exception e)
+        else
         {
-            Console.WriteLine(e);
-            throw;
+            // Handle creation failure
+            throw new Exception(string.Join("\n", result.Errors));
         }
     }
 
@@ -157,8 +150,9 @@ public class UserService : IUserService
 
     private async Task ThrowIfEmailDuplicatedAsync(Email email)
     {
-        var appUser = await _userManager.FindByEmailAsync(email.Value);
-        if (appUser != null)
+        var userCount = await _userManager.Users.Where(x => x.UserName == email.Value || x.Email == email)
+            .CountAsync();
+        if (userCount > 0)
         {
             throw new DuplicatedUserException(email.Value);
         }
