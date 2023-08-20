@@ -15,7 +15,7 @@ public class ApiResponse
         ErrorMessages = new List<string>();
     }
 
-    public object Item { get; set; }
+    public object ResponseObject { get; set; }
     public ICollection<string> ErrorMessages { get; set; }
     public string Message { get; set; }
     public HttpStatusCode StatusCode { get; set; }

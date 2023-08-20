@@ -28,14 +28,21 @@ public class UserController : ControllerBase
     {
         command.Role = UserRoles.Customer;
         var createdUser = await _mediator.Send(command);
-        return Ok(new ApiResponse { Item = createdUser });
+        return Ok(new ApiResponse { ResponseObject = createdUser });
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateUserCommand command)
     {
         var createdUser = await _mediator.Send(command);
-        return Ok(new ApiResponse { Item = createdUser });
+        return Ok(new ApiResponse { ResponseObject = createdUser });
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdatePasswordAsync(UpdatePasswordCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok(new ApiResponse());
     }
 
 
@@ -44,7 +51,7 @@ public class UserController : ControllerBase
     {
         command.Id = id;
         var updatedUser = await _mediator.Send(command);
-        return Ok(new ApiResponse { Item = updatedUser });
+        return Ok(new ApiResponse { ResponseObject = updatedUser });
     }
 
     // [HttpGet("{id}")]
