@@ -26,6 +26,7 @@ public static class ConfigureServices
 
         services.AddIdentity<AppUser, AppRole>(options =>
             {
+                
                 options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Name;
                 options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
                 options.ClaimsIdentity.EmailClaimType = ClaimTypes.Email;

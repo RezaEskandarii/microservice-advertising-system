@@ -1,8 +1,8 @@
 ﻿namespace AdvertisingSystem.Identity.Shared.Constants;
 
-public class UserRoles
+public abstract class UserRoles
 {
     public const string SuperAdmin = nameof(SuperAdmin);
     public const string Admin = nameof(Admin);
-    public const string Client = nameof(Client);
+    public const string Customer = nameof(Customer);
 }

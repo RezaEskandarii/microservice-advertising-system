@@ -14,6 +14,7 @@ public class UserConfiguration : IEntityTypeConfiguration<AppUser>
         builder.Property(x => x.LastName).HasConversion(new LastNameConverter()).HasMaxLength(20);
         builder.Property(x => x.Email).HasConversion(new EmailConverter()).HasMaxLength(30);
         builder.Property(x => x.CellNumber).HasConversion(new PhoneNumberConverter()).HasMaxLength(14);
+
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
     }
 }

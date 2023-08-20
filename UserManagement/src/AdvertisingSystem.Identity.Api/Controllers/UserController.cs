@@ -26,7 +26,7 @@ public class UserController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> SignUpAsync(CreateUserCommand command)
     {
-        command.Role = UserRoles.Client;
+        command.Role = UserRoles.Customer;
         var createdUser = await _mediator.Send(command);
         return Ok(new ApiResponse { Item = createdUser });
     }

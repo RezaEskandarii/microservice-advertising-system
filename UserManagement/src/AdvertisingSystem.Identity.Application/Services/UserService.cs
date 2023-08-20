@@ -28,20 +28,28 @@ public class UserService : IUserService
 
     public async Task<AppUser> CreateAsync(AppUser user, string password)
     {
-        await ThrowIfEmailDuplicatedAsync(user.Email);
-        await ThrowIfPhoneNumberDuplicatedAsync(new PhoneNumber(user.PhoneNumber));
-
-        var result = await _userManager.CreateAsync(user, password);
-        if (result.Succeeded)
+        try
         {
-            await _userManager.AddPasswordAsync(user, password);
-            await AddToRoleAsync(user.Email.Value, UserRoles.Client);
-            return user;
+            await ThrowIfEmailDuplicatedAsync(user.Email);
+            await ThrowIfPhoneNumberDuplicatedAsync(new PhoneNumber(user.PhoneNumber));
+     
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddPasswordAsync(user, password);
+                await AddToRoleAsync(user.Email.Value, UserRoles.Customer);
+                return user;
+            }
+            else
+            {
+                // Handle creation failure
+                throw new Exception(string.Join("\n", result.Errors));
+            }
         }
-        else
+        catch (Exception e)
         {
-            // Handle creation failure
-            throw new Exception(string.Join("\n", result.Errors));
+            Console.WriteLine(e);
+            throw;
         }
     }
 
@@ -158,6 +166,7 @@ public class UserService : IUserService
 
     private async Task ThrowIfPhoneNumberDuplicatedAsync(PhoneNumber phoneNumber)
     {
+        if (string.IsNullOrWhiteSpace(phoneNumber.Value)) return;
         var appUser = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber.Value);
         if (appUser != null)
         {

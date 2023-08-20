@@ -1,4 +1,5 @@
 ﻿using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
+using AdvertisingSystem.Identity.Infrastructure.Services;
 using AdvertisingSystem.Identity.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -11,16 +12,16 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
+        var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
 
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-
         var serviceProvider = new ServiceCollection()
-         
+            .AddInfrastructureServices(configuration)
             .BuildServiceProvider();
+
         var secretManager = serviceProvider.GetRequiredService<ISecretManager>();
 
         builder.UseNpgsql(secretManager.GetConnectionStringAsync().Result);

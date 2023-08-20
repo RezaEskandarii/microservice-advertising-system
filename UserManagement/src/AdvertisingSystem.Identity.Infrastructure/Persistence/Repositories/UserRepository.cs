@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisingSystem.Identity.Infrastructure.Persistence.Repositories;
 
-[Obsolete("this class is depricated, use from UserService in application layer")]
+[Obsolete("this class is deprecated, use from UserService in application layer")]
 public class UserRepository
 {
     private readonly ApplicationDbContext _dbContext;
