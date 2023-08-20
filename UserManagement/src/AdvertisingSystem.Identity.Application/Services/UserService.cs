@@ -1,4 +1,5 @@
 using AdvertisingSystem.Identity.Application.Interfaces;
+using AdvertisingSystem.Identity.Application.UseCases.Commands;
 using AdvertisingSystem.Identity.Domain.Entities;
 using AdvertisingSystem.Identity.Domain.ValueObjects;
 using AdvertisingSystem.Identity.Shared;
@@ -62,13 +63,14 @@ public class UserService : IUserService
         await _userManager.AddToRoleAsync(user, roleName);
     }
 
-    public async Task<AppUser?> UpdateAsync(string id, AppUser user)
+    public async Task<AppUser?> UpdateAsync(string id, UpdateUserCommand command)
     {
+        command.Id = null;
         var existingUser = await _userManager.FindByIdAsync(id);
         if (existingUser != null)
         {
             // Update user properties
-            _mapper.Map(user, existingUser);
+            _mapper.Map(command, existingUser);
             var result = await _userManager.UpdateAsync(existingUser);
             if (result.Succeeded)
             {

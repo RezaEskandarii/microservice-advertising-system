@@ -38,9 +38,10 @@ public class UserController : ControllerBase
         return Ok(new ApiResponse { ResponseObject = createdUser });
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdatePasswordAsync(UpdatePasswordCommand command)
+    [HttpPut("ChangePassword/{userId:guid}")]
+    public async Task<IActionResult> UpdatePasswordAsync([FromRoute] Guid userId, UpdatePasswordCommand command)
     {
+        command.userId = userId.ToString();
         await _mediator.Send(command);
         return Ok(new ApiResponse());
     }

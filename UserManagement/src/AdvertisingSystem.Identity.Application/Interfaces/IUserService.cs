@@ -1,3 +1,4 @@
+using AdvertisingSystem.Identity.Application.UseCases.Commands;
 using AdvertisingSystem.Identity.Domain.Entities;
 using AdvertisingSystem.Identity.Shared;
 using AdvertisingSystem.Identity.Shared.Enums;
@@ -9,7 +10,7 @@ public interface IUserService
 {
     Task<AppUser> CreateAsync(AppUser user, string password);
     Task AddToRoleAsync(string username, string roleName);
-    Task<AppUser?> UpdateAsync(string id, AppUser user);
+    Task<AppUser?> UpdateAsync(string id, UpdateUserCommand command);
     Task<AppUser?> FindAsync(string id);
     Task<bool> IsInRoleAsync(string username, string roleName);
     Task<PaginatedResult<AppUser>> GetPaginatedAsync(FindUserFilter userFilter);
