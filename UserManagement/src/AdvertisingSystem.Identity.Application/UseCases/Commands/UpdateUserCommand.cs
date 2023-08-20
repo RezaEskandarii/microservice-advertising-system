@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using AdvertisingSystem.Identity.Application.UseCases.Queries.Dtos;
+using MediatR;
 using Newtonsoft.Json;
 
 namespace AdvertisingSystem.Identity.Application.UseCases.Commands;
 
-public class UpdateUserCommand
+public class UpdateUserCommand : IRequest<GetUser>
 {
     [Required(ErrorMessage = "First name is required.")]
     public string FirstName { get; set; }

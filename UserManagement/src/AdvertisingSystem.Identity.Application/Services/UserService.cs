@@ -136,6 +136,13 @@ public class UserService : IUserService
         return await _userManager.FindByNameAsync(username);
     }
 
+    public async Task ChanePasswordAsync(string userId, string password)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        await _userManager.RemovePasswordAsync(user);
+        await _userManager.AddPasswordAsync(user, password);
+    }
+
     #region Private
 
     private IQueryable<AppUser> GetFilteredQuery(IQueryable<AppUser> query, FindUserFilter userFilter)

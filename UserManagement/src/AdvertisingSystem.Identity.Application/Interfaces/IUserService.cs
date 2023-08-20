@@ -15,4 +15,5 @@ public interface IUserService
     Task<PaginatedResult<AppUser>> GetPaginatedAsync(FindUserFilter userFilter);
     Task ChangeStatusAsync(string id, UserStatuses status);
     Task<AppUser?> FindByUserNameAsync(string username);
+    Task ChanePasswordAsync(string userId, string password);
 }
