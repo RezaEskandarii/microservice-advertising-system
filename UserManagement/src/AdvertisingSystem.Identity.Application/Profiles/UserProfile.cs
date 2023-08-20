@@ -1,4 +1,5 @@
 ﻿using AdvertisingSystem.Identity.Application.UseCases.Queries;
+using AdvertisingSystem.Identity.Application.UseCases.Queries.Dtos;
 using AdvertisingSystem.Identity.Domain.Entities;
 using AutoMapper;
 

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using AdvertisingSystem.Identity.Application.UseCases.Queries;
+using AdvertisingSystem.Identity.Application.UseCases.Queries.Dtos;
 using AdvertisingSystem.Identity.Domain.ValueObjects;
 using MediatR;
 

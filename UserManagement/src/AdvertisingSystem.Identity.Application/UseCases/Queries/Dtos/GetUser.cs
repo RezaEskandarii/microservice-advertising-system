@@ -1,4 +1,4 @@
-﻿namespace AdvertisingSystem.Identity.Application.UseCases.Queries;
+﻿namespace AdvertisingSystem.Identity.Application.UseCases.Queries.Dtos;
 
 public class GetUser
 {

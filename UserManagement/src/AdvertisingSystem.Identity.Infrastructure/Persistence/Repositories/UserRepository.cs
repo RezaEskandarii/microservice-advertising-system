@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisingSystem.Identity.Infrastructure.Persistence.Repositories;
 
-public class UserRepository : IUserRepository
+[Obsolete("this class is depricated, use from UserService in application layer")]
+public class UserRepository
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -21,19 +22,13 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
     }
 
-    public async Task<AppUser> CreateAsync(AppUser user)
+    public async Task<AppUser> CreateAsync(AppUser user, string password)
     {
-        try
-        {
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-        return user;
+        user.PasswordHash = password;
+        var result = await _dbContext.Users.AddAsync(user);
+        await _dbContext.SaveChangesAsync();
+
+        return result.Entity;
     }
 
     public async Task<AppUser?> UpdateAsync(string id, AppUser user)

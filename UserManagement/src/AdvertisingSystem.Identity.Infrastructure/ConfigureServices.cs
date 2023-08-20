@@ -18,7 +18,6 @@ public static class ConfigureServices
         services.AddLogging(options => options.AddConsole())
             .AddSingleton<IConfiguration>(configuration);
 
-        services.AddScoped<IUserRepository, UserRepository>();
         services.AddSingleton<ISecretManager, SecretManager>();
 
         // Build the service provider.

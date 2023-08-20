@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using System.Security.Claims;
+using AdvertisingSystem.Identity.Application.Interfaces;
+using AdvertisingSystem.Identity.Application.Services;
 using AdvertisingSystem.Identity.Domain.Entities;
 using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Identity.Infrastructure;
@@ -18,6 +20,7 @@ public static class ConfigureServices
             mediatRServiceConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
 
+        services.AddScoped<IUserService, UserService>();
         services.AddInfrastructureServices(configuration);
         services.AddAutoMapper(Assembly.Load("AdvertisingSystem.Identity.Application"));
 

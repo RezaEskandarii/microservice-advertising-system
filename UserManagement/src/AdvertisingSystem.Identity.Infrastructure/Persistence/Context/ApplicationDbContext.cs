@@ -1,6 +1,7 @@
 ﻿using AdvertisingSystem.Identity.Domain.Entities;
 using AdvertisingSystem.Identity.Domain.ValueObjects;
 using AdvertisingSystem.Identity.Infrastructure.EntityTypeConfigurations;
+using AdvertisingSystem.Identity.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,22 +52,29 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string>
     private void SetCreateAndUpdateFields()
     {
         var entries = ChangeTracker
-            .Entries()
-            .Where(e => e is { Entity: IAggregateRoot<string>, State: EntityState.Added or EntityState.Modified });
+            .Entries<IAggregateRoot<string>>()
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
         foreach (var entityEntry in entries)
         {
-            switch (entityEntry.State)
-            {
-                case EntityState.Added:
-                    ((IAggregateRoot<string>)entityEntry.Entity).CreatedAt = DateTime.Now;
-                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = DateTime.Now;
+            var entity = entityEntry.Entity;
+            var now = DateTime.Now;
 
-                    break;
-                case EntityState.Modified:
-                    ((IAggregateRoot<string>)entityEntry.Entity).UpdatedAt = DateTime.Now;
-                    break;
+            if (entityEntry.State == EntityState.Added)
+            {
+                entity.CreatedAt = now;
+                if (entity.DomainEvents.Any())
+                {
+                    foreach (var @event in entity.DomainEvents)
+                    {
+                        
+                    }
+                }
+        
+                entity.ClearDomainEvents();
             }
+
+            entity.UpdatedAt = now;
         }
     }
 
