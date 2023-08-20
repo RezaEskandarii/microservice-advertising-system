@@ -42,9 +42,12 @@ public class UserService : IUserService
         else
         {
             // Handle creation failure
-            throw new Exception(string.Join("\n", result.Errors));
+            ThrowCreateUserException(result);
         }
+
+        return null;
     }
+
 
     public async Task AddToRoleAsync(string username, string roleName)
     {
@@ -165,6 +168,22 @@ public class UserService : IUserService
         if (appUser != null)
         {
             throw new DuplicatedUserException(phoneNumber.Value);
+        }
+    }
+
+    private void ThrowCreateUserException(IdentityResult result)
+    {
+        var passwordErrors = result.Errors
+            .Where(x => x.Code.Contains("Password"))
+            .Select(x => x.Description)
+            .ToList();
+        if (passwordErrors.Any())
+        {
+            throw new BusinessException(passwordErrors);
+        }
+        else
+        {
+            throw new Exception(string.Join("\n", result.Errors));
         }
     }
 

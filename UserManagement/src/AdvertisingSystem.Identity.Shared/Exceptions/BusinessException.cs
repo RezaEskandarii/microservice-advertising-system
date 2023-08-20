@@ -7,5 +7,14 @@ public class BusinessException : Exception
         Errors = new List<string>();
     }
 
-    public List<string> Errors { get; set; }
+    public BusinessException()
+    {
+    }
+
+    public BusinessException(ICollection<string> errors)
+    {
+        Errors.AddRange(errors);
+    }
+
+    public List<string> Errors { get; set; } = new List<string>();
 }
