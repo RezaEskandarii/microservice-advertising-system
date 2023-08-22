@@ -1,6 +1,7 @@
+using AdvertisingSystem.Contract.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AdvertisingSystem.Infrastructure.Persistence.Context;
 
@@ -8,16 +9,13 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        var connectionString =
-            configuration.GetConnectionString("DefaultConnection");
+        IServiceCollection serviceCollection = new ServiceCollection();
 
-        builder.UseNpgsql(connectionString);
+        serviceCollection.AddInfraStructureServices();
+
+        var secretManager = serviceCollection.BuildServiceProvider().GetRequiredService<ISecretManager>();
+        builder.UseNpgsql(secretManager.GetConnectionStringAsync().Result);
 
         return new ApplicationDbContext(builder.Options);
     }

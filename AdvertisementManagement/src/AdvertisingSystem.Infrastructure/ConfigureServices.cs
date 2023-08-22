@@ -14,13 +14,27 @@ public static class ConfigureServices
     {
         services.AddSingleton<ISecretManager, SecretManager>();
         var secretManager = services.BuildServiceProvider().GetRequiredService<ISecretManager>();
+        
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(secretManager.GetConnectionStringAsync().Result,
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
+        
         services.AddScoped<IEventPublisher, AdvertisementCreatedEventPublisher>();
         services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
+
+        MigrateAsync(services).Wait();
         return services;
+    }
+
+    private static async Task MigrateAsync(IServiceCollection serviceCollection)
+    {
+        var context = serviceCollection.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
+        var migrations = await context.Database.GetPendingMigrationsAsync();
+        if (migrations.Any())
+        {
+            await context.Database.MigrateAsync();
+        }
     }
 }
