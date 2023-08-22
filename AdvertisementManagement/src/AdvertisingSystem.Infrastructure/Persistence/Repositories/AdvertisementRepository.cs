@@ -28,6 +28,7 @@ public class AdvertisementRepository : IAdvertisementRepository
 
     public async Task<Advertisement> Update(long id, Advertisement advertisement)
     {
+       
         var entity = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id);
         entity.Title = advertisement.Title;
         entity.Description = advertisement.Description;
