@@ -15,10 +15,10 @@ public class Advertisement : AggregateRoot
     public CreateDate CreatedAt { get; set; }
     public UpdateDate UpdatedAt { get; set; }
     public ExpiryDate ExpiresAt { get; set; }
-    public Address Address { get; set; }
+    public Address? Address { get; set; }
     public int CategoryId { get; set; }
     public static Advertisement CreateNew(string title, string userId, string description, decimal price,
-        CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt,Address address,int categoryId)
+        CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt,Address? address,int categoryId)
     {
         return new Advertisement()
         {

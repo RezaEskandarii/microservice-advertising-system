@@ -12,15 +12,16 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfraStructureServices(this IServiceCollection services)
     {
-        services.AddSingleton<ISecretManager, SecretManager>();
+        Console.WriteLine("============start design time db context;===============");
+        services.AddScoped<ISecretManager, SecretManager>();
         var secretManager = services.BuildServiceProvider().GetRequiredService<ISecretManager>();
-        
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(secretManager.GetConnectionStringAsync().Result,
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
-        
+
         services.AddScoped<IEventPublisher, AdvertisementCreatedEventPublisher>();
         services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
 
