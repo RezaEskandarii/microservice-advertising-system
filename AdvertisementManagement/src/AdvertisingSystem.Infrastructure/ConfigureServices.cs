@@ -13,7 +13,7 @@ public static class ConfigureServices
     public static IServiceCollection AddInfraStructureServices(this IServiceCollection services)
     {
         services.AddSingleton<ISecretManager, SecretManager>();
-        var secretManager = new SecretManager();
+        var secretManager = services.BuildServiceProvider().GetRequiredService<ISecretManager>();
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(secretManager.GetConnectionStringAsync().Result,

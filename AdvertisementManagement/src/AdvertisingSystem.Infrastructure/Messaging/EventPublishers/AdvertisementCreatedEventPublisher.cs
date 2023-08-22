@@ -15,13 +15,13 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
         _secretManager = secretManager;
     }
 
-    public Task PublishAsync(IDomainEvent @event, string routingKey, string exchange, string queue)
+    public async Task PublishAsync(IDomainEvent @event, string routingKey, string exchange, string queue)
     {
         try
         {
             var message = JsonSerializer.Serialize(@event.Data);
             // RabbitMQ connection string
-            var connString = "amqp://guest:guest@localhost:5672/";
+            var connString = await _secretManager.ReadSecretAsync("RabbitMqSecret");
 
             // Create connection factory
             var factory = new ConnectionFactory()
@@ -55,7 +55,6 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
             Console.WriteLine(e);
             throw;
         }
-
-        return Task.CompletedTask;
+        
     }
 }

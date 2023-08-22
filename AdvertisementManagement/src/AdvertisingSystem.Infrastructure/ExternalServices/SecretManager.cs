@@ -1,12 +1,46 @@
 using AdvertisingSystem.Contract.Interfaces;
+using Microsoft.Extensions.Configuration;
+using VaultSharp;
+using VaultSharp.V1.AuthMethods.Token;
+using VaultSharp.V1.Commons;
 
 namespace AdvertisingSystem.Infrastructure.ExternalServices;
 
 public class SecretManager : ISecretManager
 {
-    public async Task<string> GetConnectionStringAsync()
+    private readonly IVaultClient _vaultClient;
+    private readonly IConfiguration _configuration;
+
+    public SecretManager(IConfiguration configuration)
     {
-        return await Task.FromResult(
-            "Server=127.0.0.1;Port=5432;Database=AdvertisingSystemDB;User Id=postgres;Password=boofhichkas");
+        _configuration = configuration;
+        var authMethod = new TokenAuthMethodInfo(_configuration["Vault:Token"]);
+        var vaultClientSettings = new VaultClientSettings(_configuration["Vault:Address"], authMethod);
+        _vaultClient = new VaultClient(vaultClientSettings);
+    }
+
+    public async Task<string?> ReadSecretAsync(string secretKey)
+    {
+        try
+        {
+            Secret<SecretData> secret = await _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(
+                "microservice-project", null, "secret");
+
+            if (secret != null && secret.Data != null && secret.Data.Data.TryGetValue(secretKey, out var value))
+            {
+                if (value != null) return value.ToString();
+            }
+
+            return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    public async Task<string?> GetConnectionStringAsync()
+    {
+        return await ReadSecretAsync("AdvertisingDBConnectionString");
     }
 }
