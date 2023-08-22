@@ -18,6 +18,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
 
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
         IServiceCollection serviceCollection = new ServiceCollection();
+        
         serviceCollection.AddSingleton<IConfiguration>(configuration);
         serviceCollection.AddScoped<ISecretManager, SecretManager>();
 
