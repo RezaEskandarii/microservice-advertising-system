@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
-	"github.com/hashicorp/consul/connect"
-	"github.com/hashicorp/vault/api"
 	_ "github.com/lib/pq"
 	"log"
 	"os"
@@ -14,11 +12,15 @@ import (
 
 func main() {
 	app := NewApp()
-	app.Run(5002)
+
+	portNumber := 5002
+	registerOnServiceRegistry(portNumber)
+
+	app.Run(portNumber)
 }
 
 // RegisterOnServiceRegistry registers service address on service discovery address
-func RegisterOnServiceRegistry() {
+func registerOnServiceRegistry(port int) {
 	// Create a new Consul client
 	client, err := api.NewClient(api.DefaultConfig())
 	if err != nil {
@@ -27,12 +29,12 @@ func RegisterOnServiceRegistry() {
 
 	// Create a new service registration
 	reg := &api.AgentServiceRegistration{
-		ID:   "my-service-1",
-		Name: "My Service",
-		Tags: []string{"tag1", "tag2"},
-		Port: 8080,
+		ID:   "thumbnail-service",
+		Name: "thumbnails management service",
+		Tags: []string{"thumbnails management", "upload thumbnails"},
+		Port: port,
 		Check: &api.AgentServiceCheck{
-			TCP:      "localhost:8080",
+			TCP:      fmt.Sprintf("localhost:%d", port),
 			Interval: "10s",
 			Timeout:  "2s",
 		},
@@ -44,7 +46,7 @@ func RegisterOnServiceRegistry() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Service registered with Consul")
+	fmt.Printf("Service registered with Consul on port: %d \n", port)
 
 	// Handle termination signals to deregister the service gracefully
 	sigCh := make(chan os.Signal, 1)
