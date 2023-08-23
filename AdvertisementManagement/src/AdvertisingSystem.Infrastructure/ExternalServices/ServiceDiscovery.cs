@@ -13,13 +13,13 @@ public class ServiceDiscovery : IServiceDiscovery
     }
 
     // TODO: implement load balancer between services
-    public async Task<ICollection<ServiceResponse>> DiscoverAsync(string serviceName)
+    public async Task<ICollection<ServiceResponse>> DiscoverAsync(string serviceID)
     {
         var services = (await _consulClient.Agent.Services()).Response;
-        var agentServices = services.Values.Where(s => s.Service == serviceName).ToList();
+        var agentServices = services.Values.Where(s => s.ID == serviceID).ToList();
         if (agentServices == null)
         {
-            throw new Exception($"Service '{serviceName}' not found in Consul.");
+            throw new Exception($"Service '{serviceID}' not found in Consul.");
         }
 
         return agentServices.Select(x => new ServiceResponse()

@@ -4,7 +4,7 @@ namespace AdvertisingSystem.Contract.Interfaces;
 
 public interface IServiceDiscovery
 {
-    Task<ICollection<ServiceResponse>> DiscoverAsync(string serviceName);
+    Task<ICollection<ServiceResponse>> DiscoverAsync(string serviceID);
 }
 
 public class ServiceResponse
@@ -15,4 +15,10 @@ public class ServiceResponse
     public string ID { get; set; }
     public string Service { get; set; }
     public string[] Tags { get; set; }
+
+    /// <summary>
+    /// returns address with port
+    /// Example: http://localhost:5000
+    /// </summary>
+    public string FullAddress => $"{Address}:{Port}";
 }

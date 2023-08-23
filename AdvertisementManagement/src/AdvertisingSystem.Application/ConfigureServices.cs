@@ -13,6 +13,7 @@ public static class ConfigureServices
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
         services.AddInfraStructureServices();
+        
         return services;
     }
 }

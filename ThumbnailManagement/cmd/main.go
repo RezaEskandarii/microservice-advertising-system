@@ -14,8 +14,7 @@ func main() {
 	app := NewApp()
 
 	portNumber := 5002
-	registerOnServiceRegistry(portNumber)
-
+	go registerOnServiceRegistry(portNumber)
 	app.Run(portNumber)
 }
 
@@ -29,10 +28,11 @@ func registerOnServiceRegistry(port int) {
 
 	// Create a new service registration
 	reg := &api.AgentServiceRegistration{
-		ID:   "thumbnail-service",
-		Name: "thumbnails management service",
-		Tags: []string{"thumbnails management", "upload thumbnails"},
-		Port: port,
+		ID:      "thumbnail-service",
+		Name:    "thumbnails management service",
+		Tags:    []string{"thumbnails management", "upload thumbnails"},
+		Port:    port,
+		Address: "http://127.0.0.1",
 		Check: &api.AgentServiceCheck{
 			TCP:      fmt.Sprintf("localhost:%d", port),
 			Interval: "10s",

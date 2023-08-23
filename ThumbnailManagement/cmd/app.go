@@ -36,7 +36,7 @@ func (a App) Run(portNumber int) {
 
 	fs := grpc.NewFleServer()
 
-	fs.Start("5002")
+	fs.Start(fmt.Sprintf("%d", portNumber))
 
 }
 

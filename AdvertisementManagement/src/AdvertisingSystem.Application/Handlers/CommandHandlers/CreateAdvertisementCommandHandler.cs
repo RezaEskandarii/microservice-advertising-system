@@ -15,12 +15,14 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IEventPublisher _eventPublisher;
+    private readonly IServiceDiscovery _serviceDiscovery;
 
     public CreateAdvertisementCommandHandler(IAdvertisementRepository advertisementRepository,
-        IEventPublisher eventPublisher)
+        IEventPublisher eventPublisher, IServiceDiscovery serviceDiscovery)
     {
         _advertisementRepository = advertisementRepository;
         _eventPublisher = eventPublisher;
+        _serviceDiscovery = serviceDiscovery;
     }
 
     public async Task Handle(CreateAdvertisementCommand command, CancellationToken cancellationToken)
@@ -28,25 +30,29 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, command.Price,
             new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
             command.Address, command.CategoryId);
-        
+
         await UploadImagesAsync(command);
         var result = await _advertisementRepository.AddAsync(advertisement);
 
         var obj = new { Title = result.Title, UserEmail = "" };
         var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(obj));
-        
+
         await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
     }
 
     private async Task UploadImagesAsync(CreateAdvertisementCommand command)
     {
+        var discoveredAddresses = await _serviceDiscovery.DiscoverAsync("thumbnail-service");
+        var address = discoveredAddresses.FirstOrDefault();
+        
+        // AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+        // AppContext.SetSwitch("System.Net.SocketsHttpHandler.Http2Support", true);
+
         // Create a gRPC channel and client
-        // TODO: read address from service discovery
-        var channel = GrpcChannel.ForAddress("http://localhost:5002");
+        var channel = GrpcChannel.ForAddress(address.FullAddress);
         var client = new FileService.FileServiceClient(channel);
 
         // Read the image file into a byte array
-
         if (command.Thumbnails != null)
             foreach (var fileBytes in command.Thumbnails)
             {

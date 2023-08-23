@@ -1,6 +1,5 @@
 syntax = "proto3";
-//option go_package = "thumbnail-management/grpc";
-/// 
+option go_package = "thumbnail-management/grpc";
 
 package file;
 
@@ -18,4 +17,3 @@ message FileResponse {
   bool success = 1;
   string message = 2;
 }
-
