@@ -12,7 +12,7 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfraStructureServices(this IServiceCollection services)
     {
-        Console.WriteLine("============start design time db context;===============");
+ 
         services.AddScoped<ISecretManager, SecretManager>();
         var secretManager = services.BuildServiceProvider().GetRequiredService<ISecretManager>();
 
@@ -24,6 +24,7 @@ public static class ConfigureServices
 
         services.AddScoped<IEventPublisher, AdvertisementCreatedEventPublisher>();
         services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
+        services.AddScoped<IServiceDiscovery, ServiceDiscovery>();
 
         MigrateAsync(services).Wait();
         return services;
