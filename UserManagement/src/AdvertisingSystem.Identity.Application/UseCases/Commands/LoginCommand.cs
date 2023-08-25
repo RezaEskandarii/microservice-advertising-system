@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AdvertisingSystem.Identity.Application.UseCases.Commands;
 
-public class LoginCommand : IRequest<LoginResponse>, IRequest
+public class LoginCommand : IRequest<LoginResponse>
 {
     [Required(ErrorMessage = "Username is required")]
     public string Username { get; set; }

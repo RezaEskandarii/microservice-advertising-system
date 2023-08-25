@@ -1,14 +1,11 @@
 ﻿using AdvertisingSystem.Identity.Application.Interfaces;
 using AdvertisingSystem.Identity.Application.UseCases.Commands;
-using AdvertisingSystem.Identity.Application.UseCases.Queries;
 using AdvertisingSystem.Identity.Application.UseCases.Queries.Dtos;
 using AdvertisingSystem.Identity.Domain.DomainEvents;
 using AdvertisingSystem.Identity.Domain.Entities;
-using AdvertisingSystem.Identity.Domain.Interfaces;
 using AdvertisingSystem.Identity.Shared.Enums;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace AdvertisingSystem.Identity.Application.Handlers.CommandHandlers;
 

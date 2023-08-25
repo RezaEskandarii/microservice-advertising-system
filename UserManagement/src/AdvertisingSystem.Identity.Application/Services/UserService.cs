@@ -157,8 +157,9 @@ public class UserService : IUserService
         if (!await _userManager.CheckPasswordAsync(user, command.Password))
             throw new BusinessException("invalid username or password");
 
-        return await _jwtUtils.GenerateJwtToken(user);
+        return await _jwtUtils.GenerateJwtTokenAsync(user);
     }
+    
 
     #region Private
 

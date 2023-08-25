@@ -5,5 +5,5 @@ namespace AdvertisingSystem.Identity.Application.Interfaces;
 
 public interface IJwtUtils
 {
-    public Task<LoginResponse> GenerateJwtToken(AppUser user);
+    public Task<LoginResponse> GenerateJwtTokenAsync(AppUser user);
 }

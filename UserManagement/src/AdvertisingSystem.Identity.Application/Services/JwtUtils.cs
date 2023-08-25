@@ -22,35 +22,23 @@ public class JwtUtils : IJwtUtils
         _secretManager = secretManager;
     }
 
-    public async Task<LoginResponse> GenerateJwtToken(AppUser user)
+    public async Task<LoginResponse> GenerateJwtTokenAsync(AppUser user)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var secretKeyStr = await GetJwtSecretKey();
-        var key = Encoding.ASCII.GetBytes(secretKeyStr);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = GetUserClaims(user),
-            Expires = DateTime.UtcNow.AddMinutes(15),
-            SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        var tokenStr = tokenHandler.WriteToken(token);
+        var tokenExpiresAt = DateTime.UtcNow.AddMinutes(15);
+        var token = await GenerateTokenAsync(tokenExpiresAt, user);
 
         var refreshToken = await GenerateRefreshToken(user.UserName, DateTime.Now.AddMonths(1));
 
         return new LoginResponse()
         {
-            AuthToken = tokenStr,
-            AuthTokenExpiresAt = tokenDescriptor.Expires.Value,
+            AuthToken = token,
+            AuthTokenExpiresAt = tokenExpiresAt,
             RefreshToken = refreshToken.Token,
             RefreshTokenExpiresAt = refreshToken.ExpiresAt
         };
     }
 
-
+    
     #region Private
 
     private string GetUniqueToken()
@@ -62,6 +50,24 @@ public class JwtUtils : IJwtUtils
             return GetUniqueToken();
 
         return token;
+    }
+
+    private async Task<string> GenerateTokenAsync(DateTime tokenExpiresAt, AppUser user)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var secretKeyStr = await GetJwtSecretKey();
+        var key = Encoding.ASCII.GetBytes(secretKeyStr);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = GetUserClaims(user),
+            Expires = tokenExpiresAt,
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 
     private async Task<RefreshTokenResult> GenerateRefreshToken(string username, DateTime expiresAt)
