@@ -19,7 +19,7 @@ public class SecretManager : ISecretManager
         _vaultClient = new VaultClient(vaultClientSettings);
     }
 
-    public async Task<string?> ReadSecretAsync(string secretKey)
+    public async Task<string> ReadSecretAsync(string secretKey)
     {
         try
         {
@@ -28,6 +28,7 @@ public class SecretManager : ISecretManager
 
             if (secret != null && secret.Data != null && secret.Data.Data.TryGetValue(secretKey, out var value))
             {
+                if (value == null) throw new ArgumentNullException($"not found any secret with key {secret}");
                 if (value != null) return value.ToString();
             }
 
@@ -42,5 +43,10 @@ public class SecretManager : ISecretManager
     public async Task<string?> GetConnectionStringAsync()
     {
         return await ReadSecretAsync("IdentityDBConnectionString");
+    }
+
+    public async Task<string> GetJwtSecretKeyAsync()
+    {
+        return await ReadSecretAsync("jwt-secret-key");
     }
 }

@@ -15,6 +15,8 @@ public class AppUser : UserAggregatedRoot
     public Address? Address { get; set; }
     public UserStatuses Status { get; set; }
     public Email Email { get; set; }
+    public string? RefreshToken { get; set; }
+    public DateTime? RefreshTokenExpiresAt { get; set; }
 
     public static AppUser CreateNew(FirstName firstName, LastName lastName, PhoneNumber cellNumber, Email email,
         Address? address,

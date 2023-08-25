@@ -19,12 +19,15 @@ public class UserService : IUserService
     private readonly UserManager<AppUser> _userManager;
     private readonly IMapper _mapper;
     private readonly RoleManager<AppRole> _roleManager;
+    private readonly IJwtUtils _jwtUtils;
 
-    public UserService(UserManager<AppUser> userManager, IMapper mapper, RoleManager<AppRole> roleManager)
+    public UserService(UserManager<AppUser> userManager, IMapper mapper, RoleManager<AppRole> roleManager,
+        IJwtUtils jwtUtils)
     {
         _userManager = userManager;
         _mapper = mapper;
         _roleManager = roleManager;
+        _jwtUtils = jwtUtils;
     }
 
     public async Task<AppUser> CreateAsync(AppUser user, string password)
@@ -67,20 +70,19 @@ public class UserService : IUserService
     {
         command.Id = null;
         var existingUser = await _userManager.FindByIdAsync(id);
-        if (existingUser != null)
+        if (existingUser == null) return null;
+
+        // Update user properties
+        _mapper.Map(command, existingUser);
+        var result = await _userManager.UpdateAsync(existingUser);
+        if (result.Succeeded)
         {
-            // Update user properties
-            _mapper.Map(command, existingUser);
-            var result = await _userManager.UpdateAsync(existingUser);
-            if (result.Succeeded)
-            {
-                return existingUser;
-            }
-            else
-            {
-                // Handle update failure
-                ThrowIdentityExceptions(result);
-            }
+            return existingUser;
+        }
+        else
+        {
+            // Handle update failure
+            ThrowIdentityExceptions(result);
         }
 
         return null;
@@ -106,6 +108,7 @@ public class UserService : IUserService
     {
         var query = _userManager.Users.AsQueryable();
         query = GetFilteredQuery(query, userFilter);
+
         var totalCount = await query.CountAsync();
 
         return new PaginatedResult<AppUser>(userFilter)
@@ -143,6 +146,18 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId);
         await _userManager.RemovePasswordAsync(user);
         await _userManager.AddPasswordAsync(user, password);
+    }
+
+    public async Task<LoginResponse> GenerateJwtAsync(LoginCommand command)
+    {
+        var user = await _userManager.FindByNameAsync(command.Username);
+        if (user == null)
+            throw new BusinessException($"user not found with username: {command.Username}");
+
+        if (!await _userManager.CheckPasswordAsync(user, command.Password))
+            throw new BusinessException("invalid username or password");
+
+        return await _jwtUtils.GenerateJwtToken(user);
     }
 
     #region Private
