@@ -38,12 +38,15 @@ public class JwtUtils : IJwtUtils
         };
     }
 
-    
+
     #region Private
 
     private string GetUniqueToken()
     {
-        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        var token = $"{Convert.ToBase64String(RandomNumberGenerator.GetBytes(64))}{Guid.NewGuid()}"
+            .Replace("-", "")
+            .Replace("/", "");
+        
         var tokenIsUnique = !_userManager.Users.Any(x => x.RefreshToken == token);
 
         if (!tokenIsUnique)

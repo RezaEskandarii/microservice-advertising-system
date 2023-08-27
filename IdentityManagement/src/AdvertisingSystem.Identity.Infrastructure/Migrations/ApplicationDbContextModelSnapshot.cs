@@ -117,6 +117,13 @@ namespace AdvertisingSystem.Identity.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime?>("RefreshTokenExpiresAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
