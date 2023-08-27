@@ -13,6 +13,7 @@ public class CreateAdvertisementCommand : IRequest
     public Address? Address { get; set; }
     public int CategoryId { get; set; }
     public ICollection<ThumbnailFileModel> Thumbnails { get; set; } = new List<ThumbnailFileModel>();
+    public string[]? Tags { get; set; }
 }
 
 public class ThumbnailFileModel

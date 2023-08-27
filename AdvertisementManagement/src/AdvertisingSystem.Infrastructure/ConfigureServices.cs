@@ -12,7 +12,6 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfraStructureServices(this IServiceCollection services)
     {
- 
         services.AddScoped<ISecretManager, SecretManager>();
         var secretManager = services.BuildServiceProvider().GetRequiredService<ISecretManager>();
 
@@ -34,7 +33,7 @@ public static class ConfigureServices
     {
         var context = serviceCollection.BuildServiceProvider().GetRequiredService<ApplicationDbContext>();
         var migrations = await context.Database.GetPendingMigrationsAsync();
-        if (migrations.Any())
+        if (migrations != null && migrations.Any())
         {
             await context.Database.MigrateAsync();
         }

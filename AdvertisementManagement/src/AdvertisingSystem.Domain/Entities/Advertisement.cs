@@ -17,8 +17,11 @@ public class Advertisement : AggregateRoot
     public ExpiryDate ExpiresAt { get; set; }
     public Address? Address { get; set; }
     public int CategoryId { get; set; }
+    public string[]? Tags { get; set; }
+
     public static Advertisement CreateNew(string title, string userId, string description, decimal price,
-        CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt,Address? address,int categoryId)
+        CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt, Address? address, int categoryId,
+        string[]? tags)
     {
         return new Advertisement()
         {
@@ -30,7 +33,8 @@ public class Advertisement : AggregateRoot
             UpdatedAt = updatedAt,
             ExpiresAt = expiresAt,
             Address = address,
-            CategoryId = categoryId
+            CategoryId = categoryId,
+            Tags = tags
         };
     }
 }
