@@ -53,14 +53,17 @@ func (s *FileServer) UploadFile(ctx context.Context, req *pb.FileRequest) (*pb.F
 		return nil, fmt.Errorf("invalid file extension: %s", req.GetFileName())
 	}
 
+	uuidStr := uuid.New()
+	fileName := fmt.Sprintf("%s_%s", uuidStr.String(), req.GetFileName())
 	// Return a success response
 	response := &pb.FileResponse{
-		Success: true,
-		Message: "File uploaded successfully",
+		Success:  true,
+		Message:  "File uploaded successfully",
+		FileName: fileName,
 	}
-	uuidStr := uuid.New()
+
 	thumbnail := models.Thumbnail{
-		ImageName:       fmt.Sprintf("%s_%s", uuidStr.String(), req.GetFileName()),
+		ImageName:       fileName,
 		ImageBucket:     "",
 		ImageBytes:      req.GetFileContent(),
 		AdvertisementID: req.GetAdvertisementId(),

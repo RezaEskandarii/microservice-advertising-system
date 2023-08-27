@@ -29,7 +29,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
     {
         var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, command.Price,
             new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
-            command.Address, command.CategoryId,command.Tags);
+            command.Address, command.CategoryId, command.Tags);
 
         var result = await _advertisementRepository.AddAsync(advertisement);
         await UploadImagesAsync(command, result.Id);
@@ -68,6 +68,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
 
             // Call the gRPC method
             var response = await client.UploadFileAsync(request);
+            await _advertisementRepository.AddThumbnailAsync(advertisementId, response.FileName);
         }
     }
 }

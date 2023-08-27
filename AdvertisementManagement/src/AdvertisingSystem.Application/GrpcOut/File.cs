@@ -26,15 +26,15 @@ namespace File {
           string.Concat(
             "CgRmaWxlEgRmaWxlIlAKC0ZpbGVSZXF1ZXN0EhQKDGZpbGVfY29udGVudBgB",
             "IAEoDBIRCglmaWxlX25hbWUYAiABKAkSGAoQYWR2ZXJ0aXNlbWVudF9pZBgD",
-            "IAEoAyIwCgxGaWxlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNz",
-            "YWdlGAIgASgJMkQKC0ZpbGVTZXJ2aWNlEjUKClVwbG9hZEZpbGUSES5maWxl",
-            "LkZpbGVSZXF1ZXN0GhIuZmlsZS5GaWxlUmVzcG9uc2UiAEIbWhl0aHVtYm5h",
-            "aWwtbWFuYWdlbWVudC9ncnBjYgZwcm90bzM="));
+            "IAEoAyJDCgxGaWxlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNz",
+            "YWdlGAIgASgJEhEKCWZpbGVfbmFtZRgDIAEoCTJECgtGaWxlU2VydmljZRI1",
+            "CgpVcGxvYWRGaWxlEhEuZmlsZS5GaWxlUmVxdWVzdBoSLmZpbGUuRmlsZVJl",
+            "c3BvbnNlIgBCG1oZdGh1bWJuYWlsLW1hbmFnZW1lbnQvZ3JwY2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::File.FileRequest), global::File.FileRequest.Parser, new[]{ "FileContent", "FileName", "AdvertisementId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::File.FileResponse), global::File.FileResponse.Parser, new[]{ "Success", "Message" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::File.FileResponse), global::File.FileResponse.Parser, new[]{ "Success", "Message", "FileName" }, null, null, null, null)
           }));
     }
     #endregion
@@ -340,6 +340,7 @@ namespace File {
     public FileResponse(FileResponse other) : this() {
       success_ = other.success_;
       message_ = other.message_;
+      fileName_ = other.fileName_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -373,6 +374,18 @@ namespace File {
       }
     }
 
+    /// <summary>Field number for the "file_name" field.</summary>
+    public const int FileNameFieldNumber = 3;
+    private string fileName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string FileName {
+      get { return fileName_; }
+      set {
+        fileName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -390,6 +403,7 @@ namespace File {
       }
       if (Success != other.Success) return false;
       if (Message != other.Message) return false;
+      if (FileName != other.FileName) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -399,6 +413,7 @@ namespace File {
       int hash = 1;
       if (Success != false) hash ^= Success.GetHashCode();
       if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (FileName.Length != 0) hash ^= FileName.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -425,6 +440,10 @@ namespace File {
         output.WriteRawTag(18);
         output.WriteString(Message);
       }
+      if (FileName.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(FileName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -443,6 +462,10 @@ namespace File {
         output.WriteRawTag(18);
         output.WriteString(Message);
       }
+      if (FileName.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(FileName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -458,6 +481,9 @@ namespace File {
       }
       if (Message.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (FileName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(FileName);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -476,6 +502,9 @@ namespace File {
       }
       if (other.Message.Length != 0) {
         Message = other.Message;
+      }
+      if (other.FileName.Length != 0) {
+        FileName = other.FileName;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -500,6 +529,10 @@ namespace File {
             Message = input.ReadString();
             break;
           }
+          case 26: {
+            FileName = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -521,6 +554,10 @@ namespace File {
           }
           case 18: {
             Message = input.ReadString();
+            break;
+          }
+          case 26: {
+            FileName = input.ReadString();
             break;
           }
         }

@@ -2,7 +2,6 @@
   "GlobalConfiguration": {
     "GlobalConfiguration": {
       "BaseUrl": "http://127.0.0.1:5009"
-      
     }
   },
   "Routes": [
@@ -31,6 +30,20 @@
         {
           "Host": "127.0.0.1",
           "Port": 5004
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/Advertisement",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/api/v1/Advertisement",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5006
         }
       ]
     }

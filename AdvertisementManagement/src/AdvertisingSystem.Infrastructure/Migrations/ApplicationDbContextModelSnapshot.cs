@@ -53,6 +53,9 @@ namespace AdvertisingSystem.Infrastructure.Migrations
                     b.Property<string[]>("Tags")
                         .HasColumnType("text[]");
 
+                    b.Property<string[]>("Thumbnails")
+                        .HasColumnType("text[]");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)

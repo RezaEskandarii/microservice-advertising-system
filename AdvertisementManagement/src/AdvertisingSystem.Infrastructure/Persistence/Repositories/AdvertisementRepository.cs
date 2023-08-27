@@ -28,7 +28,6 @@ public class AdvertisementRepository : IAdvertisementRepository
 
     public async Task<Advertisement> Update(long id, Advertisement advertisement)
     {
-       
         var entity = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id);
         entity.Title = advertisement.Title;
         entity.Description = advertisement.Description;
@@ -43,5 +42,24 @@ public class AdvertisementRepository : IAdvertisementRepository
         var entity = await _context.Advertisements.FindAsync(id);
         if (entity != null) _context.Advertisements.Remove(entity);
         return true;
+    }
+
+    public async Task AddThumbnailAsync(long advertisementId, string thumbnailFileName)
+    {
+        var advertisement = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == advertisementId);
+        if (advertisement == null) return;
+
+        if (advertisement.Thumbnails == null)
+        {
+            advertisement.Thumbnails = new[] { thumbnailFileName };
+        }
+        else
+        {
+            var thumbnails = new List<string>(advertisement.Thumbnails) { thumbnailFileName };
+            advertisement.Thumbnails = thumbnails.ToArray();
+        }
+
+        _context.Advertisements.Update(advertisement);
+        await _context.SaveChangesAsync();
     }
 }

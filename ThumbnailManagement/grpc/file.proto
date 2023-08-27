@@ -16,4 +16,5 @@ message FileRequest {
 message FileResponse {
   bool success = 1;
   string message = 2;
+  string file_name = 3;
 }
