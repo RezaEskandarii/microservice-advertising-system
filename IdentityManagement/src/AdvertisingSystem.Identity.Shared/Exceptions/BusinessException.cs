@@ -2,7 +2,7 @@
 
 public class BusinessException : Exception
 {
-    protected BusinessException(string message) : base(message)
+    public BusinessException(string message) : base(message)
     {
         Errors = new List<string>();
     }

@@ -17,4 +17,5 @@ public interface IUserService
     Task ChangeStatusAsync(string id, UserStatuses status);
     Task<AppUser?> FindByUserNameAsync(string username);
     Task ChanePasswordAsync(string userId, string password);
+    Task<LoginResponse> GenerateJwtAsync(LoginCommand command);
 }

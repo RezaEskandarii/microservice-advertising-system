@@ -31,6 +31,15 @@ public class UserController : ControllerBase
         return Ok(new ApiResponse { ResponseObject = createdUser });
     }
 
+    [HttpPost("SignIn")]
+    [AllowAnonymous]
+    public async Task<IActionResult> SignInAsync(LoginCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(new ApiResponse { ResponseObject = result });
+    }
+
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateUserCommand command)
     {
@@ -46,7 +55,6 @@ public class UserController : ControllerBase
         return Ok(new ApiResponse());
     }
 
-
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(string id, UpdateUserCommand command)
     {
@@ -54,6 +62,7 @@ public class UserController : ControllerBase
         var updatedUser = await _mediator.Send(command);
         return Ok(new ApiResponse { ResponseObject = updatedUser });
     }
+
 
     // [HttpGet("{id}")]
     // public async Task<IActionResult> FindAsync(string id)
