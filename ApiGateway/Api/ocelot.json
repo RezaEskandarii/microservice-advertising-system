@@ -1,0 +1,39 @@
+{
+  "GlobalConfiguration": {
+    "GlobalConfiguration": {
+      "BaseUrl": "http://127.0.0.1:5009"
+      
+    }
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/v1/Identity/SignUp",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/api/User/SignUp",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5004
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/Identity/SignIn",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/api/User/SignIn",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5004
+        }
+      ]
+    }
+  ]
+}
+
