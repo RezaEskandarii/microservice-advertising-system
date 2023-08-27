@@ -12,5 +12,11 @@ public class CreateAdvertisementCommand : IRequest
     public DateTime ExpiresAt { get; set; }
     public Address? Address { get; set; }
     public int CategoryId { get; set; }
-    public ICollection<byte[]?>? Thumbnails { get; set; } = new List<byte[]?>();
+    public ICollection<ThumbnailFileModel> Thumbnails { get; set; } = new List<ThumbnailFileModel>();
+}
+
+public class ThumbnailFileModel
+{
+    public byte[]? Bytes { get; set; }
+    public string FileName { get; set; }
 }

@@ -31,8 +31,8 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
             new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
             command.Address, command.CategoryId);
 
-        await UploadImagesAsync(command);
         var result = await _advertisementRepository.AddAsync(advertisement);
+        await UploadImagesAsync(command, result.Id);
 
         var obj = new { Title = result.Title, UserEmail = "" };
         var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(obj));
@@ -40,11 +40,14 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
     }
 
-    private async Task UploadImagesAsync(CreateAdvertisementCommand command)
+    private async Task UploadImagesAsync(CreateAdvertisementCommand command, long advertisementId)
     {
+        if (!command.Thumbnails.Any())
+            return;
+
         var discoveredAddresses = await _serviceDiscovery.DiscoverAsync("thumbnail-service");
         var address = discoveredAddresses.FirstOrDefault();
-        
+
         // AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
         // AppContext.SetSwitch("System.Net.SocketsHttpHandler.Http2Support", true);
 
@@ -53,19 +56,18 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         var client = new FileService.FileServiceClient(channel);
 
         // Read the image file into a byte array
-        if (command.Thumbnails != null)
-            foreach (var fileBytes in command.Thumbnails)
+        foreach (var thumbnail in command.Thumbnails)
+        {
+            // Create the request message
+            var request = new FileRequest
             {
-                // Create the request message
-                var request = new FileRequest
-                {
-                    FileContent = ByteString.CopyFrom(fileBytes),
-                    FileName = "image.jpg",
-                    AdvertisementId = 123
-                };
+                FileContent = ByteString.CopyFrom(thumbnail.Bytes),
+                FileName = thumbnail.FileName,
+                AdvertisementId = advertisementId
+            };
 
-                // Call the gRPC method
-                var response = await client.UploadFileAsync(request);
-            }
+            // Call the gRPC method
+            var response = await client.UploadFileAsync(request);
+        }
     }
 }

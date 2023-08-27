@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_DB: 1234
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: your_db_password
+      POSTGRES_PASSWORD: 1234
 
   rabbitmq:
     image: rabbitmq:management
