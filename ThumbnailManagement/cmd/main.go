@@ -15,6 +15,7 @@ func main() {
 
 	portNumber := 5002
 	go registerOnServiceRegistry(portNumber)
+
 	app.Run(portNumber)
 }
 

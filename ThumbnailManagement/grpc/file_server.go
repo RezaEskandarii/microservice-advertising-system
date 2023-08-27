@@ -8,6 +8,9 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"path/filepath"
+	"slices"
+	"strings"
 	pb "thumbnail-management/grpc/thumbnail-management/grpc"
 	"thumbnail-management/internal/database"
 	"thumbnail-management/internal/models"
@@ -42,6 +45,13 @@ func NewFleServer() FileServer {
 }
 
 func (s *FileServer) UploadFile(ctx context.Context, req *pb.FileRequest) (*pb.FileResponse, error) {
+
+	allowedExtensions := []string{".jpg", ".jpeg", ".png"}
+
+	ext := strings.ToLower(filepath.Ext(req.FileName))
+	if !slices.Contains(allowedExtensions, ext) {
+		return nil, fmt.Errorf("invalid file extension: %s", req.GetFileName())
+	}
 
 	// Return a success response
 	response := &pb.FileResponse{
