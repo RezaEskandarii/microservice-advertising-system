@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: 1234
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_db_password
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  vault:
+    image: hashicorp/vault:latest
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: 58ec2667-a9f4-455b-b89b-914fe565b7ea
+    ports:
+      - "8200:8200"
+
+  consul:
+    image: hashicorp/consul:latest
+    command: "agent -dev"
+    ports:
+      - "8500:8500"
+
+  redis:
+    image: redis:latest
+
+  identity-management:
+    build:
+      context: .
+      dockerfile: ./IdentityManagement/src/AdvertisingSystem.Identity.Api/Dockerfile
+    depends_on:
+      - postgres
+      - vault
+      - consul
+
+  advertisement-management:
+    build:
+      context: .
+      dockerfile: ./AdvertisementManagement/src/AdvertisingSystem.Api/Dockerfile
+    depends_on:
+      - postgres
+      - vault
+      - consul
+  
+  email-sender:
+    build:
+      context: .
+      dockerfile: ./EmailSender/cmd/Dockerfile
+    depends_on:
+      - vault
+      - consul
+      - rabbitmq
+
+  thumbnail-management:
+    build:
+      context: .
+      dockerfile: ./ThumbnailManagement/cmd/Dockerfile
+    depends_on:
+      - postgres
+      - vault
+      - consul
+  
+  category-management:
+    build:
+      context: .
+      dockerfile: ./CategoryManagement/cmd/Dockerfile
+    depends_on:
+      - postgres
+      - vault
+      - consul
+
+################################################
+networks:
+  default:
+    external:
+      name: bridge
