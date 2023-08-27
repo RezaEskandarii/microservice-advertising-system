@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "37037bfe-5a21-4475-8eac-ec41b9832fee",
+		"name": "advertising-system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9361164"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"reza\",\r\n  \"lastName\": \"eskandari\",\r\n  \"cellNumber\": \"+1987554777\",\r\n  \"address\": {\r\n    \"street\": \"58\",\r\n    \"city\": \"Toronto\",\r\n    \"state\": \"Ontario\",\r\n    \"postalCode\": \"88478874\",\r\n    \"country\": \"Canada\"\r\n  },\r\n  \"email\": \"user@example.com\",\r\n  \"phoneNumber\": \"+1877445877\",\r\n  \"password\": \"Test@1234\",\r\n  \"confirmPassword\": \"Test@1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{advertisement-host}}/Identity/SignUp",
+							"host": [
+								"{{advertisement-host}}"
+							],
+							"path": [
+								"Identity",
+								"SignUp"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "signup-resp",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstName\": \"reza\",\r\n  \"lastName\": \"eskandari\",\r\n  \"cellNumber\": \"+1987554777\",\r\n  \"address\": {\r\n    \"street\": \"58\",\r\n    \"city\": \"Toronto\",\r\n    \"state\": \"Ontario\",\r\n    \"postalCode\": \"88478874\",\r\n    \"country\": \"Canada\"\r\n  },\r\n  \"email\": \"user@example.com\",\r\n  \"phoneNumber\": \"+1877445877\",\r\n  \"password\": \"Test@1234\",\r\n  \"confirmPassword\": \"Test@1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{advertisement-host}}/Identity/SignUp",
+									"host": [
+										"{{advertisement-host}}"
+									],
+									"path": [
+										"Identity",
+										"SignUp"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "308"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 27 Aug 2023 09:49:13 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseObject\": {\n        \"id\": \"606f9a8a-607b-41d3-82cc-0b8ded8b490c\",\n        \"firstName\": \"reza\",\n        \"lastName\": \"eskandari\",\n        \"email\": \"user@example.com\",\n        \"phoneNumber\": \"+1877445877\",\n        \"address\": \"58, Toronto, Ontario, 88478874, Canada\"\n    },\n    \"errorMessages\": [],\n    \"message\": null,\n    \"statusCode\": 0,\n    \"dateTime\": \"2023-08-27T13:19:14.8246409+03:30\"\n}"
+						}
+					]
+				},
+				{
+					"name": "signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"user@example.com\",\r\n  \"password\": \"Test@1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{advertisement-host}}/Identity/SignIn",
+							"host": [
+								"{{advertisement-host}}"
+							],
+							"path": [
+								"Identity",
+								"SignIn"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "signin-resp",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": \"user@example.com\",\r\n  \"password\": \"Test@1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{advertisement-host}}/Identity/SignIn",
+									"host": [
+										"{{advertisement-host}}"
+									],
+									"path": [
+										"Identity",
+										"SignIn"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "680"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 27 Aug 2023 10:04:03 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseObject\": {\n        \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyaSIsIm5iZiI6MTY5MzEzMDY0MiwiZXhwIjoxNjkzMTMxNTQyLCJpYXQiOjE2OTMxMzA2NDJ9.qCxaBZX5ByPKwBBAp7QRSrOQK6dxs14rh2kwWcTNqkU\",\n        \"authTokenExpiresAt\": \"2023-08-27T10:19:02.2249356Z\",\n        \"refreshToken\": \"U0ccZ6JyFDkiruwoQF3BJF3YG0x4yB5S6dLlP+rbOlSKTzAME1PTlHOuJxO8b1VKvK9aoc9MpnM0gLfKQbIw==2277af63e66d4c528e44ffa3eba73f1c\",\n        \"refreshTokenExpiresAt\": \"2023-09-27T13:34:03.0823446+03:30\"\n    },\n    \"errorMessages\": [],\n    \"message\": null,\n    \"statusCode\": 0,\n    \"dateTime\": \"2023-08-27T13:34:03.2281088+03:30\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
