@@ -19,7 +19,7 @@ public class AdvertisementController : BaseController
     public async Task<ActionResult> CreateAsync([FromForm] CreateAdvertisementCommand command,
         [FromForm] List<IFormFile> thumbnails)
     {
-        await SetThumbnails(command, thumbnails);
+        await SetThumbnailsAsync(command, thumbnails);
 
         await _mediator.Send(command);
         return Ok();
@@ -30,8 +30,11 @@ public class AdvertisementController : BaseController
     /// </summary>
     /// <param name="command"></param>
     /// <param name="thumbnails"></param>
-    private static async Task SetThumbnails(CreateAdvertisementCommand command, List<IFormFile> thumbnails)
+    private static async Task SetThumbnailsAsync(CreateAdvertisementCommand command, List<IFormFile> thumbnails)
     {
+        if (!thumbnails.Any())
+            return;
+
         foreach (var thumbnail in thumbnails)
         {
             using var memoryStream = new MemoryStream();
