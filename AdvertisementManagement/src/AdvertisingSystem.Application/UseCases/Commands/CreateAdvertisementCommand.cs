@@ -1,9 +1,10 @@
+using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Domain.ValueObjects;
 using MediatR;
 
 namespace AdvertisingSystem.Application.UseCases.Commands;
 
-public class CreateAdvertisementCommand : IRequest
+public class CreateAdvertisementCommand : IRequest<GetAdvertisement>
 {
     public string Title { get; set; }
     public string UserId { get; set; }

@@ -1,14 +1,13 @@
 using AdvertisingSystem.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Newtonsoft.Json;
 
 namespace AdvertisingSystem.Infrastructure.Persistence.ValueConverters;
 
-public class PriceConverter : ValueConverter<Price, string>
+public class PriceConverter : ValueConverter<Price, decimal>
 {
     public PriceConverter() : base(
-        price => JsonConvert.SerializeObject(price),
-        json => JsonConvert.DeserializeObject<Price>(json))
+        c => c.Amount,
+        date => new Price(date, "USD"))
     {
     }
 }

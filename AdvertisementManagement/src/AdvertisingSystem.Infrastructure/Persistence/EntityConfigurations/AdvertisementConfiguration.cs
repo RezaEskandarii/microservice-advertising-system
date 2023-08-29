@@ -15,6 +15,7 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         builder.Property(x => x.CreatedAt).HasConversion(new CreatedAtConverter());
         builder.Property(x => x.UpdatedAt).HasConversion(new UpdatedAtConverter());
         builder.Property(x => x.ExpiresAt).HasConversion(new ExpiryDateConverter());
+        builder.Property(x => x.Price).HasConversion(new PriceConverter());
         builder.Property(x => x.Tags).HasColumnType("text[]");
         builder.Property(x => x.Thumbnails).HasColumnType("text[]");
 

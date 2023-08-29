@@ -48,6 +48,9 @@
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
+      },
+      "AddHeadersToRequest": {
+        "Authorization": "Bearer {token}"
       }
     }
   ]

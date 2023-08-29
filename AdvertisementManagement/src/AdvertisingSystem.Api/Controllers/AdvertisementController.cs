@@ -1,3 +1,5 @@
+using System.Net;
+using AdvertisingSystem.Api.ViewModels;
 using AdvertisingSystem.Application.UseCases.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +21,11 @@ public class AdvertisementController : BaseController
     public async Task<ActionResult> CreateAsync([FromForm] CreateAdvertisementCommand command,
         [FromForm] List<IFormFile> thumbnails)
     {
+        command.UserId = GetUserIdFromToken();
         await SetThumbnailsAsync(command, thumbnails);
+        var result = await _mediator.Send(command);
 
-        await _mediator.Send(command);
-        return Ok();
+        return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 
     /// <summary>

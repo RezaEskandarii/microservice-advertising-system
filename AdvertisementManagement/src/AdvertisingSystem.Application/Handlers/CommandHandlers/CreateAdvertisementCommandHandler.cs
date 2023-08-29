@@ -1,9 +1,11 @@
 using System.Text.Json;
 using AdvertisingSystem.Application.UseCases.Commands;
+using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.DomainEvents;
 using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Domain.ValueObjects;
+using AutoMapper;
 using File;
 using Google.Protobuf;
 using Grpc.Net.Client;
@@ -11,23 +13,25 @@ using MediatR;
 
 namespace AdvertisingSystem.Application.Handlers.CommandHandlers;
 
-public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertisementCommand>
+public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertisementCommand, GetAdvertisement>
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IEventPublisher _eventPublisher;
     private readonly IServiceDiscovery _serviceDiscovery;
+    private readonly IMapper _mapper;
 
     public CreateAdvertisementCommandHandler(IAdvertisementRepository advertisementRepository,
-        IEventPublisher eventPublisher, IServiceDiscovery serviceDiscovery)
+        IEventPublisher eventPublisher, IServiceDiscovery serviceDiscovery, IMapper mapper)
     {
         _advertisementRepository = advertisementRepository;
         _eventPublisher = eventPublisher;
         _serviceDiscovery = serviceDiscovery;
+        _mapper = mapper;
     }
 
-    public async Task Handle(CreateAdvertisementCommand command, CancellationToken cancellationToken)
+    public async Task<GetAdvertisement> Handle(CreateAdvertisementCommand command, CancellationToken cancellationToken)
     {
-        var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, command.Price,
+        var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, new Price(command.Price, "USD"),
             new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
             command.Address, command.CategoryId, command.Tags);
 
@@ -38,6 +42,8 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(obj));
 
         await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
+
+        return _mapper.Map<GetAdvertisement>(result);
     }
 
     private async Task UploadImagesAsync(CreateAdvertisementCommand command, long advertisementId)

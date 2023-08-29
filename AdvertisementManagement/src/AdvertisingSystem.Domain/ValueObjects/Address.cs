@@ -49,6 +49,6 @@ public class Address
 
     public override string ToString()
     {
-        return $"{Street}, {City}, {State}, {PostalCode}, {Country}";
+        return $"street: {Street}, city: {City}, state: {State}, postalCode: {PostalCode}, country: {Country}";
     }
 }
