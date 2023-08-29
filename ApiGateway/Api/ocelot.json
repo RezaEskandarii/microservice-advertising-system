@@ -1,5 +1,6 @@
 {
   "GlobalConfiguration": {
+    "RequestIdKey": "X-Request-ID",
     "GlobalConfiguration": {
       "BaseUrl": "http://127.0.0.1:5009"
     }

@@ -23,6 +23,7 @@ public class AdvertisementController : BaseController
     {
         command.UserId = GetUserIdFromToken();
         await SetThumbnailsAsync(command, thumbnails);
+
         var result = await _mediator.Send(command);
 
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
