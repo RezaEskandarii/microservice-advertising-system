@@ -41,6 +41,12 @@ public class SecretManager : ISecretManager
 
     public async Task<string?> GetConnectionStringAsync()
     {
-        return await ReadSecretAsync("AdvertisingDBConnectionString");
+        var secretKey = "AdvertisementDBConnectionString";
+        var connStr = await ReadSecretAsync(secretKey);
+
+        if (string.IsNullOrWhiteSpace(connStr))
+            throw new Exception($"secretKey: {secretKey} has no any data");
+
+        return connStr;
     }
 }
