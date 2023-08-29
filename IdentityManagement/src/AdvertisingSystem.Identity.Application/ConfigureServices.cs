@@ -53,7 +53,7 @@ public static class ConfigureServices
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
                     ValidAudience = "http://127.0.0.1:5004",
                     IssuerSigningKey =
