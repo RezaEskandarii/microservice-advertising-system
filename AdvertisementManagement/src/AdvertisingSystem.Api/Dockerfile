@@ -1,5 +1,5 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
+WORKDIR /advertisementmanagementapp
 EXPOSE 80
 EXPOSE 443
 
@@ -13,12 +13,12 @@ COPY ["src/AdvertisingSystem.Contract/AdvertisingSystem.Contract.csproj", "src/A
 RUN dotnet restore "src/AdvertisingSystem.Api/AdvertisingSystem.Api.csproj"
 COPY . .
 WORKDIR "/src/src/AdvertisingSystem.Api"
-RUN dotnet build "AdvertisingSystem.Api.csproj" -c Release -o /app/build
+RUN dotnet build "AdvertisingSystem.Api.csproj" -c Release -o /advertisementmanagementapp/build
 
 FROM build AS publish
-RUN dotnet publish "AdvertisingSystem.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "AdvertisingSystem.Api.csproj" -c Release -o /advertisementmanagementapp/publish /p:UseAppHost=false
 
 FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+WORKDIR /advertisementmanagementapp
+COPY --from=publish /advertisementmanagementapp/publish .
 ENTRYPOINT ["dotnet", "AdvertisingSystem.Api.dll"]

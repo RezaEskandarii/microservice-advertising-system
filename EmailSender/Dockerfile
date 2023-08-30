@@ -1,27 +1,23 @@
-# Use the official Golang image as the base image
-FROM golang:1.21
+# Use the official Go image as the base image
+FROM golang:latest
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /EmailSenderApp
 
-# Copy the Go module files
+# Copy the Go module files to the working directory
 COPY go.mod go.sum ./
 
-# Download the Go module dependencies
+# Download and install the Go dependencies
 RUN go mod download
 
-# Copy the source code into the container
+# Copy the source code to the working directory
 COPY . .
 
 # Build the Go application
-RUN go build -o app
+RUN go build -o main .
 
-# Set the environment variables
-ENV RABBITMQ_CONNECTION_STRING="amqp://guest:guest@rabbitmq:5672/"
-ENV EMAIL_SERVICE_API_KEY="email-service-api-key"
+# Expose port 5007
+EXPOSE 5007
 
-# Expose the port on which the application listens
-EXPOSE 8080
-
-# Set the command to run the application when the container starts
-CMD ["./app"]
+# Set the entry point of the container
+CMD ["./main"]

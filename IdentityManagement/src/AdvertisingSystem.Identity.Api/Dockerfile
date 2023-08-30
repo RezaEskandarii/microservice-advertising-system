@@ -1,5 +1,5 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
+WORKDIR /identityapp
 EXPOSE 80
 EXPOSE 443
 
@@ -14,12 +14,12 @@ COPY ["src/AdvertisingSystem.Identity.Infrastructure/AdvertisingSystem.Identity.
 RUN dotnet restore "src/AdvertisingSystem.Identity.Api/AdvertisingSystem.Identity.Api.csproj"
 COPY . .
 WORKDIR "/src/src/AdvertisingSystem.Identity.Api"
-RUN dotnet build "AdvertisingSystem.Identity.Api.csproj" -c Release -o /app/build
+RUN dotnet build "AdvertisingSystem.Identity.Api.csproj" -c Release -o /identityapp/build
 
 FROM build AS publish
-RUN dotnet publish "AdvertisingSystem.Identity.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "AdvertisingSystem.Identity.Api.csproj" -c Release -o /identityapp/publish /p:UseAppHost=false
 
 FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+WORKDIR /identityapp
+COPY --from=publish /identityapp/publish .
 ENTRYPOINT ["dotnet", "AdvertisingSystem.Identity.Api.dll"]

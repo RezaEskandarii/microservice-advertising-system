@@ -45,6 +45,11 @@ services:
   redis:
     image: redis:latest
 
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./ApiGateway/Api/Dockerfile
+
   identity-management:
     build:
       context: .
@@ -66,7 +71,7 @@ services:
   email-sender:
     build:
       context: .
-      dockerfile: ./EmailSender/cmd/Dockerfile
+      dockerfile: ./EmailSender/Dockerfile
     depends_on:
       - vault
       - consul
@@ -75,7 +80,7 @@ services:
   thumbnail-management:
     build:
       context: .
-      dockerfile: ./ThumbnailManagement/cmd/Dockerfile
+      dockerfile: ./ThumbnailManagement/Dockerfile
     depends_on:
       - minio
       - postgres
@@ -85,7 +90,7 @@ services:
   category-management:
     build:
       context: .
-      dockerfile: ./CategoryManagement/cmd/Dockerfile
+      dockerfile: ./CategoryManagement/Dockerfile
     depends_on:
       - postgres
       - vault

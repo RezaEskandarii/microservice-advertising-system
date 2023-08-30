@@ -2,7 +2,7 @@
 FROM golang:latest
 
 # Set the working directory inside the container
-WORKDIR /EmailSenderApp
+WORKDIR /thumbnailmanagementapp
 
 # Copy the Go module files to the working directory
 COPY go.mod go.sum ./
@@ -16,8 +16,8 @@ COPY . .
 # Build the Go application
 RUN go build -o main .
 
-# Expose port 5007
-EXPOSE 5007
+# Expose port 5002
+EXPOSE 5002
 
 # Set the entry point of the container
 CMD ["./main"]

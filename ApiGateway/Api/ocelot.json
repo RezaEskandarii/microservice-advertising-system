@@ -68,7 +68,7 @@
         }
       ]
     },
-	    {
+    {
       "UpstreamPathTemplate": "/api/v1/Advertisement/{id}",
       "UpstreamHttpMethod": [
         "DELETE"
@@ -88,7 +88,7 @@
         "Authorization": "Bearer {token}"
       }
     },
-		    {
+    {
       "UpstreamPathTemplate": "/api/v1/Advertisement/{id}",
       "UpstreamHttpMethod": [
         "PUT"
