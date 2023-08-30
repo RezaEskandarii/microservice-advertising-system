@@ -164,6 +164,541 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "Advertisement",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								},
+								{
+									"key": "payload",
+									"value": "{}",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyZGkiLCJuYmYiOjE2OTMzMDM1MzksImV4cCI6MTY5MzMwNDQzOSwiaWF0IjoxNjkzMzAzNTM5fQ.hQwAFQWxcDE5L6bBOV0ny7JSNEXAghL7ZqA3EvSf44I",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Title",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "Description",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "thumbnails",
+									"type": "file",
+									"src": "/C:/Users/infor/Pictures/1_RwWsV7t6rKzFWZA4VsGu8g.png"
+								},
+								{
+									"key": "thumbnails",
+									"type": "file",
+									"src": "/C:/Users/infor/Pictures/1521481310295.jpg"
+								},
+								{
+									"key": "thumbnails",
+									"type": "file",
+									"src": "/C:/Users/infor/Pictures/gold.png"
+								},
+								{
+									"key": "ExpiresAt",
+									"value": "2023-12-29",
+									"type": "text"
+								},
+								{
+									"key": "Tags",
+									"value": "[\"\"test1,\"test2\"]",
+									"type": "text"
+								},
+								{
+									"key": "categoryId",
+									"value": "256",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{advertisement-host}}/Advertisement",
+							"host": [
+								"{{advertisement-host}}"
+							],
+							"path": [
+								"Advertisement"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyZGkiLCJuYmYiOjE2OTMzMDM1MzksImV4cCI6MTY5MzMwNDQzOSwiaWF0IjoxNjkzMzAzNTM5fQ.hQwAFQWxcDE5L6bBOV0ny7JSNEXAghL7ZqA3EvSf44I",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "Title",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "Description",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "thumbnails",
+											"type": "file",
+											"src": "/C:/Users/infor/Pictures/1_RwWsV7t6rKzFWZA4VsGu8g.png"
+										},
+										{
+											"key": "thumbnails",
+											"type": "file",
+											"src": "/C:/Users/infor/Pictures/1521481310295.jpg"
+										},
+										{
+											"key": "thumbnails",
+											"type": "file",
+											"src": "/C:/Users/infor/Pictures/gold.png"
+										},
+										{
+											"key": "ExpiresAt",
+											"value": "2023-12-29",
+											"type": "text"
+										},
+										{
+											"key": "Tags",
+											"value": "[\"\"test1,\"test2\"]",
+											"type": "text"
+										},
+										{
+											"key": "categoryId",
+											"value": "256",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{advertisement-host}}/Advertisement",
+									"host": [
+										"{{advertisement-host}}"
+									],
+									"path": [
+										"Advertisement"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "595"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Aug 2023 06:53:04 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseObject\": {\n        \"id\": 42,\n        \"title\": \"test\",\n        \"userId\": \"606f9a8a-607b-41d3-82cc-0b8ded8b490c\",\n        \"description\": \"test\",\n        \"price\": 0,\n        \"expiresAt\": \"2023-12-29T00:00:00\",\n        \"createdAt\": \"2023-08-30T00:00:00+03:30\",\n        \"updatedAt\": \"2023-08-30T10:23:03.6913911+03:30\",\n        \"address\": null,\n        \"categoryId\": 256,\n        \"thumbnails\": [\n            \"f286c400-8bd0-4300-815e-1b2d5cdf948d_1_RwWsV7t6rKzFWZA4VsGu8g.png\",\n            \"3cabf244-d010-4da5-b891-aaf9c6df3bb9_1521481310295.jpg\",\n            \"c57664cd-0aa7-4ec3-bf01-b2e3fa8fa2f8_gold.png\"\n        ],\n        \"tags\": [\n            \"[\\\"\\\"test1,\\\"test2\\\"]\"\n        ]\n    },\n    \"errorMessages\": [],\n    \"message\": null,\n    \"statusCode\": 200,\n    \"dateTime\": \"2023-08-30T10:23:04.9465009+03:30\"\n}"
+						}
+					]
+				},
+				{
+					"name": "find-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{advertisement-host}}/Advertisement/42",
+							"host": [
+								"{{advertisement-host}}"
+							],
+							"path": [
+								"Advertisement",
+								"42"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "find-by-id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{advertisement-host}}/Advertisement/42",
+									"host": [
+										"{{advertisement-host}}"
+									],
+									"path": [
+										"Advertisement",
+										"42"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "582"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Aug 2023 06:58:53 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseObject\": {\n        \"id\": 42,\n        \"title\": \"test\",\n        \"userId\": \"606f9a8a-607b-41d3-82cc-0b8ded8b490c\",\n        \"description\": \"test\",\n        \"price\": 0,\n        \"expiresAt\": \"2023-12-29T00:00:00\",\n        \"createdAt\": \"2023-08-30T00:00:00\",\n        \"updatedAt\": \"2023-08-30T10:23:03.691391\",\n        \"address\": null,\n        \"categoryId\": 256,\n        \"thumbnails\": [\n            \"f286c400-8bd0-4300-815e-1b2d5cdf948d_1_RwWsV7t6rKzFWZA4VsGu8g.png\",\n            \"3cabf244-d010-4da5-b891-aaf9c6df3bb9_1521481310295.jpg\",\n            \"c57664cd-0aa7-4ec3-bf01-b2e3fa8fa2f8_gold.png\"\n        ],\n        \"tags\": [\n            \"[\\\"\\\"test1,\\\"test2\\\"]\"\n        ]\n    },\n    \"errorMessages\": [],\n    \"message\": null,\n    \"statusCode\": 200,\n    \"dateTime\": \"2023-08-30T10:28:53.8315637+03:30\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyaSIsIm5iZiI6MTY5MzM3OTcyOCwiZXhwIjoxNjkzMzgwNjI4LCJpYXQiOjE2OTMzNzk3Mjh9.EoSA7MfSnTHvgFTdutpAejefBKjT1wTMpaHKQNFG0Gk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{advertisement-host}}/Advertisement/41",
+							"host": [
+								"{{advertisement-host}}"
+							],
+							"path": [
+								"Advertisement",
+								"41"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyaSIsIm5iZiI6MTY5MzM3OTcyOCwiZXhwIjoxNjkzMzgwNjI4LCJpYXQiOjE2OTMzNzk3Mjh9.EoSA7MfSnTHvgFTdutpAejefBKjT1wTMpaHKQNFG0Gk",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{advertisement-host}}/Advertisement/41",
+									"host": [
+										"{{advertisement-host}}"
+									],
+									"path": [
+										"Advertisement",
+										"41"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "121"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Aug 2023 07:19:23 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseObject\": null,\n    \"errorMessages\": [],\n    \"message\": null,\n    \"statusCode\": 200,\n    \"dateTime\": \"2023-08-30T10:49:24.7087105+03:30\"\n}"
+						}
+					]
+				},
+				{
+					"name": "edit",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyaSIsIm5iZiI6MTY5MzM3OTcyOCwiZXhwIjoxNjkzMzgwNjI4LCJpYXQiOjE2OTMzNzk3Mjh9.EoSA7MfSnTHvgFTdutpAejefBKjT1wTMpaHKQNFG0Gk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Title",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "Description",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "ExpiresAt",
+									"value": "2023-12-29",
+									"type": "text"
+								},
+								{
+									"key": "Tags",
+									"value": "[\"\"test144,\"test442\"]",
+									"type": "text"
+								},
+								{
+									"key": "categoryId",
+									"value": "256",
+									"type": "text"
+								},
+								{
+									"key": "Thumbnails",
+									"type": "file",
+									"src": "/C:/Users/infor/Pictures/33-1024x680.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{advertisement-host}}/Advertisement/40",
+							"host": [
+								"{{advertisement-host}}"
+							],
+							"path": [
+								"Advertisement",
+								"40"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "edit",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyaSIsIm5iZiI6MTY5MzM3OTcyOCwiZXhwIjoxNjkzMzgwNjI4LCJpYXQiOjE2OTMzNzk3Mjh9.EoSA7MfSnTHvgFTdutpAejefBKjT1wTMpaHKQNFG0Gk",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "Title",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "Description",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "ExpiresAt",
+											"value": "2023-12-29",
+											"type": "text"
+										},
+										{
+											"key": "Tags",
+											"value": "[\"\"test144,\"test442\"]",
+											"type": "text"
+										},
+										{
+											"key": "categoryId",
+											"value": "256",
+											"type": "text"
+										},
+										{
+											"key": "Thumbnails",
+											"type": "file",
+											"src": "/C:/Users/infor/Pictures/33-1024x680.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{advertisement-host}}/Advertisement/40",
+									"host": [
+										"{{advertisement-host}}"
+									],
+									"path": [
+										"Advertisement",
+										"40"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "430"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Aug 2023 08:08:55 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseObject\": {\n        \"id\": 40,\n        \"title\": \"test\",\n        \"userId\": \"606f9a8a-607b-41d3-82cc-0b8ded8b490c\",\n        \"description\": \"test\",\n        \"price\": 0,\n        \"expiresAt\": \"2023-12-29T00:00:00\",\n        \"createdAt\": \"2023-08-30T00:00:00\",\n        \"updatedAt\": \"2023-08-30T10:19:28.213182\",\n        \"address\": null,\n        \"categoryId\": 256,\n        \"thumbnails\": [\n            \"33-1024x680.jpg\"\n        ],\n        \"tags\": [\n            \"[\\\"\\\"test144,\\\"test442\\\"]\"\n        ]\n    },\n    \"errorMessages\": [],\n    \"message\": null,\n    \"statusCode\": 200,\n    \"dateTime\": \"2023-08-30T11:38:55.427156+03:30\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "jwt",
+		"jwt": [
+			{
+				"key": "payload",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyaSIsIm5iZiI6MTY5MzM3OTcyOCwiZXhwIjoxNjkzMzgwNjI4LCJpYXQiOjE2OTMzNzk3Mjh9.EoSA7MfSnTHvgFTdutpAejefBKjT1wTMpaHKQNFG0Gk",
+				"type": "string"
+			},
+			{
+				"key": "header",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmY5YThhLTYwN2ItNDFkMy04MmNjLTBiOGRlZDhiNDkwYyIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImZpcnN0TmFtZSI6InJlemEiLCJsYXN0TmFtZSI6ImVza2FuZGFyaSIsIm5iZiI6MTY5MzM3OTcyOCwiZXhwIjoxNjkzMzgwNjI4LCJpYXQiOjE2OTMzNzk3Mjh9.EoSA7MfSnTHvgFTdutpAejefBKjT1wTMpaHKQNFG0Gk",
+				"type": "string"
+			},
+			{
+				"key": "algorithm",
+				"value": "HS256",
+				"type": "string"
+			},
+			{
+				"key": "isSecretBase64Encoded",
+				"value": false,
+				"type": "boolean"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "headerPrefix",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "queryParamKey",
+				"value": "token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
