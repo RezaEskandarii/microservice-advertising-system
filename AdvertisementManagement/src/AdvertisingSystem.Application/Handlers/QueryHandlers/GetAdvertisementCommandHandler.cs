@@ -1,12 +1,24 @@
 using AdvertisingSystem.Application.UseCases.Queries;
+using AdvertisingSystem.Contract.Interfaces;
+using AutoMapper;
 using MediatR;
 
 namespace AdvertisingSystem.Application.Handlers;
 
-public class GetAdvertisementCommandHandler : IRequestHandler<GetAdvertisementQuery>
+public class GetAdvertisementCommandHandler : IRequestHandler<GetAdvertisementQuery, GetAdvertisement>
 {
-    public Task Handle(GetAdvertisementQuery request, CancellationToken cancellationToken)
+    private readonly IAdvertisementRepository _repository;
+    private readonly IMapper _mapper;
+
+    public GetAdvertisementCommandHandler(IAdvertisementRepository repository, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _repository = repository;
+        _mapper = mapper;
+    }
+
+    public async Task<GetAdvertisement> Handle(GetAdvertisementQuery query, CancellationToken cancellationToken)
+    {
+        var advertisement = await _repository.GetById(query.Id);
+        return _mapper.Map<GetAdvertisement>(advertisement);
     }
 }

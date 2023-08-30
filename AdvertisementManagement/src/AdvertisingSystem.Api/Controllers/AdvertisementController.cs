@@ -1,6 +1,7 @@
 using System.Net;
 using AdvertisingSystem.Api.ViewModels;
 using AdvertisingSystem.Application.UseCases.Commands;
+using AdvertisingSystem.Application.UseCases.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,13 @@ public class AdvertisementController : BaseController
 
         var result = await _mediator.Send(command);
 
+        return Ok(new ApiResponse(HttpStatusCode.OK, result));
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<ActionResult> FindByIdAsync(long id)
+    {
+        var result = await _mediator.Send(new GetAdvertisementQuery() { Id = id });
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 

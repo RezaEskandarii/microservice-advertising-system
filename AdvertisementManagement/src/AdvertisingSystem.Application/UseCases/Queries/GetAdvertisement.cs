@@ -5,6 +5,7 @@ namespace AdvertisingSystem.Application.UseCases.Queries;
 
 public class GetAdvertisement
 {
+    public long Id { get; set; }
     public string Title { get; set; }
     public string UserId { get; set; }
     public string Description { get; set; }

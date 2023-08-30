@@ -1,7 +1,7 @@
 using System.Reflection;
 using AdvertisingSystem.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
+
 namespace AdvertisingSystem.Application;
 
 public static class ConfigureServices
