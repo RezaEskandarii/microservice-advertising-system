@@ -2,6 +2,7 @@ using System.Net;
 using AdvertisingSystem.Api.ViewModels;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.UseCases.Queries;
+using AdvertisingSystem.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,9 +60,9 @@ public class AdvertisementController : BaseController
     /// </summary>
     /// <param name="command"></param>
     /// <param name="thumbnails"></param>
-    private async Task<ICollection<ThumbnailFileModel>> GetThumbnailsFromRequestAsync()
+    private async Task<ICollection<ThumbnailFileViewModel>> GetThumbnailsFromRequestAsync()
     {
-        var result = new List<ThumbnailFileModel>();
+        var result = new List<ThumbnailFileViewModel>();
         var thumbnails = Request.Form.Files.Where(x => x.Name == "Thumbnails").ToList();
 
         if (!thumbnails.Any())
@@ -72,7 +73,7 @@ public class AdvertisementController : BaseController
             using var memoryStream = new MemoryStream();
             await thumbnail.CopyToAsync(memoryStream);
             
-            result.Add(new ThumbnailFileModel()
+            result.Add(new ThumbnailFileViewModel()
             {
                 Bytes = memoryStream.ToArray(),
                 FileName = thumbnail.FileName

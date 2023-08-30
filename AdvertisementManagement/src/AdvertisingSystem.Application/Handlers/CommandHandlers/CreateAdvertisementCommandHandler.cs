@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.UseCases.Queries;
+using AdvertisingSystem.Application.ViewModels;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.DomainEvents;
 using AdvertisingSystem.Domain.Entities;
@@ -13,7 +14,7 @@ using MediatR;
 
 namespace AdvertisingSystem.Application.Handlers.CommandHandlers;
 
-public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertisementCommand, GetAdvertisement>
+public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertisementCommand, GetAdvertisementViewModel>
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IEventPublisher _eventPublisher;
@@ -29,7 +30,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         _mapper = mapper;
     }
 
-    public async Task<GetAdvertisement> Handle(CreateAdvertisementCommand command, CancellationToken cancellationToken)
+    public async Task<GetAdvertisementViewModel> Handle(CreateAdvertisementCommand command, CancellationToken cancellationToken)
     {
         var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, new Price(command.Price, "USD"),
             new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
@@ -43,7 +44,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
 
         await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
 
-        return _mapper.Map<GetAdvertisement>(result);
+        return _mapper.Map<GetAdvertisementViewModel>(result);
     }
 
     private async Task UploadImagesAsync(CreateAdvertisementCommand command, long advertisementId)

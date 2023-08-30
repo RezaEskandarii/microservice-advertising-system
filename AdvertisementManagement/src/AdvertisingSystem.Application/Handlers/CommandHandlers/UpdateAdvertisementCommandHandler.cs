@@ -1,5 +1,6 @@
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.UseCases.Queries;
+using AdvertisingSystem.Application.ViewModels;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.ValueObjects;
 using AutoMapper;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace AdvertisingSystem.Application.Handlers.CommandHandlers;
 
-public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertisementCommand, GetAdvertisement>
+public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertisementCommand, GetAdvertisementViewModel>
 {
     private readonly IAdvertisementRepository _repository;
     private readonly IMapper _mapper;
@@ -18,7 +19,7 @@ public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertise
         _mapper = mapper;
     }
 
-    public async Task<GetAdvertisement> Handle(UpdateAdvertisementCommand command, CancellationToken cancellationToken)
+    public async Task<GetAdvertisementViewModel> Handle(UpdateAdvertisementCommand command, CancellationToken cancellationToken)
     {
         var advertisement = await _repository.GetByIdAsync(command.AdvertsiementId, command.UserId);
 
@@ -35,6 +36,6 @@ public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertise
         advertisement.Tags = command.Tags;
 
         var result = await _repository.UpdateAsync(advertisement);
-        return _mapper.Map<GetAdvertisement>(result);
+        return _mapper.Map<GetAdvertisementViewModel>(result);
     }
 }

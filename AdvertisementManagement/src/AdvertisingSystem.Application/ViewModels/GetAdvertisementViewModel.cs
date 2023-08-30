@@ -1,15 +1,14 @@
-﻿using AdvertisingSystem.Application.UseCases.Commands;
-using AdvertisingSystem.Domain.ValueObjects;
+﻿using AdvertisingSystem.Domain.ValueObjects;
 
-namespace AdvertisingSystem.Application.UseCases.Queries;
+namespace AdvertisingSystem.Application.ViewModels;
 
-public class GetAdvertisement
+public class GetAdvertisementViewModel
 {
     public long Id { get; set; }
     public string Title { get; set; }
     public string UserId { get; set; }
     public string Description { get; set; }
-    public decimal Price { get; set; }
+    public decimal? Price { get; set; }
     public DateTime ExpiresAt { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
