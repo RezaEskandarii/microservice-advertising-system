@@ -18,7 +18,7 @@ public class GetAdvertisementCommandHandler : IRequestHandler<GetAdvertisementQu
 
     public async Task<GetAdvertisement> Handle(GetAdvertisementQuery query, CancellationToken cancellationToken)
     {
-        var advertisement = await _repository.GetById(query.Id);
+        var advertisement = await _repository.GetByIdAsync(query.Id);
         return _mapper.Map<GetAdvertisement>(advertisement);
     }
 }

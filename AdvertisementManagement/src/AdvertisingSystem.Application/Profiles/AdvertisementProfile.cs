@@ -1,4 +1,5 @@
-﻿using AdvertisingSystem.Application.UseCases.Queries;
+﻿using AdvertisingSystem.Application.UseCases.Commands;
+using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Domain.Entities;
 using AutoMapper;
 
@@ -13,5 +14,7 @@ public class AdvertisementProfile : Profile
             .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt.Value))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt.Value))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt.Value));
+
+        CreateMap<UpdateAdvertisementCommand, Advertisement>();
     }
 }

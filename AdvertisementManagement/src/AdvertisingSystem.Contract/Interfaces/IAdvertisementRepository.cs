@@ -4,9 +4,12 @@ namespace AdvertisingSystem.Contract.Interfaces;
 
 public interface IAdvertisementRepository
 {
-    Task<Advertisement> GetById(long id);
+    Task<Advertisement> GetByIdAsync(long id);
+    Task<Advertisement> GetByIdAsync(long id,string userId);
     Task<Advertisement> AddAsync(Advertisement advertisement);
-    Task<Advertisement> Update(long id, Advertisement advertisement);
-    Task<bool> Delete(long id);
+    Task<Advertisement> UpdateAsync(long id, Advertisement advertisement);
+    Task<Advertisement> UpdateAsync(Advertisement advertisement);
+    Task<bool> DeleteAsync(long id);
+    Task<bool> DeleteAsync(long id,string userId);
     Task AddThumbnailAsync(long advertisementId, string thumbnailFileName);
 }

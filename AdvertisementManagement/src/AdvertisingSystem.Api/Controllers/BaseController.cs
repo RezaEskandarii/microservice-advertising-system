@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdvertisingSystem.Api.Controllers;
 
-public class BaseController : Controller
+public class BaseController : ControllerBase
 {
     public string GetUserIdFromToken()
     {

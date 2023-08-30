@@ -23,10 +23,9 @@ public class AdvertisementController : BaseController
         [FromForm] List<IFormFile> thumbnails)
     {
         command.UserId = GetUserIdFromToken();
-        await SetThumbnailsAsync(command, thumbnails);
+        command.Thumbnails = await GetThumbnailsFromRequestAsync();
 
         var result = await _mediator.Send(command);
-
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 
@@ -37,26 +36,50 @@ public class AdvertisementController : BaseController
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 
+    [HttpDelete("{id:long}")]
+    public async Task<ActionResult> DeleteAsync(long id)
+    {
+        await _mediator.Send(new DeleteAdvertisementCommand() { Id = id, UserId = GetUserIdFromToken() });
+        return Ok(new ApiResponse(HttpStatusCode.OK));
+    }
+
+    [HttpPut("{id:long}")]
+    public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromForm] UpdateAdvertisementCommand command)
+    {
+        command.AdvertsiementId = id;
+        command.UserId = GetUserIdFromToken();
+        command.Thumbnails = await GetThumbnailsFromRequestAsync();
+
+        var result = await _mediator.Send(command);
+        return Ok(new ApiResponse(HttpStatusCode.OK, result));
+    }
+
     /// <summary>
     /// set thumbnails byte array
     /// </summary>
     /// <param name="command"></param>
     /// <param name="thumbnails"></param>
-    private static async Task SetThumbnailsAsync(CreateAdvertisementCommand command, List<IFormFile> thumbnails)
+    private async Task<ICollection<ThumbnailFileModel>> GetThumbnailsFromRequestAsync()
     {
+        var result = new List<ThumbnailFileModel>();
+        var thumbnails = Request.Form.Files.Where(x => x.Name == "Thumbnails").ToList();
+
         if (!thumbnails.Any())
-            return;
+            return result;
 
         foreach (var thumbnail in thumbnails)
         {
             using var memoryStream = new MemoryStream();
             await thumbnail.CopyToAsync(memoryStream);
-            command.Thumbnails?.Add(new ThumbnailFileModel()
+            
+            result.Add(new ThumbnailFileModel()
             {
                 Bytes = memoryStream.ToArray(),
                 FileName = thumbnail.FileName
             });
             memoryStream.Close();
         }
+
+        return result;
     }
 }
