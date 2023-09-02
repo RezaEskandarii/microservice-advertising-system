@@ -32,3 +32,7 @@ func (s *CategoryService) FindByID(id int) (*Category, error) {
 func (s *CategoryService) FindAll() ([]Category, error) {
 	return s.repo.FindAll()
 }
+
+func (s *CategoryService) Seed() error {
+	return s.repo.Seed()
+}

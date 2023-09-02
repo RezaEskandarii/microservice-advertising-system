@@ -46,6 +46,7 @@ func (a App) Run(portNumber int) {
 	categoryRepo := repositories.NewCategoryPostgresRepository(db)
 	categoryService := services.NewCategoryService(categoryRepo)
 
+	go categoryService.Seed()
 	categoryHandler := api.CategoryAPIHandler{}
 	categoryHandler.RegisterRoutes(categoryService)
 

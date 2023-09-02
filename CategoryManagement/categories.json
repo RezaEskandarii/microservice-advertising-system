@@ -1,0 +1,304 @@
+{
+  "categories": [
+    {
+      "name": "Automotive",
+      "subcategories": [
+        "Cars",
+        "Motorcycles",
+        "Auto Parts",
+        "Accessories",
+        "Classic Cars"
+      ]
+    },
+    {
+      "name": "Electronics",
+      "subcategories": [
+        "Mobile Phones",
+        "Laptops & Computers",
+        "TVs & Audio",
+        "Electronic Accessories",
+        "Cameras & Photography"
+      ]
+    },
+    {
+      "name": "Real Estate",
+      "subcategories": [
+        "Apartments",
+        "Villas",
+        "Land & Plots",
+        "Commercial Properties",
+        "Residential Rentals"
+      ]
+    },
+    {
+      "name": "Jobs",
+      "subcategories": [
+        "Full-time",
+        "Part-time",
+        "Freelance",
+        "Internships",
+        "Government Jobs"
+      ]
+    },
+    {
+      "name": "Home & Furniture",
+      "subcategories": [
+        "Furniture",
+        "Home Appliances",
+        "Decor & Lighting",
+        "Kitchenware",
+        "Garden & Outdoor"
+      ]
+    },
+    {
+      "name": "Fashion",
+      "subcategories": [
+        "Clothing",
+        "Shoes",
+        "Accessories",
+        "Jewelry",
+        "Watches"
+      ]
+    },
+    {
+      "name": "Pets",
+      "subcategories": [
+        "Dogs",
+        "Cats",
+        "Birds",
+        "Pet Accessories",
+        "Other Pets"
+      ]
+    },
+    {
+      "name": "Sports & Outdoors",
+      "subcategories": [
+        "Sporting Goods",
+        "Bicycles",
+        "Fitness Equipment",
+        "Outdoor & Adventure",
+        "Team Sports"
+      ]
+    },
+    {
+      "name": "Electronics",
+      "subcategories": [
+        "Mobile Phones",
+        "Laptops & Computers",
+        "TVs & Audio",
+        "Electronic Accessories",
+        "Cameras & Photography"
+      ]
+    },
+    {
+      "name": "Books & Hobbies",
+      "subcategories": [
+        "Books",
+        "Musical Instruments",
+        "Sports Equipment",
+        "Collectibles",
+        "Art & Crafts"
+      ]
+    },
+    {
+      "name": "Services",
+      "subcategories": [
+        "Automotive Services",
+        "Home Services",
+        "Computer Services",
+        "Event Services",
+        "Health & Beauty Services"
+      ]
+    },
+    {
+      "name": "Toys & Kids",
+      "subcategories": [
+        "Toys",
+        "Baby Gear",
+        "Kids' Clothing",
+        "Maternity",
+        "Kids' Furniture"
+      ]
+    },
+    {
+      "name": "Business & Industrial",
+      "subcategories": [
+        "Industrial Equipment",
+        "Office Furniture",
+        "Business for Sale",
+        "Food & Restaurants",
+        "Medical & Healthcare"
+      ]
+    },
+    {
+      "name": "Community",
+      "subcategories": [
+        "Activities",
+        "Artists & Musicians",
+        "Classes",
+        "Lost & Found",
+        "Volunteers"
+      ]
+    },
+    {
+      "name": "Music & Instruments",
+      "subcategories": [
+        "Musical Instruments",
+        "Music Accessories",
+        "Sheet Music",
+        "Audio & Sound Equipment",
+        "Music Lessons"
+      ]
+    },
+    {
+      "name": "Travel",
+      "subcategories": [
+        "Hotels & Accommodation",
+        "Flights",
+        "Vacation Packages",
+        "Car Rentals",
+        "Travel Accessories"
+      ]
+    },
+    {
+      "name": "Health & Fitness",
+      "subcategories": [
+        "Gym & Fitness Equipment",
+        "Nutrition & Supplements",
+        "Health Services",
+        "Sports & Wellness",
+        "Yoga & Meditation"
+      ]
+    },
+    {
+      "name": "Art & Collectibles",
+      "subcategories": [
+        "Paintings & Drawings",
+        "Sculptures",
+        "Photography",
+        "Coins & Stamps",
+        "Vintage Collectibles"
+      ]
+    },
+    {
+      "name": "Education",
+      "subcategories": [
+        "Tutoring",
+        "Online Courses",
+        "Textbooks",
+        "School Supplies",
+        "Language Classes"
+      ]
+    },
+    {
+      "name": "Beauty & Personal Care",
+      "subcategories": [
+        "Skincare",
+        "Makeup",
+        "Haircare",
+        "Fragrances",
+        "Spa & Salon Services"
+      ]
+    },
+    {
+      "name": "Computers & Accessories",
+      "subcategories": [
+        "Desktop Computers",
+        "Monitors",
+        "Computer Accessories",
+        "Printers & Scanners",
+        "Software"
+      ]
+    },
+    {
+      "name": "Food & Agriculture",
+      "subcategories": [
+        "Food Products",
+        "Agricultural Equipment",
+        "Livestock & Poultry",
+        "Beverages",
+        "Food Services"
+      ]
+    },
+    {
+      "name": "Jewelry & Watches",
+      "subcategories": [
+        "Jewelry",
+        "Watches",
+        "Accessories",
+        "Precious Stones",
+        "Antique & Vintage Jewelry"
+      ]
+    },
+    {
+      "name": "Photography",
+      "subcategories": [
+        "Digital Cameras",
+        "Camera Accessories",
+        "Photo & Video Services",
+        "Drones",
+        "Darkroom Equipment"
+      ]
+    },
+    {
+      "name": "Collectibles",
+      "subcategories": [
+        "Coins & Stamps",
+        "Antiques",
+        "Toys & Games",
+        "Militaria",
+        "Collectible Cards"
+      ]
+    },
+    {
+      "name": "Business Opportunities",
+      "subcategories": [
+        "Franchise Opportunities",
+        "Business Partnerships",
+        "Investment Opportunities",
+        "Business Loans",
+        "Business for Sale"
+      ]
+    },
+    {
+      "name": "Home Appliances",
+      "subcategories": [
+        "Kitchen Appliances",
+        "Laundry Appliances",
+        "Refrigerators & Freezers",
+        "Air Conditioners",
+        "Vacuums & Floor Care"
+      ]
+    },
+    {
+      "name": "Mobile Phones & Accessories",
+      "subcategories": [
+        "Mobile Phones",
+        "Phone Accessories",
+        "Smartwatches",
+        "Mobile Phone Repair",
+        "Phone Cases & Covers"
+      ]
+    },
+    {
+      "name": "Arts & Crafts",
+      "subcategories": [
+        "Craft Supplies",
+        "Art Supplies",
+        "Craft Tools",
+        "Fabric & Textiles",
+        "Scrapbooking & Paper Crafts"
+      ]
+    },
+    {
+      "name": "Garden & Outdoor",
+      "subcategories": [
+        "Outdoor Furniture",
+        "Garden Tools",
+        "Plants & Seeds",
+        "Patio & Deck",
+        "Swimming Pools & Spas"
+      ]
+    }
+  ]
+}
