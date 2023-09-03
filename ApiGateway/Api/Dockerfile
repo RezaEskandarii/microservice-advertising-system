@@ -1,20 +1,19 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+﻿# Use the .NET SDK image as the build environment
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ./Api.csproj Api/
-RUN dotnet restore "Api/Api.csproj"
-COPY . .
-WORKDIR "/src/Api"
-RUN dotnet build "Api.csproj" -c Release -o /app/build
+# Copy the project file and restore dependencies
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish "Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Copy the rest of the source code and build the project
+COPY . ./
+RUN dotnet build -c Release -o out
 
-FROM base AS final
+# Build the runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build-env /app/out .
+
+# Set the entry point for the container
 ENTRYPOINT ["dotnet", "Api.dll"]
