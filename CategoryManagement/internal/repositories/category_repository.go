@@ -181,9 +181,9 @@ func (r *CategoryPostgresRepository) Seed() error {
 
 			err := db.QueryRow("INSERT INTO categories (name, parent_id) VALUES ($1, $2) RETURNING id", category.Name, nil).Scan(&parentID)
 			if err != nil {
-				log.Fatal(err)
+				return err
 			}
-
+			log.Printf("######### The %s was seeded ##########", category.Name)
 		} else {
 
 			parent, _ := r.FindByName(category.Name)
@@ -195,11 +195,12 @@ func (r *CategoryPostgresRepository) Seed() error {
 			if categoryExists(db, child) {
 				continue
 			}
-			_, err := db.Exec("INSERT INTO categories (name, parent_id) VALUES ($1, $2)",
-				child, parentID)
+			_, err := db.Exec("INSERT INTO categories (name, parent_id) VALUES ($1, $2)", child, parentID)
 			if err != nil {
-				log.Fatal(err)
+				return err
 			}
+
+			log.Printf("######### The %s child was seeded ##########", child)
 
 		}
 	}
@@ -215,7 +216,7 @@ func handleNoRowsError(err error) error {
 }
 
 func categoryExists(db *sql.DB, name string) bool {
-	var count int
+	var count int = 0
 	queryStr := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE name = $1", config.CategoriesTblName)
 	err := db.QueryRow(queryStr, name).Scan(&count)
 	if err != nil {
