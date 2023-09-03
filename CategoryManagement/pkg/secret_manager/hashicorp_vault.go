@@ -9,7 +9,7 @@ import (
 
 var (
 	mountPath  = "secret"
-	secretPath = "category-microservice"
+	secretPath = "microservice-project"
 )
 
 type SecretManager struct {
@@ -23,7 +23,7 @@ func New() *SecretManager {
 	client, err := vault.NewClient(config)
 
 	if err != nil {
-		panic(err.Error())
+		///	panic(err.Error())
 	}
 
 	client.SetToken(env.GetFromDotENV("vault_token"))

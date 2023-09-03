@@ -2,6 +2,7 @@ package main
 
 import (
 	"category-management/api"
+	"category-management/config"
 	"category-management/internal/repositories"
 	"category-management/internal/services"
 	"category-management/pkg/secret_manager"
@@ -22,18 +23,17 @@ func NewApp() *App {
 func (a App) Run(portNumber int) {
 
 	secretManager := secret_manager.New()
-	dbName := "advertisement_categories"
 
 	ctx := context.Background()
-	sdn, err := secretManager.Get(ctx, "db_full_connection")
+	sdn, err := secretManager.Get(ctx, "CategoriesDBFullConnection")
 	if err != nil {
 		panic(err.Error())
 	}
-	createDBSdn, err := secretManager.Get(ctx, "db_base_connection")
+	createDBSdn, err := secretManager.Get(ctx, "CategoriesDBBaseConnection")
 	if err != nil {
 		panic(err.Error())
 	}
-	a.createDatabase(dbName, fmt.Sprintf("%s", createDBSdn))
+	a.createDatabase(config.DbName, fmt.Sprintf("%s", createDBSdn))
 
 	// Connect to PostgreSQL
 	db, err := sql.Open("postgres", fmt.Sprintf("%s", sdn))

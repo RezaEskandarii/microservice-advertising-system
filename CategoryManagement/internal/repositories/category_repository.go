@@ -1,12 +1,15 @@
 package repositories
 
 import (
+	"category-management/config"
 	. "category-management/internal/models"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"os"
+	"strings"
 )
 
 type CategoryRepository interface {
@@ -58,6 +61,23 @@ func (r *CategoryPostgresRepository) DeleteCategory(id int) error {
 func (r *CategoryPostgresRepository) FindByID(id int) (*Category, error) {
 	category := &Category{}
 	err := r.db.QueryRow("SELECT id, name FROM categories WHERE id = $1", id).Scan(&category.ID, &category.Name)
+	if err != nil {
+		return nil, handleNoRowsError(err)
+	}
+
+	subcategories, err := r.findSubcategories(category.ID)
+	if err != nil {
+		return nil, err
+	}
+	category.Subcategories = subcategories
+
+	return category, nil
+}
+
+func (r *CategoryPostgresRepository) FindByName(name string) (*Category, error) {
+	category := &Category{}
+	name = strings.TrimSpace(name)
+	err := r.db.QueryRow("SELECT id, name FROM categories WHERE name = $1", name).Scan(&category.ID, &category.Name)
 	if err != nil {
 		return nil, handleNoRowsError(err)
 	}
@@ -139,42 +159,47 @@ func (r *CategoryPostgresRepository) Seed() error {
 
 	byteValue, _ := io.ReadAll(jsonFile)
 
-	var categories []Category
+	type categoryRequest struct {
+		Name          string   `json:"name"`
+		Subcategories []string `json:"subcategories"`
+	}
+
+	var categories struct {
+		Categories []categoryRequest `json:"categories"`
+	}
+
 	err = json.Unmarshal(byteValue, &categories)
 	if err != nil {
 		return err
 	}
 
 	// Insert parent categories and store their IDs
-	for _, category := range categories {
-		if category.ParentID == 0 {
+	for _, category := range categories.Categories {
 
-			if categoryExists(db, category.Name) {
-				continue
-			}
-			result, err := db.Exec("INSERT INTO categories (name, parent_id) VALUES (?, ?)",
-				category.Name, nil)
+		var parentID int
+		if !categoryExists(db, category.Name) {
+
+			err := db.QueryRow("INSERT INTO categories (name, parent_id) VALUES ($1, $2) RETURNING id", category.Name, nil).Scan(&parentID)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			parentID, err := result.LastInsertId()
+		} else {
+			parent, _ := r.FindByName(category.Name)
+			parentID = parent.ID
+		}
+
+		// Insert child categories with parent IDs
+		for _, child := range category.Subcategories {
+			if categoryExists(db, child) {
+				continue
+			}
+			_, err := db.Exec("INSERT INTO categories (name, parent_id) VALUES ($1, $2)",
+				child, parentID)
 			if err != nil {
-				return err
+				log.Fatal(err)
 			}
 
-			// Insert child categories with parent IDs
-			for _, child := range category.Subcategories {
-				if categoryExists(db, child.Name) {
-					continue
-				}
-				_, err := db.Exec("INSERT INTO categories (name, parent_id) VALUES (?, ?)",
-					child.Name, parentID)
-				if err != nil {
-					log.Fatal(err)
-				}
-
-			}
 		}
 	}
 
@@ -190,7 +215,8 @@ func handleNoRowsError(err error) error {
 
 func categoryExists(db *sql.DB, name string) bool {
 	var count int
-	err := db.QueryRow("SELECT COUNT(*) FROM categories WHERE name = ?", name).Scan(&count)
+	queryStr := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE name = $1", config.CategoriesTblName)
+	err := db.QueryRow(queryStr, name).Scan(&count)
 	if err != nil {
 		log.Fatal(err)
 	}
