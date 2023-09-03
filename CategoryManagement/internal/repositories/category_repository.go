@@ -121,7 +121,7 @@ func (r *CategoryPostgresRepository) FindAll() ([]Category, error) {
 
 // findSubcategories
 func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category, error) {
-	rows, err := r.db.Query("SELECT id, name FROM categories WHERE parent_id = $1", parentID)
+	rows, err := r.db.Query("SELECT id, name,parent_id FROM categories WHERE parent_id = $1", parentID)
 	if err != nil {
 		return nil, handleNoRowsError(err)
 	}
@@ -130,7 +130,7 @@ func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category
 	subcategories := []Category{}
 	for rows.Next() {
 		category := Category{}
-		err := rows.Scan(&category.ID, &category.Name)
+		err := rows.Scan(&category.ID, &category.Name, &category.ParentID)
 		if err != nil {
 			return nil, err
 		}
@@ -185,6 +185,7 @@ func (r *CategoryPostgresRepository) Seed() error {
 			}
 
 		} else {
+
 			parent, _ := r.FindByName(category.Name)
 			parentID = parent.ID
 		}
