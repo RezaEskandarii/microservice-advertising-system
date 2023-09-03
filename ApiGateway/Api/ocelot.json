@@ -34,6 +34,20 @@
         }
       ]
     },
+	{
+      "UpstreamPathTemplate": "/api/v1/categories",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/v1/categories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5005
+        }
+      ]
+    },
     {
       "UpstreamPathTemplate": "/api/v1/Advertisement",
       "UpstreamHttpMethod": [
