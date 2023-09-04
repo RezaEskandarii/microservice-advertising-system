@@ -50,4 +50,5 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	log.Println("################ Secret seeding was done successfully!!! #######################")
 }
