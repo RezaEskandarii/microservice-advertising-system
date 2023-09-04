@@ -1,4 +1,4 @@
-package main
+package application
 
 import (
 	"category-management/api"
@@ -16,7 +16,7 @@ import (
 type App struct {
 }
 
-func NewApp() *App {
+func New() *App {
 	return &App{}
 }
 

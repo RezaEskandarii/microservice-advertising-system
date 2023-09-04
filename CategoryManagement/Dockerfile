@@ -12,9 +12,9 @@ RUN go mod download
 
 # Copy the source code to the working directory
 COPY . .
-
+COPY categories.json ./
 # Build the Go application
-RUN go build -o main .
+RUN go build ./cmd/main.go 
 
 # Expose port 5005
 EXPOSE 5005

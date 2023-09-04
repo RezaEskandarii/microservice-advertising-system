@@ -1,19 +1,16 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 80
+EXPOSE 5006
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
-COPY *.csproj ./
-
-COPY ./AdvertisingSystem.Api.csproj src/AdvertisingSystem.Api/
-#COPY ../AdvertisingSystem.Api/AdvertisingSystem.Api.csproj src/AdvertisingSystem.Api/
-#COPY ../AdvertisingSystem.Application/AdvertisingSystem.Application.csproj src/AdvertisingSystem.Application/
-#COPY ../AdvertisingSystem.Domain/AdvertisingSystem.Domain.csproj src/AdvertisingSystem.Domain/
-#COPY ../AdvertisingSystem.Infrastructure/AdvertisingSystem.Infrastructure.csproj src/AdvertisingSystem.Infrastructure/
-#COPY ../AdvertisingSystem.Contract/* src/AdvertisingSystem.Contract/
+COPY  src/AdvertisingSystem.Api/AdvertisingSystem.Api.csproj src/AdvertisingSystem.Api/ 
+COPY  src/AdvertisingSystem.Application/AdvertisingSystem.Application.csproj src/AdvertisingSystem.Application/
+COPY  src/AdvertisingSystem.Domain/AdvertisingSystem.Domain.csproj src/AdvertisingSystem.Domain/
+COPY  src/AdvertisingSystem.Infrastructure/AdvertisingSystem.Infrastructure.csproj src/AdvertisingSystem.Infrastructure/
+COPY  src/AdvertisingSystem.Contract/AdvertisingSystem.Contract.csproj src/AdvertisingSystem.Contract/
 RUN dotnet restore "src/AdvertisingSystem.Api/AdvertisingSystem.Api.csproj"
 COPY . .
 WORKDIR "/src/src/AdvertisingSystem.Api"

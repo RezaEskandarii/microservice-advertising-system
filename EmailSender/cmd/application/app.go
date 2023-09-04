@@ -1,4 +1,4 @@
-package main
+package application
 
 import (
 	"category-management/pkg/email_sender"
@@ -12,7 +12,7 @@ import (
 type App struct {
 }
 
-func NewApp() *App {
+func New() *App {
 	return &App{}
 }
 

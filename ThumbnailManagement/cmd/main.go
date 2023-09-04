@@ -8,14 +8,15 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"thumbnail-management/cmd/application"
 )
 
 func main() {
-	app := NewApp()
 
+	app := application.New()
 	portNumber := 5002
-	go registerOnServiceRegistry(portNumber)
 
+	go registerOnServiceRegistry(portNumber)
 	app.Run(portNumber)
 }
 

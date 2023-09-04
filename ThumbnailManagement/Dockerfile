@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN go build -o cmd/main .
+RUN go build ./cmd/main.go 
 
 # Expose port 5002
 EXPOSE 5002

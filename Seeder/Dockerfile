@@ -2,20 +2,20 @@
 FROM golang:latest
 
 # Set the working directory inside the container
-WORKDIR /seederapp
+WORKDIR /app
 
 # Copy the Go module files to the working directory
 COPY go.mod go.sum ./
 
 # Download and install the Go dependencies
-RUN go mod download
+#RUN go mod download
 
 # Copy the source code to the working directory
 COPY . .
-COPY data.json /seederapp/data.json
+COPY data.json ./
 
 # Build the Go application
-RUN go build -o cmmd/main .
+RUN go build ./cmd/main.go 
 
 # Expose port 5002
 EXPOSE 5002

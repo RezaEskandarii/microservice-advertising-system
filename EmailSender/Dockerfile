@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN go build -o main .
+RUN go build ./cmd/main.go 
 
 # Expose port 5007
 EXPOSE 5007

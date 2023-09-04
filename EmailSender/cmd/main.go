@@ -1,6 +1,7 @@
 package main
 
 import (
+	"category-management/cmd/application"
 	env "category-management/pkg/env_manager"
 	"log"
 	"os"
@@ -10,7 +11,7 @@ import (
 )
 
 func main() {
-	app := NewApp()
+	app := application.New()
 	portStr := env.GetFromDotENV("app_port")
 
 	if port, err := strconv.Atoi(portStr); err != nil {

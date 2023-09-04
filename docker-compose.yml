@@ -47,22 +47,22 @@ services:
 
   seeder:
     build:
-      context: .
-      dockerfile: ./Seeder/Dockerfile
+      context: ./Seeder
+      dockerfile: ./Dockerfile
     depends_on:
       - vault
   
   api-gateway:
     build:
-      context: .
-      dockerfile: ./ApiGateway/Dockerfile
+      context: ./ApiGateway
+      dockerfile: ./Dockerfile
     depends_on:
       - seeder
 
   identity-management:
     build:
-      context: .
-      dockerfile: ./IdentityManagement/Dockerfile
+      context: ./IdentityManagement
+      dockerfile: ./Dockerfile
     depends_on:
       - postgres
       - vault
@@ -71,8 +71,8 @@ services:
 
   advertisement-management:
     build:
-      context: .
-      dockerfile: ./AdvertisementManagement/Dockerfile
+      context: ./AdvertisementManagement
+      dockerfile: ./Dockerfile
     depends_on:
       - postgres
       - vault
@@ -81,8 +81,8 @@ services:
   
   email-sender:
     build:
-      context: .
-      dockerfile: ./EmailSender/Dockerfile
+      context: ./EmailSender
+      dockerfile: ./Dockerfile
     depends_on:
       - vault
       - consul
@@ -95,8 +95,8 @@ services:
 
   thumbnail-management:
     build:
-      context: .
-      dockerfile: ./ThumbnailManagement/Dockerfile
+      context: ./ThumbnailManagement
+      dockerfile: ./Dockerfile
     depends_on:
       - minio
       - postgres
@@ -110,8 +110,8 @@ services:
   
   category-management:
     build:
-      context: .
-      dockerfile: ./CategoryManagement/Dockerfile
+      context: ./CategoryManagement
+      dockerfile: ./Dockerfile
     depends_on:
       - postgres
       - vault
