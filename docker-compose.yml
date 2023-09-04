@@ -7,7 +7,9 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
-
+    networks:
+      - bridgenet
+  
   rabbitmq:
     image: rabbitmq:management
     ports:
@@ -16,7 +18,9 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-
+    networks:
+      - bridgenet
+  
   vault:
     image: hashicorp/vault:latest
     cap_add:
@@ -25,18 +29,25 @@ services:
       VAULT_DEV_ROOT_TOKEN_ID: 58ec2667-a9f4-455b-b89b-914fe565b7ea
     ports:
       - "8200:8200"
+    networks:
+      - bridgenet
 
   consul:
     image: hashicorp/consul:latest
     command: "agent -dev"
     ports:
       - "8500:8500"
+    networks:
+      - bridgenet
+  
   minio:
     image: minio/minio
     ports:
       - '9000:9000'
     #    volumes:
     #      - minio-data:/data
+    networks:
+      - bridgenet
     environment:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
@@ -44,13 +55,16 @@ services:
   
   redis:
     image: redis:latest
-
+    networks:
+      - bridgenet
   seeder:
     build:
       context: ./Seeder
       dockerfile: ./Dockerfile
     depends_on:
       - vault
+    networks:
+      - bridgenet
   
   api-gateway:
     build:
@@ -58,7 +72,9 @@ services:
       dockerfile: ./Dockerfile
     depends_on:
       - seeder
-
+    networks:
+      - bridgenet
+  
   identity-management:
     build:
       context: ./IdentityManagement
@@ -68,7 +84,9 @@ services:
       - vault
       - consul
       - seeder
-
+    networks:
+      - bridgenet
+  
   advertisement-management:
     build:
       context: ./AdvertisementManagement
@@ -78,6 +96,8 @@ services:
       - vault
       - consul
       - seeder
+    networks:
+      - bridgenet
   
   email-sender:
     build:
@@ -92,7 +112,9 @@ services:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
       vault_address: http://127.0.0.1:8200
       app_port: 5007
-
+    networks:
+      - bridgenet
+  
   thumbnail-management:
     build:
       context: ./ThumbnailManagement
@@ -107,6 +129,8 @@ services:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
       vault_address: http://127.0.0.1:8200
       port_number: 5002
+    networks:
+      - bridgenet
   
   category-management:
     build:
@@ -120,9 +144,9 @@ services:
     environment:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
       vault_address: http://127.0.0.1:8200
+    networks:
+      - bridgenet
 
-################################################
 networks:
-  default:
-    name: bridge
-    external: true
+  bridgenet:
+    driver: bridge
