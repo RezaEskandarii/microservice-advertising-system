@@ -2,7 +2,7 @@
 FROM golang:latest
 
 # Set the working directory inside the container
-WORKDIR /thumbnailmanagementapp
+WORKDIR /seederapp
 
 # Copy the Go module files to the working directory
 COPY go.mod go.sum ./
@@ -12,9 +12,10 @@ RUN go mod download
 
 # Copy the source code to the working directory
 COPY . .
+COPY data.json /seederapp/data.json
 
 # Build the Go application
-RUN go build -o cmd/main .
+RUN go build -o cmmd/main .
 
 # Expose port 5002
 EXPOSE 5002

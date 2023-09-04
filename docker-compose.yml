@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_PASSWORD: 123456
 
   rabbitmq:
     image: rabbitmq:management
@@ -45,28 +45,39 @@ services:
   redis:
     image: redis:latest
 
+  seeder:
+    build:
+      context: .
+      dockerfile: ./Seeder/Dockerfile
+    depends_on:
+      - vault
+  
   api-gateway:
     build:
       context: .
-      dockerfile: ./ApiGateway/Api/Dockerfile
+      dockerfile: ./ApiGateway/Dockerfile
+    depends_on:
+      - seeder
 
   identity-management:
     build:
       context: .
-      dockerfile: ./IdentityManagement/src/AdvertisingSystem.Identity.Api/Dockerfile
+      dockerfile: ./IdentityManagement/Dockerfile
     depends_on:
       - postgres
       - vault
       - consul
+      - seeder
 
   advertisement-management:
     build:
       context: .
-      dockerfile: ./AdvertisementManagement/src/AdvertisingSystem.Api/Dockerfile
+      dockerfile: ./AdvertisementManagement/Dockerfile
     depends_on:
       - postgres
       - vault
       - consul
+      - seeder
   
   email-sender:
     build:
@@ -76,6 +87,11 @@ services:
       - vault
       - consul
       - rabbitmq
+      - seeder
+    environment:
+      vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
+      vault_address: http://127.0.0.1:8200
+      app_port: 5007
 
   thumbnail-management:
     build:
@@ -86,6 +102,11 @@ services:
       - postgres
       - vault
       - consul
+      - seeder
+    environment:
+      vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
+      vault_address: http://127.0.0.1:8200
+      port_number: 5002
   
   category-management:
     build:
@@ -95,9 +116,13 @@ services:
       - postgres
       - vault
       - consul
+      - seeder
+    environment:
+      vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
+      vault_address: http://127.0.0.1:8200
 
 ################################################
 networks:
   default:
-    external:
-      name: bridge
+    name: bridge
+    external: true
