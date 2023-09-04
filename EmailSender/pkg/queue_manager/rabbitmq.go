@@ -115,7 +115,8 @@ func (q *QueueManager) sendEmail(msg amqp.Delivery) {
 	// Check if the event is "OnAdvertisementAdded"
 	if msg.RoutingKey == "ad_events.OnAdvertisementAdded" {
 
-		var ad = toAdvertisement(body)
+		var ad = fetchAdvertisementFromMessageBody(body)
+
 		if ad != nil {
 			request := email_sender.SendEmailRequest{
 				Subject: "Your ad has been successfully registered.",
@@ -131,8 +132,8 @@ func (q *QueueManager) sendEmail(msg amqp.Delivery) {
 	}
 }
 
-// toAdvertisement convert given message into advertisement struct
-func toAdvertisement(jsonStr string) *models.Advertisement {
+// fetchAdvertisementFromMessageBody convert given message into advertisement struct
+func fetchAdvertisementFromMessageBody(jsonStr string) *models.Advertisement {
 	var result models.Advertisement
 
 	unquotedStr, err := strconv.Unquote(jsonStr)
