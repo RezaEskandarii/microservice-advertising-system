@@ -15,7 +15,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity-management.api",
+          "Host": "127.0.0.1",
           "Port": 5004
         }
       ]
@@ -29,7 +29,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity-management.api",
+          "Host": "127.0.0.1",
           "Port": 5004
         }
       ]
@@ -43,7 +43,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "category-management.api",
+          "Host": "localhost",
           "Port": 5005
         }
       ]
@@ -57,7 +57,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "advertisement-management.api",
+          "Host": "127.0.0.1",
           "Port": 5006
         }
       ],
@@ -77,7 +77,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "advertisement-management.api",
+          "Host": "127.0.0.1",
           "Port": 5006
         }
       ]
@@ -91,7 +91,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "advertisement-management.api",
+          "Host": "127.0.0.1",
           "Port": 5006
         }
       ],
@@ -111,7 +111,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "advertisement-management.api",
+          "Host": "127.0.0.1",
           "Port": 5006
         }
       ],

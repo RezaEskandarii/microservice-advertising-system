@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
     networks:
-      - bridgenet
+      - internal
   
   rabbitmq:
     image: rabbitmq:management
@@ -19,26 +19,24 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     networks:
-      - bridgenet
+      - internal
   
   vault:
     image: hashicorp/vault:latest
-    cap_add:
-      - IPC_LOCK
-    environment:
-      VAULT_DEV_ROOT_TOKEN_ID: 58ec2667-a9f4-455b-b89b-914fe565b7ea
     ports:
       - "8200:8200"
     networks:
-      - bridgenet
-
+      - internal
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: 58ec2667-a9f4-455b-b89b-914fe565b7ea
+  
   consul:
     image: hashicorp/consul:latest
     command: "agent -dev"
     ports:
       - "8500:8500"
     networks:
-      - bridgenet
+      - internal
   
   minio:
     image: minio/minio
@@ -47,7 +45,7 @@ services:
     #    volumes:
     #      - minio-data:/data
     networks:
-      - bridgenet
+      - internal
     environment:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
@@ -56,26 +54,20 @@ services:
   redis:
     image: redis:latest
     networks:
-      - bridgenet
-  seeder:
+      - internal
+  secrets-seeder-api:
     build:
       context: ./Seeder
       dockerfile: ./Dockerfile
+    environment:
+      vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
+      vault_address: http://vault:8200
+    networks:
+      - internal
     depends_on:
       - vault
-    networks:
-      - bridgenet
   
-  api-gateway:
-    build:
-      context: ./ApiGateway
-      dockerfile: ./Dockerfile
-    depends_on:
-      - seeder
-    networks:
-      - bridgenet
-  
-  identity-management:
+  identity-management.api:
     build:
       context: ./IdentityManagement
       dockerfile: ./Dockerfile
@@ -83,11 +75,18 @@ services:
       - postgres
       - vault
       - consul
-      - seeder
+      - secrets-seeder-api
     networks:
-      - bridgenet
+      - internal
+    environment:
+      - Kestrel__Endpoints__Http__Url=http://0.0.0.0:5004
+      - Logging__LogLevel__Default=Information
+      - Logging__LogLevel__Microsoft.AspNetCore=Warning
+      - Vault__Address=http://vault:8200
+      - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
+      - AllowedHosts=*
   
-  advertisement-management:
+  advertisement-management.api:
     build:
       context: ./AdvertisementManagement
       dockerfile: ./Dockerfile
@@ -95,9 +94,16 @@ services:
       - postgres
       - vault
       - consul
-      - seeder
+      - secrets-seeder-api
     networks:
-      - bridgenet
+      - internal
+    environment:
+      - Logging__LogLevel__Default=Information
+      - Logging__LogLevel__Microsoft.AspNetCore=Warning
+      - AllowedHosts=*
+      - Kestrel__Endpoints__Http__Url=http://0.0.0.0:5006
+      - Vault__Address=http://vault:8200
+      - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
   
   email-sender:
     build:
@@ -107,13 +113,13 @@ services:
       - vault
       - consul
       - rabbitmq
-      - seeder
+      - secrets-seeder-api
     environment:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
-      vault_address: http://127.0.0.1:8200
+      vault_address: http://vault:8200
       app_port: 5007
     networks:
-      - bridgenet
+      - internal
   
   thumbnail-management:
     build:
@@ -124,15 +130,16 @@ services:
       - postgres
       - vault
       - consul
-      - seeder
+      - secrets-seeder-api
     environment:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
-      vault_address: http://127.0.0.1:8200
+      vault_address: http://vault:8200
       port_number: 5002
+      host_name: thumbnail-management
     networks:
-      - bridgenet
+      - internal
   
-  category-management:
+  category-management.api:
     build:
       context: ./CategoryManagement
       dockerfile: ./Dockerfile
@@ -140,13 +147,34 @@ services:
       - postgres
       - vault
       - consul
-      - seeder
+      - secrets-seeder-api
     environment:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
-      vault_address: http://127.0.0.1:8200
+      vault_address: http://vault:8200
     networks:
-      - bridgenet
+      - internal
+  
+  api-gateway.app.api:
+    build:
+      context: ./ApiGateway
+      dockerfile: ./Dockerfile
+    ports:
+      - "5009:5009"
+    depends_on:
+      - vault
+      - secrets-seeder-api
+      - category-management.api
+    networks:
+      - internal
+    restart: always
+    environment:
+      - Logging__LogLevel__Default=Information
+      - Logging__LogLevel__Microsoft.AspNetCore=Warning
+      - AllowedHosts=*
+      - Kestrel__Endpoints__http__Url=http://0.0.0.0:5009
+      - Vault__Address=http://vault:8200
+      - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
 
 networks:
-  bridgenet:
+  internal:
     driver: bridge

@@ -17,8 +17,4 @@
     <PackageReference Include="VaultSharp" Version="1.13.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

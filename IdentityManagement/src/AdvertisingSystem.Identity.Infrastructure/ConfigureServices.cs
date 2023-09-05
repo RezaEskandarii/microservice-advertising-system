@@ -31,6 +31,21 @@ public static class ConfigureServices
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
 
+        MigrateAsync(services).Wait();
+
         return services;
+    }
+
+
+    private static async Task MigrateAsync(IServiceCollection serviceCollection)
+    {
+        var provider = serviceCollection.BuildServiceProvider();
+        var context = provider.GetRequiredService<ApplicationDbContext>();
+
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
+        {
+            await context.Database.MigrateAsync();
+        }
     }
 }

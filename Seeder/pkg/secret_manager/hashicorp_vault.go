@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	vault "github.com/hashicorp/vault/api"
+	"log"
+	"thumbnail-management/pkg/env_manager"
 	"time"
 )
 
@@ -19,8 +21,9 @@ type SecretManager struct {
 func New() *SecretManager {
 
 	config := vault.DefaultConfig()
-	config.Address = "http://localhost:8200"
+	config.Address = env_manager.GetFromDotENV("vault_address")
 	client, err := vault.NewClient(config)
+	log.Printf("######### connteted to vault %s #########", config.Address)
 
 	if err != nil {
 		///	panic(err.Error())

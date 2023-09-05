@@ -1,10 +1,10 @@
 {
-  "IdentityDBConnectionString": "Server=127.0.0.1;Port=5432;Database=IdentityManagement;User Id=postgres;Password=123456",
-  "RabbitMqSecret": "amqp://guest:guest@localhost:5672/",
-  "AdvertisementDBConnectionString": "Server=127.0.0.1;Port=5432;Database=AdvertisingDB;User Id=postgres;Password=123456",
-  "advertisement_thumbnails_base_db": "user=postgres password=123456 host=127.0.0.1 port=5432 sslmode=disable",
-  "advertisement_thumbnails_db": "user=postgres password=123456 dbname=advertisement_thumbnails_db host=127.0.0.1 port=5432 sslmode=disable",
+  "IdentityDBConnectionString": "Server=postgres;Port=5432;Database=IdentityManagement;User Id=postgres;Password=123456",
+  "RabbitMqSecret": "amqp://guest:guest@rabbitmq:5672/",
+  "AdvertisementDBConnectionString": "Server=postgres;Port=5432;Database=AdvertisingDB;User Id=postgres;Password=123456",
+  "advertisement_thumbnails_base_db": "user=postgres password=123456 host=postgres port=5432 sslmode=disable",
+  "advertisement_thumbnails_db": "user=postgres password=123456 dbname=advertisement_thumbnails_db host=postgres port=5432 sslmode=disable",
   "jwt-secret-key": "TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM=",
-  "CategoriesDBFullConnection": "user=postgres password=123456 host=127.0.0.1 port=5432 dbname=category_management sslmode=disable",
-  "CategoriesDBBaseConnection": "user=postgres password=123456 host=127.0.0.1 port=5432 sslmode=disable"
+  "CategoriesDBFullConnection": "user=postgres password=123456 host=postgres port=5432 dbname=category_management sslmode=disable",
+  "CategoriesDBBaseConnection": "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
 }

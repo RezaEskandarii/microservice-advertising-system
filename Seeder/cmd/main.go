@@ -7,30 +7,25 @@ import (
 	"log"
 	"os"
 	"thumbnail-management/pkg/secret_manager"
-	"time"
 )
 
 func main() {
 
 	defer func() {
 		if r := recover(); r != nil {
-			log.Fatal(r)
+			printError(r)
 			return
 		}
 	}()
 
-	log.Println("============= seed operation starts after 10 seconds ===========")
-	delay := 10 * time.Second
-
-	// Wait for the specified duration
-	<-time.After(delay)
+	log.Println("============= start to seeding secrets ===========")
 
 	s := secret_manager.New()
 	ctx := context.Background()
 
 	fileData, err := os.ReadFile("./data.json")
 	if err != nil {
-		log.Fatal(err.Error())
+		printError(err.Error())
 		return
 	}
 
@@ -40,15 +35,22 @@ func main() {
 	// Unmarshal JSON data into the map
 	err = json.Unmarshal(fileData, &secretData)
 	if err != nil {
-		log.Fatal(err.Error())
+		printError(err.Error())
 		return
 	}
 
 	err = s.Put(ctx, secretData, 10)
 
 	if err != nil && err.Error() != "" {
-		log.Fatal(err.Error())
+		printError(err.Error())
+		return
 	}
 
 	log.Println("################ Secret seeding was done successfully!!! #######################")
+}
+
+func printError(err interface{}) {
+	log.Println("#################################################################")
+	log.Printf("########################## %s ########################", err)
+	log.Println("#################################################################")
 }

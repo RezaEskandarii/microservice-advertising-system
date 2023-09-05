@@ -17,7 +17,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ISecretManager, SecretManager>();
 
+#if DEBUG
+builder.Configuration.AddJsonFile("ocelot.dev.json", optional: false, reloadOnChange: true);
+#else
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+#endif
+
 builder.Services.AddOcelot(builder.Configuration);
 
 var secretManager = builder.Services.BuildServiceProvider().GetRequiredService<ISecretManager>();
