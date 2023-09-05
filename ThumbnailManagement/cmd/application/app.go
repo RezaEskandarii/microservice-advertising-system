@@ -16,7 +16,7 @@ func New() *App {
 	return &App{}
 }
 
-func (a App) Run(portNumber int) {
+func (a App) Run(portNumber int64) {
 
 	secretManager := secret_manager.New()
 	dbName := "advertisement_thumbnails"

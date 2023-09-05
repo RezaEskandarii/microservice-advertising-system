@@ -33,6 +33,8 @@ services:
   consul:
     image: hashicorp/consul:latest
     command: "agent -dev"
+    environment:
+      - CONSUL_HTTP_ADDR=consul:8500
     ports:
       - "8500:8500"
     networks:

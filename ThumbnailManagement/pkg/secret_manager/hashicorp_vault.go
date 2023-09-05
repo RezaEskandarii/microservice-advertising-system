@@ -20,14 +20,14 @@ type SecretManager struct {
 func New() *SecretManager {
 
 	config := vault.DefaultConfig()
-	config.Address = env.GetFromDotENV("vault_address")
+	config.Address = env.LoadEnv("vault_address")
 	client, err := vault.NewClient(config)
 
 	if err != nil {
 		///	panic(err.Error())
 	}
 
-	client.SetToken(env.GetFromDotENV("vault_token"))
+	client.SetToken(env.LoadEnv("vault_token"))
 	return &SecretManager{
 		client: client,
 	}

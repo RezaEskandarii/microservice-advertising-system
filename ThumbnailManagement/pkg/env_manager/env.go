@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func GetFromDotENV(key string) string {
+func LoadEnv(key string) string {
 	err := godotenv.Load()
 	if err != nil {
 		return ""
