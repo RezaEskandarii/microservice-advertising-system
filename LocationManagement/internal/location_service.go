@@ -87,7 +87,7 @@ func (s *LocationServiceImp) CreateTable() (int64, error) {
 		CREATE TABLE IF NOT EXISTS locations(
 			id SERIAL PRIMARY KEY,
 			country_id INT NOT NULL,
-			city VARCHAR(255) NOT NULL,
+			name VARCHAR(255) NOT NULL,
 			pos POINT
 		);
 
@@ -151,15 +151,15 @@ func (s *LocationServiceImp) Seed() error {
 		for _, city := range country.Cities {
 			// Check if the city already exists for the country
 			var cityID int
-			err := db.QueryRow("SELECT id FROM cities WHERE name = $1 AND country_id = $2", city.Name, countryID).Scan(&cityID)
+			err := db.QueryRow("SELECT id FROM locations WHERE name = $1 AND country_id = $2", city.Name, countryID).Scan(&cityID)
 			if err != nil && err != sql.ErrNoRows {
 				log.Fatal(err)
 			}
 
 			if cityID == 0 {
 				// Insert the city if it doesn't exist and return its ID
-
-				err = db.QueryRow("INSERT INTO cities(name, country_id,pos) VALUES($1, $2) RETURNING id", city.Name, countryID).Scan(&cityID)
+				err = db.QueryRow("INSERT INTO locations (name, country_id,pos) VALUES($1, $2, POINT($3, $4) ) RETURNING id",
+					city.Name, countryID, city.Latitude, city.Longitude).Scan(&cityID)
 				if err != nil {
 					log.Fatal(err)
 				}
