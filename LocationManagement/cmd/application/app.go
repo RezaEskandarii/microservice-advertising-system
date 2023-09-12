@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func Run(portNumber int) error {
+func Run(portNumber string) error {
 
 	sdn := env_manager.GetFromDotENV("location_management_full_sdn")
 
@@ -35,8 +35,8 @@ func Run(portNumber int) error {
 	locationHandler := handlers.LocationHandler{}
 	locationHandler.RegisterRoutes(locationService)
 
-	log.Printf("application started at: %d", portNumber)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", portNumber), nil))
+	log.Printf("application started at: %s", portNumber)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", portNumber), nil))
 
 	return nil
 }

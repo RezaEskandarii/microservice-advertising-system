@@ -23,7 +23,7 @@ func (h *LocationHandler) findAllHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	// Convert locations to JSON and write response
-	response, err := json.Marshal(locations)
+	response, err := json.Marshal(&locations)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

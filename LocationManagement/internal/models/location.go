@@ -22,4 +22,5 @@ type GetCountry struct {
 type GetCity struct {
 	LocationId int    `json:"location_id"`
 	CityName   string `json:"city_name"`
+	Pos        string `json:"position"`
 }

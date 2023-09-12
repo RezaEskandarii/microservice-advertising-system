@@ -14,7 +14,7 @@ import (
 
 type LocationService interface {
 	Seed() error
-	GetAll() (map[models.GetCountry][]models.GetCity, error)
+	GetAll() (map[string][]models.GetCity, error)
 }
 
 type LocationServiceImp struct {
@@ -145,8 +145,6 @@ func (s *LocationServiceImp) Seed() error {
 			}
 		}
 
-		fmt.Printf("Country ID: %d\n", countryID)
-
 		// Insert cities associated with the country, checking for duplicates
 		for _, city := range country.Cities {
 			// Check if the city already exists for the country
@@ -163,21 +161,20 @@ func (s *LocationServiceImp) Seed() error {
 				if err != nil {
 					log.Fatal(err)
 				}
+				fmt.Printf("City ID for %s: %d\n", city.Name, cityID)
 			}
-
-			fmt.Printf("City ID for %s: %d\n", city.Name, cityID)
 
 		}
 	}
 	return nil
 }
 
-func (s *LocationServiceImp) GetAll() (map[models.GetCountry][]models.GetCity, error) {
+func (s *LocationServiceImp) GetAll() (map[string][]models.GetCity, error) {
 
 	db := s.db
-	data := make(map[models.GetCountry][]models.GetCity)
+	data := make(map[string][]models.GetCity)
 
-	rows, err := db.Query(`SELECT c."name" as CountryName, l."id" as LocationId, l."name" as CityName FROM "countries" c join "locations" l on c."id" = l."country_id"`)
+	rows, err := db.Query(`SELECT c."name" as CountryName, l."id" as LocationId, l."name" as CityName, l."pos" as pos FROM "countries" c join "locations" l on c."id" = l."country_id"`)
 
 	if err != nil {
 		log.Fatal(err)
@@ -189,13 +186,13 @@ func (s *LocationServiceImp) GetAll() (map[models.GetCountry][]models.GetCity, e
 		var country models.GetCountry
 		var city models.GetCity
 
-		err := rows.Scan(&country.CountryName, &city.LocationId, &city.CityName)
+		err := rows.Scan(&country.CountryName, &city.LocationId, &city.CityName, &city.Pos)
 		if err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
 
-		data[country] = append(data[country], city)
+		data[country.CountryName] = append(data[country.CountryName], city)
 	}
 
 	if err := rows.Err(); err != nil {
