@@ -14,7 +14,7 @@ import (
 
 type LocationService interface {
 	Seed() error
-	GetAll() ([]models.Location, error)
+	GetAll() (map[models.GetCountry][]models.GetCity, error)
 }
 
 type LocationServiceImp struct {
@@ -170,4 +170,37 @@ func (s *LocationServiceImp) Seed() error {
 		}
 	}
 	return nil
+}
+
+func (s *LocationServiceImp) GetAll() (map[models.GetCountry][]models.GetCity, error) {
+
+	db := s.db
+	data := make(map[models.GetCountry][]models.GetCity)
+
+	rows, err := db.Query(`SELECT c."name" as CountryName, l."id" as LocationId, l."name" as CityName FROM "countries" c join "locations" l on c."id" = l."country_id"`)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var country models.GetCountry
+		var city models.GetCity
+
+		err := rows.Scan(&country.CountryName, &city.LocationId, &city.CityName)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+
+		data[country] = append(data[country], city)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return data, nil
 }

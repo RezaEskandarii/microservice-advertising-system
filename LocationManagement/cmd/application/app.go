@@ -3,6 +3,7 @@ package application
 import (
 	"database/sql"
 	"fmt"
+	"location-management/api/handlers"
 	"location-management/internal"
 	"location-management/pkg/env_manager"
 	"log"
@@ -31,6 +32,9 @@ func Run(portNumber int) error {
 	locationService.Seed()
 
 	// Start the HTTP server
+	locationHandler := handlers.LocationHandler{}
+	locationHandler.RegisterRoutes(locationService)
+
 	log.Printf("application started at: %d", portNumber)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", portNumber), nil))
 

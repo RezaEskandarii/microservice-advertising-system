@@ -14,3 +14,12 @@ type Country struct {
 type Location struct {
 	Countries []Country `json:"countries"`
 }
+
+type GetCountry struct {
+	CountryName string `json:"country_name"`
+}
+
+type GetCity struct {
+	LocationId int    `json:"location_id"`
+	CityName   string `json:"city_name"`
+}
