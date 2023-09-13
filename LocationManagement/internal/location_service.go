@@ -59,30 +59,48 @@ func (s *LocationServiceImp) CreateDB() error {
 	return nil
 }
 
-func (s *LocationServiceImp) CreateTable() (int64, error) {
-
+func (s *LocationServiceImp) CreateTables() error {
 	sdn := env_manager.GetFromDotENV("location_management_full_sdn")
 
-	// Connect to db
 	db, err := sql.Open("postgres", sdn)
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
+	err = createCountriesTable(db)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	err = createLocationsTable(db)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	return nil
+}
+
+func createCountriesTable(db *sql.DB) error {
 	createCountriesTableQuery := `
 		CREATE TABLE IF NOT EXISTS countries(
 			id SERIAL PRIMARY KEY,
 			name VARCHAR(255) NOT NULL
 		);
-
 	`
 
-	r, err := db.Exec(createCountriesTableQuery)
+	_, err := db.Exec(createCountriesTableQuery)
 	if err != nil {
-		log.Println(r)
-		return 0, err
+		log.Println(err.Error())
+		return err
 	}
 
+	return nil
+}
+
+func createLocationsTable(db *sql.DB) error {
 	createLocationsTableQuery := `
 		CREATE TABLE IF NOT EXISTS locations(
 			id SERIAL PRIMARY KEY,
@@ -90,83 +108,105 @@ func (s *LocationServiceImp) CreateTable() (int64, error) {
 			name VARCHAR(255) NOT NULL,
 			pos POINT
 		);
-
 	`
-	result, err := db.Exec(createLocationsTableQuery)
+
+	_, err := db.Exec(createLocationsTableQuery)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	return result.RowsAffected()
+	return nil
 }
 
 func (s *LocationServiceImp) Seed() error {
-
 	file, err := os.Open("locations.json")
 	if err != nil {
 		log.Println("Error opening file:", err)
 		return err
 	}
 	defer file.Close()
-	db := s.db
 
-	// Read the JSON data from the file
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
 		log.Println("Error reading file:", err)
 		return err
 	}
 
-	// Create a location struct to hold the data
 	var location models.Location
-
-	// Unmarshal the JSON data into the struct
-	err = json.Unmarshal([]byte(data), &location)
+	err = json.Unmarshal(data, &location)
 	if err != nil {
 		log.Println("Error:", err)
 		return err
 	}
 
-	// Access and print the data
+	db := s.db
 	for _, country := range location.Countries {
-
-		// Check if the country already exists
-		var countryID int
-		err = db.QueryRow("SELECT id FROM countries WHERE name = $1", country.Name).Scan(&countryID)
-		if err != nil && err != sql.ErrNoRows {
+		countryID, err := getCountryID(db, country.Name)
+		if err != nil {
 			log.Fatal(err)
 		}
 
 		if countryID == 0 {
-			// Insert the country if it doesn't exist and return its ID
-			err = db.QueryRow("INSERT INTO countries(name) VALUES($1) RETURNING id", country.Name).Scan(&countryID)
+			countryID, err = insertCountry(db, country.Name)
 			if err != nil {
 				log.Fatal(err)
 			}
 		}
 
-		// Insert cities associated with the country, checking for duplicates
 		for _, city := range country.Cities {
-			// Check if the city already exists for the country
-			var cityID int
-			err := db.QueryRow("SELECT id FROM locations WHERE name = $1 AND country_id = $2", city.Name, countryID).Scan(&cityID)
-			if err != nil && err != sql.ErrNoRows {
+			cityID, err := getCityID(db, city.Name, countryID)
+			if err != nil {
 				log.Fatal(err)
 			}
 
 			if cityID == 0 {
-				// Insert the city if it doesn't exist and return its ID
-				err = db.QueryRow("INSERT INTO locations (name, country_id,pos) VALUES($1, $2, POINT($3, $4) ) RETURNING id",
-					city.Name, countryID, city.Latitude, city.Longitude).Scan(&cityID)
+				cityID, err = insertCity(db, city.Name, countryID, city.Latitude, city.Longitude)
 				if err != nil {
 					log.Fatal(err)
 				}
 				fmt.Printf("City ID for %s: %d\n", city.Name, cityID)
 			}
-
 		}
 	}
+
 	return nil
+}
+
+func getCountryID(db *sql.DB, countryName string) (int, error) {
+	var countryID int
+	err := db.QueryRow("SELECT id FROM countries WHERE name = $1", countryName).Scan(&countryID)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
+	return countryID, nil
+}
+
+func insertCountry(db *sql.DB, countryName string) (int, error) {
+	var countryID int
+	err := db.QueryRow("INSERT INTO countries(name) VALUES($1) RETURNING id", countryName).Scan(&countryID)
+	if err != nil {
+		return 0, err
+	}
+	return countryID, nil
+}
+
+func getCityID(db *sql.DB, cityName string, countryID int) (int, error) {
+	var cityID int
+	err := db.QueryRow("SELECT id FROM locations WHERE name = $1 AND country_id = $2", cityName, countryID).Scan(&cityID)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
+	return cityID, nil
+}
+
+func insertCity(db *sql.DB, cityName string, countryID int, latitude float64, longitude float64) (int, error) {
+	var cityID int
+	err := db.QueryRow("INSERT INTO locations (name, country_id, pos) VALUES($1, $2, POINT($3, $4) ) RETURNING id",
+		cityName, countryID, latitude, longitude).Scan(&cityID)
+	if err != nil {
+		return 0, err
+	}
+	return cityID, nil
 }
 
 func (s *LocationServiceImp) GetAll() (map[string][]models.GetCity, error) {
@@ -187,7 +227,7 @@ func (s *LocationServiceImp) GetAll() (map[string][]models.GetCity, error) {
 		var city models.GetCity
 
 		err := rows.Scan(&country.CountryName, &city.LocationId, &city.CityName, &city.Pos)
-		if err != nil {
+		if err != nil && err != sql.ErrNoRows {
 			log.Fatal(err)
 			return nil, err
 		}
@@ -195,7 +235,7 @@ func (s *LocationServiceImp) GetAll() (map[string][]models.GetCity, error) {
 		data[country.CountryName] = append(data[country.CountryName], city)
 	}
 
-	if err := rows.Err(); err != nil {
+	if err := rows.Err(); err != nil && rows.Err() != sql.ErrNoRows {
 		log.Fatal(err)
 	}
 

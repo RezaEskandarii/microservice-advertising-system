@@ -25,7 +25,8 @@ func Run(portNumber string) error {
 	if err := locationService.CreateDB(); err != nil {
 		return err
 	}
-	if _, err := locationService.CreateTable(); err != nil {
+
+	if err := locationService.CreateTables(); err != nil {
 		return err
 	}
 
