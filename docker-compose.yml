@@ -155,6 +155,20 @@ services:
       vault_address: http://vault:8200
     networks:
       - internal
+
+  location-management.api:
+    build:
+      context: ./LocationManagement
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres
+      - vault
+    environment:
+      location_management_base_sdn: "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
+      location_management_full_sdn: "user=postgres password=123456 host=postgres port=5432 dbname=location_management sslmode=disable"
+      location_app_port: 5010
+    networks:
+      - internal
   
   api-gateway.app.api:
     build:
