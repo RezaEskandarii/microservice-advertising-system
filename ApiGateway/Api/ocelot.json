@@ -121,6 +121,20 @@
       "AddHeadersToRequest": {
         "Authorization": "Bearer {token}"
       }
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/locations",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/v1/locations",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "location-management.api",
+          "Port": 5010
+        }
+      ]
     }
   ]
 }

@@ -13,6 +13,8 @@ RUN go mod download
 # Copy the source code to the working directory
 COPY . .
 
+COPY locations.json ./
+
 # Build the Go application
 RUN go build ./cmd/main.go 
 

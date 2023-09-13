@@ -121,6 +121,26 @@
       "AddHeadersToRequest": {
         "Authorization": "Bearer {token}"
       }
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/Advertisement/{id}",
+      "UpstreamHttpMethod": [
+        "PUT"
+      ],
+      "DownstreamPathTemplate": "/api/v1/Advertisement/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5006
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "AddHeadersToRequest": {
+        "Authorization": "Bearer {token}"
+      }
     }
   ]
 }
