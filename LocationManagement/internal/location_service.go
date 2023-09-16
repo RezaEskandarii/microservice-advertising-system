@@ -119,12 +119,7 @@ func createLocationsTable(db *sql.DB) error {
 }
 
 func (s *LocationServiceImp) Seed() error {
-	file, err := os.Open("locations.json")
-	if err != nil {
-		log.Println("Error opening file:", err)
-		return err
-	}
-	defer file.Close()
+	file, err := readLocationsJson()
 
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
@@ -153,23 +148,38 @@ func (s *LocationServiceImp) Seed() error {
 			}
 		}
 
-		for _, city := range country.Cities {
-			cityID, err := getCityID(db, city.Name, countryID)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			if cityID == 0 {
-				cityID, err = insertCity(db, city.Name, countryID, city.Latitude, city.Longitude)
-				if err != nil {
-					log.Fatal(err)
-				}
-				fmt.Printf("City ID for %s: %d\n", city.Name, cityID)
-			}
-		}
+		s.insertCityFromCountry(country, db, countryID)
 	}
 
 	return nil
+}
+
+func (s *LocationServiceImp) insertCityFromCountry(country models.Country, db *sql.DB, countryID int) {
+	for _, city := range country.Cities {
+		cityID, err := getCityID(db, city.Name, countryID)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if cityID == 0 {
+			cityID, err = insertCity(db, city.Name, countryID, city.Latitude, city.Longitude)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("City ID for %s: %d\n", city.Name, cityID)
+		}
+	}
+}
+
+func readLocationsJson() (*os.File, error) {
+	file, err := os.Open("locations.json")
+	if err != nil {
+		log.Println("Error opening file:", err)
+		return nil, err
+	}
+	defer file.Close()
+
+	return file, nil
 }
 
 func getCountryID(db *sql.DB, countryName string) (int, error) {
