@@ -160,8 +160,16 @@ func (r *CategoryPostgresRepository) Seed() error {
 	byteValue, _ := io.ReadAll(jsonFile)
 
 	type categoryRequest struct {
-		Name          string   `json:"name"`
-		Subcategories []string `json:"subcategories"`
+		Name string `json:"name"`
+
+		Subcategories []struct {
+			Name       string `json:"name"`
+			Properties []struct {
+				Name     string      `json:"name"`
+				DataType string      `json:"data_type"`
+				Value    interface{} `json:"value"`
+			} `json:"properties"`
+		}
 	}
 
 	var categories struct {
@@ -192,10 +200,15 @@ func (r *CategoryPostgresRepository) Seed() error {
 
 		// Insert child categories with parent IDs
 		for _, child := range category.Subcategories {
-			if categoryExists(db, child) {
+			if categoryExists(db, child.Name) {
 				continue
 			}
-			_, err := db.Exec("INSERT INTO categories (name, parent_id) VALUES ($1, $2)", child, parentID)
+			properties := child.Properties
+			propertiesStr, err := json.Marshal(properties)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			_, err = db.Exec("INSERT INTO categories (name, parent_id,properties) VALUES ($1, $2, $3)", child.Name, parentID, propertiesStr)
 			if err != nil {
 				return err
 			}

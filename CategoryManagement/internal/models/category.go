@@ -5,4 +5,5 @@ type Category struct {
 	Name          string     `json:"name"`
 	ParentID      int        `json:"parent_id,omitempty"`
 	Subcategories []Category `json:"subcategories,omitempty"`
+	Properties    []Property `json:"properties"`
 }

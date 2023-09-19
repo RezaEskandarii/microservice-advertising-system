@@ -5,8 +5,7 @@ import (
 	"category-management/config"
 	"category-management/internal/repositories"
 	"category-management/internal/services"
-	"category-management/pkg/secret_manager"
-	"context"
+	"category-management/pkg/env_manager"
 	"database/sql"
 	"fmt"
 	"log"
@@ -22,17 +21,9 @@ func New() *App {
 
 func (a App) Run(portNumber int) {
 
-	secretManager := secret_manager.New()
+	sdn := env_manager.Load("categories_full_db_connection")
+	createDBSdn := env_manager.Load("categories_base_db_connection")
 
-	ctx := context.Background()
-	sdn, err := secretManager.Get(ctx, "CategoriesDBFullConnection")
-	if err != nil {
-		panic(err.Error())
-	}
-	createDBSdn, err := secretManager.Get(ctx, "CategoriesDBBaseConnection")
-	if err != nil {
-		panic(err.Error())
-	}
 	a.createDatabase(config.DbName, fmt.Sprintf("%s", createDBSdn))
 
 	// Connect to PostgreSQL
@@ -43,10 +34,12 @@ func (a App) Run(portNumber int) {
 	defer db.Close()
 
 	a.createCategoriesTable(db)
+
 	categoryRepo := repositories.NewCategoryPostgresRepository(db)
 	categoryService := services.NewCategoryService(categoryRepo)
 
-	go categoryService.Seed()
+	categoryService.Seed()
+
 	categoryHandler := api.CategoryAPIHandler{}
 	categoryHandler.RegisterRoutes(categoryService)
 
@@ -88,7 +81,8 @@ func (a App) createCategoriesTable(db *sql.DB) error {
 		CREATE TABLE IF NOT EXISTS categories (
 			id SERIAL PRIMARY KEY,
 			name VARCHAR(255) NOT NULL,
-			parent_id INTEGER REFERENCES categories(id)
+			parent_id INTEGER REFERENCES categories(id),
+		    properties JSONB
 		)
 	`
 	_, err := db.Exec(createTableQuery)
