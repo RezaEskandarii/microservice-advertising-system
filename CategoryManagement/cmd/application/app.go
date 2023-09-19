@@ -82,7 +82,7 @@ func (a App) createCategoriesTable(db *sql.DB) error {
 			id SERIAL PRIMARY KEY,
 			name VARCHAR(255) NOT NULL,
 			parent_id INTEGER REFERENCES categories(id),
-		    properties JSONB
+		    properties JSON
 		)
 	`
 	_, err := db.Exec(createTableQuery)

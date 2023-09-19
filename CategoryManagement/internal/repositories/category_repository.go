@@ -36,6 +36,7 @@ func (r *CategoryPostgresRepository) Create(category *Category) (*Category, erro
 	if err != nil {
 		return nil, err
 	}
+
 	return category, nil
 }
 
@@ -60,7 +61,10 @@ func (r *CategoryPostgresRepository) DeleteCategory(id int) error {
 // FindByID
 func (r *CategoryPostgresRepository) FindByID(id int) (*Category, error) {
 	category := &Category{}
-	err := r.db.QueryRow("SELECT id, name FROM categories WHERE id = $1", id).Scan(&category.ID, &category.Name)
+
+	err := r.db.QueryRow(`SELECT "id", "name","properties" FROM categories WHERE id = $1`, id).
+		Scan(&category.ID, &category.Name, &category.Properties)
+
 	if err != nil {
 		return nil, handleNoRowsError(err)
 	}

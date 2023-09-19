@@ -8,43 +8,35 @@
           "properties": [
             {
               "name": "Make",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Model",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Year",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Mileage",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Fuel Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Transmission",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -53,33 +45,27 @@
           "properties": [
             {
               "name": "Make",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Model",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Year",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Mileage",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -88,23 +74,19 @@
           "properties": [
             {
               "name": "Part Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Compatibility",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -113,23 +95,19 @@
           "properties": [
             {
               "name": "Accessory Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Compatibility",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -138,43 +116,35 @@
           "properties": [
             {
               "name": "Make",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Model",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Year",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Mileage",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Fuel Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Transmission",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -188,28 +158,23 @@
           "properties": [
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Model",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Storage Capacity",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -218,33 +183,27 @@
           "properties": [
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Model",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Processor",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "RAM",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Storage",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -253,28 +212,23 @@
           "properties": [
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Screen Size",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Resolution",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -283,23 +237,19 @@
           "properties": [
             {
               "name": "Accessory Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Compatibility",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -308,28 +258,23 @@
           "properties": [
             {
               "name": "Camera Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Megapixels",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Lens Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -343,28 +288,23 @@
           "properties": [
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size (sq. ft.)",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Number of Bedrooms",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Number of Bathrooms",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -373,28 +313,23 @@
           "properties": [
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size (sq. ft.)",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Number of Bedrooms",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Number of Bathrooms",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -403,23 +338,19 @@
           "properties": [
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size (acres)",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -428,23 +359,19 @@
           "properties": [
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size (sq. ft.)",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -453,28 +380,23 @@
           "properties": [
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size (sq. ft.)",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Number of Bedrooms",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Number of Bathrooms",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Monthly Rent",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -488,28 +410,23 @@
           "properties": [
             {
               "name": "Furniture Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Dimensions",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -518,28 +435,23 @@
           "properties": [
             {
               "name": "Appliance Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Power Consumption (Watts)",
-              "data_type": "int",
-              "value": null
+              "data_type": "int"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -548,28 +460,23 @@
           "properties": [
             {
               "name": "Decor Item",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Style",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Dimensions",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -578,28 +485,23 @@
           "properties": [
             {
               "name": "Item",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -608,28 +510,23 @@
           "properties": [
             {
               "name": "Item",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Dimensions",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -643,28 +540,23 @@
           "properties": [
             {
               "name": "Type of Clothing",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -673,28 +565,23 @@
           "properties": [
             {
               "name": "Type of Shoes",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -703,23 +590,19 @@
           "properties": [
             {
               "name": "Type of Accessories",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -728,23 +611,19 @@
           "properties": [
             {
               "name": "Type of Jewelry",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Metal",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Gemstone",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -753,23 +632,19 @@
           "properties": [
             {
               "name": "Type of Watch",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -783,28 +658,23 @@
           "properties": [
             {
               "name": "Breed",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -813,28 +683,23 @@
           "properties": [
             {
               "name": "Breed",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -843,23 +708,19 @@
           "properties": [
             {
               "name": "Species",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -868,23 +729,19 @@
           "properties": [
             {
               "name": "Type of Accessories",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -893,28 +750,23 @@
           "properties": [
             {
               "name": "Species",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -928,28 +780,23 @@
           "properties": [
             {
               "name": "Breed",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -958,28 +805,23 @@
           "properties": [
             {
               "name": "Breed",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -988,23 +830,19 @@
           "properties": [
             {
               "name": "Species",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1013,23 +851,19 @@
           "properties": [
             {
               "name": "Type of Accessories",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1038,28 +872,23 @@
           "properties": [
             {
               "name": "Species",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -1073,23 +902,19 @@
           "properties": [
             {
               "name": "Title",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Author",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Genre",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1098,23 +923,19 @@
           "properties": [
             {
               "name": "Instrument Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1123,23 +944,19 @@
           "properties": [
             {
               "name": "Sport Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Equipment Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1148,23 +965,19 @@
           "properties": [
             {
               "name": "Category",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1173,18 +986,15 @@
           "properties": [
             {
               "name": "Craft Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Materials",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -1198,23 +1008,19 @@
           "properties": [
             {
               "name": "Service Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Service Provider",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1223,23 +1029,19 @@
           "properties": [
             {
               "name": "Service Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Service Provider",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1248,23 +1050,19 @@
           "properties": [
             {
               "name": "Service Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Service Provider",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1273,23 +1071,19 @@
           "properties": [
             {
               "name": "Service Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Service Provider",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1298,23 +1092,19 @@
           "properties": [
             {
               "name": "Service Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Service Provider",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -1328,23 +1118,19 @@
           "properties": [
             {
               "name": "Toy Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Age Range",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1353,23 +1139,19 @@
           "properties": [
             {
               "name": "Gear Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1378,23 +1160,19 @@
           "properties": [
             {
               "name": "Clothing Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1403,23 +1181,19 @@
           "properties": [
             {
               "name": "Maternity Item",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1428,23 +1202,19 @@
           "properties": [
             {
               "name": "Furniture Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -1458,23 +1228,19 @@
           "properties": [
             {
               "name": "Equipment Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1483,23 +1249,19 @@
           "properties": [
             {
               "name": "Furniture Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1508,18 +1270,15 @@
           "properties": [
             {
               "name": "Business Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Asking Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1528,23 +1287,19 @@
           "properties": [
             {
               "name": "Restaurant Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price Range",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Rating",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1553,18 +1308,15 @@
           "properties": [
             {
               "name": "Healthcare Service",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -1578,23 +1330,19 @@
           "properties": [
             {
               "name": "Activity Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Date",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1603,23 +1351,19 @@
           "properties": [
             {
               "name": "Artist/Musician Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Date",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1628,23 +1372,19 @@
           "properties": [
             {
               "name": "Class Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Date",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1653,18 +1393,15 @@
           "properties": [
             {
               "name": "Item Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Date",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             }
           ]
         },
@@ -1673,18 +1410,15 @@
           "properties": [
             {
               "name": "Volunteer Opportunity",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Date",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             }
           ]
         }
@@ -1699,23 +1433,19 @@
             "properties": [
               {
                 "name": "Instrument Type",
-                "data_type": "string",
-                "value": null
+                "data_type": "string"
               },
               {
                 "name": "Brand",
-                "data_type": "string",
-                "value": null
+                "data_type": "string"
               },
               {
                 "name": "Condition",
-                "data_type": "string",
-                "value": null
+                "data_type": "string"
               },
               {
                 "name": "Price",
-                "data_type": "float",
-                "value": null
+                "data_type": "float"
               }
             ]
           }
@@ -1725,23 +1455,19 @@
           "properties": [
             {
               "name": "Accessory Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1750,23 +1476,19 @@
           "properties": [
             {
               "name": "Title",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Composer",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Instrument",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1775,23 +1497,19 @@
           "properties": [
             {
               "name": "Equipment Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1800,23 +1518,19 @@
           "properties": [
             {
               "name": "Lesson Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Instructor",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -1830,28 +1544,23 @@
           "properties": [
             {
               "name": "Hotel Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Check-In Date",
-              "data_type": "date",
-              "value": null
+              "data_type": "date"
             },
             {
               "name": "Check-Out Date",
-              "data_type": "date",
-              "value": null
+              "data_type": "date"
             },
             {
               "name": "Price per Night",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1860,33 +1569,27 @@
           "properties": [
             {
               "name": "Airline",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Departure Airport",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Arrival Airport",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Departure Date",
-              "data_type": "date",
-              "value": null
+              "data_type": "date"
             },
             {
               "name": "Return Date",
-              "data_type": "date",
-              "value": null
+              "data_type": "date"
             },
             {
               "name": "Ticket Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1895,23 +1598,19 @@
           "properties": [
             {
               "name": "Package Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Destination",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Travel Dates",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1920,28 +1619,23 @@
           "properties": [
             {
               "name": "Car Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Pick-Up Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Return Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Rental Dates",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Rental Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1950,18 +1644,15 @@
           "properties": [
             {
               "name": "Accessory Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -1975,18 +1666,15 @@
           "properties": [
             {
               "name": "Equipment Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -1995,18 +1683,15 @@
           "properties": [
             {
               "name": "Supplement Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2015,18 +1700,15 @@
           "properties": [
             {
               "name": "Service Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Provider",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Cost",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2035,18 +1717,15 @@
           "properties": [
             {
               "name": "Wellness Activity",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Cost",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2055,18 +1734,15 @@
           "properties": [
             {
               "name": "Class Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Instructor",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Cost",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -2080,28 +1756,23 @@
           "properties": [
             {
               "name": "Title",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Artist",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Medium",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Year",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2110,28 +1781,23 @@
           "properties": [
             {
               "name": "Title",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Sculptor",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Height",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2140,28 +1806,23 @@
           "properties": [
             {
               "name": "Title",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Photographer",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Print Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Year",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2170,23 +1831,19 @@
           "properties": [
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Category",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Year",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2195,23 +1852,19 @@
           "properties": [
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Category",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Year",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -2225,28 +1878,23 @@
           "properties": [
             {
               "name": "Subject",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Tutor's Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Duration",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price per Hour",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             }
           ]
         },
@@ -2255,28 +1903,23 @@
           "properties": [
             {
               "name": "Course Title",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Instructor",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Duration (weeks)",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Platform",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             }
           ]
         },
@@ -2285,28 +1928,23 @@
           "properties": [
             {
               "name": "Title",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Author",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Edition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Condition",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2315,28 +1953,23 @@
           "properties": [
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Category",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Quantity",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Store",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             }
           ]
         },
@@ -2345,28 +1978,23 @@
           "properties": [
             {
               "name": "Language",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Instructor",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Duration",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price per Session",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             }
           ]
         }
@@ -2380,28 +2008,23 @@
           "properties": [
             {
               "name": "Product Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Skin Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Usage",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2410,28 +2033,23 @@
           "properties": [
             {
               "name": "Product Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Shade/Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2440,28 +2058,23 @@
           "properties": [
             {
               "name": "Product Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Hair Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Usage",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2470,28 +2083,23 @@
           "properties": [
             {
               "name": "Fragrance Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Fragrance Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Size",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2500,28 +2108,23 @@
           "properties": [
             {
               "name": "Service Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Service Provider",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Location",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Duration",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -2535,28 +2138,23 @@
           "properties": [
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Style",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Gemstone",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2565,28 +2163,23 @@
           "properties": [
             {
               "name": "Watch Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Style",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Movement Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2595,23 +2188,19 @@
           "properties": [
             {
               "name": "Accessory Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2620,23 +2209,19 @@
           "properties": [
             {
               "name": "Stone Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Carat Weight",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2645,28 +2230,23 @@
           "properties": [
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Style",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Era",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -2680,28 +2260,23 @@
           "properties": [
             {
               "name": "Appliance Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Capacity",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2710,28 +2285,23 @@
           "properties": [
             {
               "name": "Appliance Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Capacity",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2740,28 +2310,23 @@
           "properties": [
             {
               "name": "Appliance Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Capacity",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2770,28 +2335,23 @@
           "properties": [
             {
               "name": "Appliance Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Cooling Capacity (BTU)",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2800,28 +2360,23 @@
           "properties": [
             {
               "name": "Appliance Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Cleaning Method",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -2835,23 +2390,19 @@
           "properties": [
             {
               "name": "Supply Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Quantity",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2860,23 +2411,19 @@
           "properties": [
             {
               "name": "Supply Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Quantity",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2885,23 +2432,19 @@
           "properties": [
             {
               "name": "Tool Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2910,23 +2453,19 @@
           "properties": [
             {
               "name": "Fabric Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Quantity (yards)",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2935,23 +2474,19 @@
           "properties": [
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Quantity",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
@@ -2965,23 +2500,19 @@
           "properties": [
             {
               "name": "Furniture Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -2990,23 +2521,19 @@
           "properties": [
             {
               "name": "Tool Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Brand",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -3015,23 +2542,19 @@
           "properties": [
             {
               "name": "Plant/Seed Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Quantity",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -3040,23 +2563,19 @@
           "properties": [
             {
               "name": "Item Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Material",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Color",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         },
@@ -3065,23 +2584,19 @@
           "properties": [
             {
               "name": "Pool/Spa Name",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Type",
-              "data_type": "string",
-              "value": null
+              "data_type": "string"
             },
             {
               "name": "Capacity (Gallons)",
-              "data_type": "integer",
-              "value": null
+              "data_type": "integer"
             },
             {
               "name": "Price",
-              "data_type": "float",
-              "value": null
+              "data_type": "float"
             }
           ]
         }
