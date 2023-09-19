@@ -141,6 +141,7 @@ func (s *LocationServiceImp) Seed() error {
 			log.Fatal(err)
 		}
 
+		// if country is not exists by given name
 		if countryID == 0 {
 			countryID, err = insertCountry(db, country.Name)
 			if err != nil {
@@ -161,6 +162,7 @@ func (s *LocationServiceImp) insertCityFromCountry(country models.Country, db *s
 			log.Fatal(err)
 		}
 
+		// if city is not exists by given name
 		if cityID == 0 {
 			cityID, err = insertCity(db, city.Name, countryID, city.Latitude, city.Longitude)
 			if err != nil {

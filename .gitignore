@@ -18,6 +18,9 @@
 vsc.xml
 .idea/*
 
+.node_modules/*
+
+bookmark-management/dist/*
 
 #####################
 ## Ignore Visual Studio temporary files, build results, and
@@ -32,6 +35,7 @@ CHECKLIST.md
 *.userosscache
 *.sln.docstates
 .vscode/
+
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)

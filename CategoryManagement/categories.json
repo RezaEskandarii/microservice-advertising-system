@@ -3,301 +3,3088 @@
     {
       "name": "Automotive",
       "subcategories": [
-        "Cars",
-        "Motorcycles",
-        "Auto Parts",
-        "Accessories",
-        "Classic Cars"
+        {
+          "name": "Cars",
+          "properties": [
+            {
+              "name": "Make",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Model",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Year",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Mileage",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Fuel Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Transmission",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Motorcycles",
+          "properties": [
+            {
+              "name": "Make",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Model",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Year",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Mileage",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Auto Parts",
+          "properties": [
+            {
+              "name": "Part Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Compatibility",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Accessories",
+          "properties": [
+            {
+              "name": "Accessory Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Compatibility",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Classic Cars",
+          "properties": [
+            {
+              "name": "Make",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Model",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Year",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Mileage",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Fuel Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Transmission",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Electronics",
       "subcategories": [
-        "Mobile Phones",
-        "Laptops & Computers",
-        "TVs & Audio",
-        "Electronic Accessories",
-        "Cameras & Photography"
+        {
+          "name": "Mobile Phones",
+          "properties": [
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Model",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Storage Capacity",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Laptops & Computers",
+          "properties": [
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Model",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Processor",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "RAM",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Storage",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "TVs & Audio",
+          "properties": [
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Screen Size",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Resolution",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Electronic Accessories",
+          "properties": [
+            {
+              "name": "Accessory Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Compatibility",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Cameras & Photography",
+          "properties": [
+            {
+              "name": "Camera Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Megapixels",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Lens Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Real Estate",
       "subcategories": [
-        "Apartments",
-        "Villas",
-        "Land & Plots",
-        "Commercial Properties",
-        "Residential Rentals"
-      ]
-    },
-    {
-      "name": "Jobs",
-      "subcategories": [
-        "Full-time",
-        "Part-time",
-        "Freelance",
-        "Internships",
-        "Government Jobs"
+        {
+          "name": "Apartments",
+          "properties": [
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size (sq. ft.)",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Number of Bedrooms",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Number of Bathrooms",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Villas",
+          "properties": [
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size (sq. ft.)",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Number of Bedrooms",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Number of Bathrooms",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Land & Plots",
+          "properties": [
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size (acres)",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Commercial Properties",
+          "properties": [
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size (sq. ft.)",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Residential Rentals",
+          "properties": [
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size (sq. ft.)",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Number of Bedrooms",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Number of Bathrooms",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Monthly Rent",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Home & Furniture",
       "subcategories": [
-        "Furniture",
-        "Home Appliances",
-        "Decor & Lighting",
-        "Kitchenware",
-        "Garden & Outdoor"
+        {
+          "name": "Furniture",
+          "properties": [
+            {
+              "name": "Furniture Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Dimensions",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Home Appliances",
+          "properties": [
+            {
+              "name": "Appliance Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Power Consumption (Watts)",
+              "data_type": "int",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Decor & Lighting",
+          "properties": [
+            {
+              "name": "Decor Item",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Style",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Dimensions",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Kitchenware",
+          "properties": [
+            {
+              "name": "Item",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Garden & Outdoor",
+          "properties": [
+            {
+              "name": "Item",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Dimensions",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Fashion",
       "subcategories": [
-        "Clothing",
-        "Shoes",
-        "Accessories",
-        "Jewelry",
-        "Watches"
+        {
+          "name": "Clothing",
+          "properties": [
+            {
+              "name": "Type of Clothing",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Shoes",
+          "properties": [
+            {
+              "name": "Type of Shoes",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Accessories",
+          "properties": [
+            {
+              "name": "Type of Accessories",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Jewelry",
+          "properties": [
+            {
+              "name": "Type of Jewelry",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Metal",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Gemstone",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Watches",
+          "properties": [
+            {
+              "name": "Type of Watch",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Pets",
       "subcategories": [
-        "Dogs",
-        "Cats",
-        "Birds",
-        "Pet Accessories",
-        "Other Pets"
+        {
+          "name": "Dogs",
+          "properties": [
+            {
+              "name": "Breed",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Cats",
+          "properties": [
+            {
+              "name": "Breed",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Birds",
+          "properties": [
+            {
+              "name": "Species",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Pet Accessories",
+          "properties": [
+            {
+              "name": "Type of Accessories",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Other Pets",
+          "properties": [
+            {
+              "name": "Species",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Sports & Outdoors",
+      "name": "Pets",
       "subcategories": [
-        "Sporting Goods",
-        "Bicycles",
-        "Fitness Equipment",
-        "Outdoor & Adventure",
-        "Team Sports"
-      ]
-    },
-    {
-      "name": "Electronics",
-      "subcategories": [
-        "Mobile Phones",
-        "Laptops & Computers",
-        "TVs & Audio",
-        "Electronic Accessories",
-        "Cameras & Photography"
+        {
+          "name": "Dogs",
+          "properties": [
+            {
+              "name": "Breed",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Cats",
+          "properties": [
+            {
+              "name": "Breed",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Birds",
+          "properties": [
+            {
+              "name": "Species",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Pet Accessories",
+          "properties": [
+            {
+              "name": "Type of Accessories",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Other Pets",
+          "properties": [
+            {
+              "name": "Species",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Books & Hobbies",
       "subcategories": [
-        "Books",
-        "Musical Instruments",
-        "Sports Equipment",
-        "Collectibles",
-        "Art & Crafts"
+        {
+          "name": "Books",
+          "properties": [
+            {
+              "name": "Title",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Author",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Genre",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Musical Instruments",
+          "properties": [
+            {
+              "name": "Instrument Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Sports Equipment",
+          "properties": [
+            {
+              "name": "Sport Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Equipment Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Collectibles",
+          "properties": [
+            {
+              "name": "Category",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Art & Crafts",
+          "properties": [
+            {
+              "name": "Craft Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Materials",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Services",
       "subcategories": [
-        "Automotive Services",
-        "Home Services",
-        "Computer Services",
-        "Event Services",
-        "Health & Beauty Services"
+        {
+          "name": "Automotive Services",
+          "properties": [
+            {
+              "name": "Service Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Service Provider",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Home Services",
+          "properties": [
+            {
+              "name": "Service Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Service Provider",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Computer Services",
+          "properties": [
+            {
+              "name": "Service Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Service Provider",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Event Services",
+          "properties": [
+            {
+              "name": "Service Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Service Provider",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Health & Beauty Services",
+          "properties": [
+            {
+              "name": "Service Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Service Provider",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Toys & Kids",
       "subcategories": [
-        "Toys",
-        "Baby Gear",
-        "Kids' Clothing",
-        "Maternity",
-        "Kids' Furniture"
+        {
+          "name": "Toys",
+          "properties": [
+            {
+              "name": "Toy Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Age Range",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Baby Gear",
+          "properties": [
+            {
+              "name": "Gear Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Kids' Clothing",
+          "properties": [
+            {
+              "name": "Clothing Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Maternity",
+          "properties": [
+            {
+              "name": "Maternity Item",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Kids' Furniture",
+          "properties": [
+            {
+              "name": "Furniture Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Business & Industrial",
       "subcategories": [
-        "Industrial Equipment",
-        "Office Furniture",
-        "Business for Sale",
-        "Food & Restaurants",
-        "Medical & Healthcare"
+        {
+          "name": "Industrial Equipment",
+          "properties": [
+            {
+              "name": "Equipment Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Office Furniture",
+          "properties": [
+            {
+              "name": "Furniture Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Business for Sale",
+          "properties": [
+            {
+              "name": "Business Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Asking Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Food & Restaurants",
+          "properties": [
+            {
+              "name": "Restaurant Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price Range",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Rating",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Medical & Healthcare",
+          "properties": [
+            {
+              "name": "Healthcare Service",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Community",
       "subcategories": [
-        "Activities",
-        "Artists & Musicians",
-        "Classes",
-        "Lost & Found",
-        "Volunteers"
+        {
+          "name": "Activities",
+          "properties": [
+            {
+              "name": "Activity Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Date",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Artists & Musicians",
+          "properties": [
+            {
+              "name": "Artist/Musician Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Date",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Classes",
+          "properties": [
+            {
+              "name": "Class Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Date",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Lost & Found",
+          "properties": [
+            {
+              "name": "Item Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Date",
+              "data_type": "string",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Volunteers",
+          "properties": [
+            {
+              "name": "Volunteer Opportunity",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Date",
+              "data_type": "string",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Music & Instruments",
       "subcategories": [
-        "Musical Instruments",
-        "Music Accessories",
-        "Sheet Music",
-        "Audio & Sound Equipment",
-        "Music Lessons"
+        {
+          "name": "Musical Instruments",
+          "value": {
+            "properties": [
+              {
+                "name": "Instrument Type",
+                "data_type": "string",
+                "value": null
+              },
+              {
+                "name": "Brand",
+                "data_type": "string",
+                "value": null
+              },
+              {
+                "name": "Condition",
+                "data_type": "string",
+                "value": null
+              },
+              {
+                "name": "Price",
+                "data_type": "float",
+                "value": null
+              }
+            ]
+          }
+        },
+        {
+          "name": "Music Accessories",
+          "properties": [
+            {
+              "name": "Accessory Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Sheet Music",
+          "properties": [
+            {
+              "name": "Title",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Composer",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Instrument",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Audio & Sound Equipment",
+          "properties": [
+            {
+              "name": "Equipment Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Music Lessons",
+          "properties": [
+            {
+              "name": "Lesson Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Instructor",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Travel",
       "subcategories": [
-        "Hotels & Accommodation",
-        "Flights",
-        "Vacation Packages",
-        "Car Rentals",
-        "Travel Accessories"
+        {
+          "name": "Hotels & Accommodation",
+          "properties": [
+            {
+              "name": "Hotel Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Check-In Date",
+              "data_type": "date",
+              "value": null
+            },
+            {
+              "name": "Check-Out Date",
+              "data_type": "date",
+              "value": null
+            },
+            {
+              "name": "Price per Night",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Flights",
+          "properties": [
+            {
+              "name": "Airline",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Departure Airport",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Arrival Airport",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Departure Date",
+              "data_type": "date",
+              "value": null
+            },
+            {
+              "name": "Return Date",
+              "data_type": "date",
+              "value": null
+            },
+            {
+              "name": "Ticket Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Vacation Packages",
+          "properties": [
+            {
+              "name": "Package Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Destination",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Travel Dates",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Car Rentals",
+          "properties": [
+            {
+              "name": "Car Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Pick-Up Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Return Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Rental Dates",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Rental Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Travel Accessories",
+          "properties": [
+            {
+              "name": "Accessory Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Health & Fitness",
       "subcategories": [
-        "Gym & Fitness Equipment",
-        "Nutrition & Supplements",
-        "Health Services",
-        "Sports & Wellness",
-        "Yoga & Meditation"
+        {
+          "name": "Gym & Fitness Equipment",
+          "properties": [
+            {
+              "name": "Equipment Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Nutrition & Supplements",
+          "properties": [
+            {
+              "name": "Supplement Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Health Services",
+          "properties": [
+            {
+              "name": "Service Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Provider",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Cost",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Sports & Wellness",
+          "properties": [
+            {
+              "name": "Wellness Activity",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Cost",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Yoga & Meditation",
+          "properties": [
+            {
+              "name": "Class Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Instructor",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Cost",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Art & Collectibles",
       "subcategories": [
-        "Paintings & Drawings",
-        "Sculptures",
-        "Photography",
-        "Coins & Stamps",
-        "Vintage Collectibles"
+        {
+          "name": "Paintings & Drawings",
+          "properties": [
+            {
+              "name": "Title",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Artist",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Medium",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Year",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Sculptures",
+          "properties": [
+            {
+              "name": "Title",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Sculptor",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Height",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Photography",
+          "properties": [
+            {
+              "name": "Title",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Photographer",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Print Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Year",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Coins & Stamps",
+          "properties": [
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Category",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Year",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Vintage Collectibles",
+          "properties": [
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Category",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Year",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Education",
       "subcategories": [
-        "Tutoring",
-        "Online Courses",
-        "Textbooks",
-        "School Supplies",
-        "Language Classes"
+        {
+          "name": "Tutoring",
+          "properties": [
+            {
+              "name": "Subject",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Tutor's Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Duration",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price per Hour",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Online Courses",
+          "properties": [
+            {
+              "name": "Course Title",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Instructor",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Duration (weeks)",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Platform",
+              "data_type": "string",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Textbooks",
+          "properties": [
+            {
+              "name": "Title",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Author",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Edition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Condition",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "School Supplies",
+          "properties": [
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Category",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Quantity",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Store",
+              "data_type": "string",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Language Classes",
+          "properties": [
+            {
+              "name": "Language",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Instructor",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Duration",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price per Session",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Beauty & Personal Care",
       "subcategories": [
-        "Skincare",
-        "Makeup",
-        "Haircare",
-        "Fragrances",
-        "Spa & Salon Services"
-      ]
-    },
-    {
-      "name": "Computers & Accessories",
-      "subcategories": [
-        "Desktop Computers",
-        "Monitors",
-        "Computer Accessories",
-        "Printers & Scanners",
-        "Software"
-      ]
-    },
-    {
-      "name": "Food & Agriculture",
-      "subcategories": [
-        "Food Products",
-        "Agricultural Equipment",
-        "Livestock & Poultry",
-        "Beverages",
-        "Food Services"
+        {
+          "name": "Skincare",
+          "properties": [
+            {
+              "name": "Product Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Skin Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Usage",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Makeup",
+          "properties": [
+            {
+              "name": "Product Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Shade/Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Haircare",
+          "properties": [
+            {
+              "name": "Product Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Hair Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Usage",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Fragrances",
+          "properties": [
+            {
+              "name": "Fragrance Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Fragrance Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Size",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Spa & Salon Services",
+          "properties": [
+            {
+              "name": "Service Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Service Provider",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Location",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Duration",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Jewelry & Watches",
       "subcategories": [
-        "Jewelry",
-        "Watches",
-        "Accessories",
-        "Precious Stones",
-        "Antique & Vintage Jewelry"
-      ]
-    },
-    {
-      "name": "Photography",
-      "subcategories": [
-        "Digital Cameras",
-        "Camera Accessories",
-        "Photo & Video Services",
-        "Drones",
-        "Darkroom Equipment"
-      ]
-    },
-    {
-      "name": "Collectibles",
-      "subcategories": [
-        "Coins & Stamps",
-        "Antiques",
-        "Toys & Games",
-        "Militaria",
-        "Collectible Cards"
-      ]
-    },
-    {
-      "name": "Business Opportunities",
-      "subcategories": [
-        "Franchise Opportunities",
-        "Business Partnerships",
-        "Investment Opportunities",
-        "Business Loans",
-        "Business for Sale"
+        {
+          "name": "Jewelry",
+          "properties": [
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Style",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Gemstone",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Watches",
+          "properties": [
+            {
+              "name": "Watch Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Style",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Movement Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Accessories",
+          "properties": [
+            {
+              "name": "Accessory Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Precious Stones",
+          "properties": [
+            {
+              "name": "Stone Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Carat Weight",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Antique & Vintage Jewelry",
+          "properties": [
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Style",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Era",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Home Appliances",
       "subcategories": [
-        "Kitchen Appliances",
-        "Laundry Appliances",
-        "Refrigerators & Freezers",
-        "Air Conditioners",
-        "Vacuums & Floor Care"
-      ]
-    },
-    {
-      "name": "Mobile Phones & Accessories",
-      "subcategories": [
-        "Mobile Phones",
-        "Phone Accessories",
-        "Smartwatches",
-        "Mobile Phone Repair",
-        "Phone Cases & Covers"
+        {
+          "name": "Kitchen Appliances",
+          "properties": [
+            {
+              "name": "Appliance Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Capacity",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Laundry Appliances",
+          "properties": [
+            {
+              "name": "Appliance Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Capacity",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Refrigerators & Freezers",
+          "properties": [
+            {
+              "name": "Appliance Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Capacity",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Air Conditioners",
+          "properties": [
+            {
+              "name": "Appliance Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Cooling Capacity (BTU)",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Vacuums & Floor Care",
+          "properties": [
+            {
+              "name": "Appliance Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Cleaning Method",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Arts & Crafts",
       "subcategories": [
-        "Craft Supplies",
-        "Art Supplies",
-        "Craft Tools",
-        "Fabric & Textiles",
-        "Scrapbooking & Paper Crafts"
+        {
+          "name": "Craft Supplies",
+          "properties": [
+            {
+              "name": "Supply Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Quantity",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Art Supplies",
+          "properties": [
+            {
+              "name": "Supply Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Quantity",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Craft Tools",
+          "properties": [
+            {
+              "name": "Tool Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Fabric & Textiles",
+          "properties": [
+            {
+              "name": "Fabric Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Quantity (yards)",
+              "data_type": "float",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Scrapbooking & Paper Crafts",
+          "properties": [
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Quantity",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Garden & Outdoor",
       "subcategories": [
-        "Outdoor Furniture",
-        "Garden Tools",
-        "Plants & Seeds",
-        "Patio & Deck",
-        "Swimming Pools & Spas"
+        {
+          "name": "Outdoor Furniture",
+          "properties": [
+            {
+              "name": "Furniture Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Garden Tools",
+          "properties": [
+            {
+              "name": "Tool Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Brand",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Plants & Seeds",
+          "properties": [
+            {
+              "name": "Plant/Seed Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Quantity",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Patio & Deck",
+          "properties": [
+            {
+              "name": "Item Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Material",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Color",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "Swimming Pools & Spas",
+          "properties": [
+            {
+              "name": "Pool/Spa Name",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Type",
+              "data_type": "string",
+              "value": null
+            },
+            {
+              "name": "Capacity (Gallons)",
+              "data_type": "integer",
+              "value": null
+            },
+            {
+              "name": "Price",
+              "data_type": "float",
+              "value": null
+            }
+          ]
+        }
       ]
     }
   ]
