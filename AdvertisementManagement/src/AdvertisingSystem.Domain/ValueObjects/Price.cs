@@ -14,64 +14,64 @@ public class Price
         Currency = currency;
     }
 
-    public static bool operator ==(Price price1, Price price2)
+    public static bool operator ==(Price left, Price right)
     {
-        if (ReferenceEquals(price1, price2))
+        if (ReferenceEquals(left, right))
             return true;
 
-        if (ReferenceEquals(price1, null) || ReferenceEquals(price2, null))
+        if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
             return false;
 
-        return price1.Amount == price2.Amount && price1.Currency == price2.Currency;
+        return left.Amount == right.Amount && left.Currency == right.Currency;
     }
 
-    public static bool operator !=(Price price1, Price price2)
+    public static bool operator !=(Price left, Price right)
     {
-        return !(price1 == price2);
+        return !(left == right);
     }
 
-    public static bool operator <(Price price1, Price price2)
+    public static bool operator <(Price left, Price right)
     {
-        if (ReferenceEquals(price1, null) || ReferenceEquals(price2, null))
+        if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
             return false;
 
-        return price1.Amount < price2.Amount;
+        return left.Amount < right.Amount;
     }
 
-    public static bool operator >(Price price1, Price price2)
+    public static bool operator >(Price left, Price right)
     {
-        if (ReferenceEquals(price1, null) || ReferenceEquals(price2, null))
+        if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
             return false;
 
-        return price1.Amount > price2.Amount;
+        return left.Amount > right.Amount;
     }
 
-    public static bool operator <=(Price price1, Price price2)
+    public static bool operator <=(Price left, Price right)
     {
-        return price1 < price2 || price1 == price2;
+        return left < right || left == right;
     }
 
-    public static bool operator >=(Price price1, Price price2)
+    public static bool operator >=(Price left, Price right)
     {
-        return price1 > price2 || price1 == price2;
+        return left > right || left == right;
     }
 
-    public static Price operator +(Price price1, Price price2)
+    public static Price operator +(Price left, Price right)
     {
-        if (price1.Currency != price2.Currency)
+        if (left.Currency != right.Currency)
             throw new InvalidOperationException("Cannot add prices with different currencies.");
 
-        var sum = price1.Amount + price2.Amount;
-        return new Price(sum, price1.Currency);
+        var sum = left.Amount + right.Amount;
+        return new Price(sum, left.Currency);
     }
 
-    public static Price operator -(Price price1, Price price2)
+    public static Price operator -(Price left, Price right)
     {
-        if (price1.Currency != price2.Currency)
+        if (left.Currency != right.Currency)
             throw new InvalidOperationException("Cannot subtract prices with different currencies.");
 
-        var difference = price1.Amount - price2.Amount;
-        return new Price(difference, price1.Currency);
+        var difference = left.Amount - right.Amount;
+        return new Price(difference, left.Currency);
     }
 
 

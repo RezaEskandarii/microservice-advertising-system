@@ -30,11 +30,13 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         _mapper = mapper;
     }
 
-    public async Task<GetAdvertisementViewModel> Handle(CreateAdvertisementCommand command, CancellationToken cancellationToken)
+    public async Task<GetAdvertisementViewModel> Handle(CreateAdvertisementCommand command,
+        CancellationToken cancellationToken)
     {
-        var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description, new Price(command.Price, "USD"),
+        var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description,
+            new Price(command.Price, "USD"),
             new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
-            command.Address, command.CategoryId, command.Tags);
+            command.Address, command.CategoryId, command.Tags, command.Properties, command.LocationId);
 
         var result = await _advertisementRepository.AddAsync(advertisement);
         await UploadImagesAsync(command, result.Id);
@@ -54,9 +56,6 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
 
         var discoveredAddresses = await _serviceDiscovery.DiscoverAsync("thumbnail-service");
         var address = discoveredAddresses.FirstOrDefault();
-
-        // AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-        // AppContext.SetSwitch("System.Net.SocketsHttpHandler.Http2Support", true);
 
         // Create a gRPC channel and client
         var channel = GrpcChannel.ForAddress(address.FullAddress);

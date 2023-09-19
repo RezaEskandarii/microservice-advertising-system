@@ -21,44 +21,44 @@ public class CreateDate
         return Value.ToString("yyyy-MM-dd");
     }
 
-    public static bool operator ==(CreateDate date1, CreateDate date2)
+    public static bool operator ==(CreateDate left, CreateDate right)
     {
-        if (ReferenceEquals(date1, date2))
+        if (ReferenceEquals(left, right))
         {
             return true;
         }
 
-        if (ReferenceEquals(date1, null) || ReferenceEquals(date2, null))
+        if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
         {
             return false;
         }
 
-        return date1.Value == date2.Value;
+        return left.Value == right.Value;
     }
 
-    public static bool operator !=(CreateDate date1, CreateDate date2)
+    public static bool operator !=(CreateDate left, CreateDate right)
     {
-        return !(date1 == date2);
+        return !(left == right);
     }
 
-    public static bool operator <(CreateDate date1, CreateDate date2)
+    public static bool operator <(CreateDate left, CreateDate right)
     {
-        return date1.Value < date2.Value;
+        return left.Value < right.Value;
     }
 
-    public static bool operator >(CreateDate date1, CreateDate date2)
+    public static bool operator >(CreateDate left, CreateDate right)
     {
-        return date1.Value > date2.Value;
+        return left.Value > right.Value;
     }
 
-    public static bool operator <=(CreateDate date1, CreateDate date2)
+    public static bool operator <=(CreateDate left, CreateDate right)
     {
-        return date1.Value <= date2.Value;
+        return left.Value <= right.Value;
     }
 
-    public static bool operator >=(CreateDate date1, CreateDate date2)
+    public static bool operator >=(CreateDate left, CreateDate right)
     {
-        return date1.Value >= date2.Value;
+        return left.Value >= right.Value;
     }
 
     public override bool Equals(object obj)

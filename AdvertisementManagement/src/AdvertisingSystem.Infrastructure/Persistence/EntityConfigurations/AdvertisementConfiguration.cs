@@ -18,6 +18,7 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         builder.Property(x => x.Price).HasConversion(new PriceConverter());
         builder.Property(x => x.Tags).HasColumnType("text[]");
         builder.Property(x => x.Thumbnails).HasColumnType("text[]");
+        builder.Property(x => x.Properties).HasColumnType("JSONB");
 
         builder.ToTable("Advertisements");
     }

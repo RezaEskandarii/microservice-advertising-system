@@ -21,44 +21,44 @@ public class UpdateDate
         return Value.ToString("yyyy-MM-dd HH:mm:ss");
     }
 
-    public static bool operator ==(UpdateDate date1, UpdateDate date2)
+    public static bool operator ==(UpdateDate left, UpdateDate right)
     {
-        if (ReferenceEquals(date1, date2))
+        if (ReferenceEquals(left, right))
         {
             return true;
         }
 
-        if (ReferenceEquals(date1, null) || ReferenceEquals(date2, null))
+        if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
         {
             return false;
         }
 
-        return date1.Value == date2.Value;
+        return left.Value == right.Value;
     }
 
-    public static bool operator !=(UpdateDate date1, UpdateDate date2)
+    public static bool operator !=(UpdateDate left, UpdateDate right)
     {
-        return !(date1 == date2);
+        return !(left == right);
     }
 
-    public static bool operator <(UpdateDate date1, UpdateDate date2)
+    public static bool operator <(UpdateDate left, UpdateDate right)
     {
-        return date1.Value < date2.Value;
+        return left.Value < right.Value;
     }
 
-    public static bool operator >(UpdateDate date1, UpdateDate date2)
+    public static bool operator >(UpdateDate left, UpdateDate right)
     {
-        return date1.Value > date2.Value;
+        return left.Value > right.Value;
     }
 
-    public static bool operator <=(UpdateDate date1, UpdateDate date2)
+    public static bool operator <=(UpdateDate left, UpdateDate right)
     {
-        return date1.Value <= date2.Value;
+        return left.Value <= right.Value;
     }
 
-    public static bool operator >=(UpdateDate date1, UpdateDate date2)
+    public static bool operator >=(UpdateDate left, UpdateDate right)
     {
-        return date1.Value >= date2.Value;
+        return left.Value >= right.Value;
     }
 
     public override bool Equals(object obj)
