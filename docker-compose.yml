@@ -100,6 +100,7 @@ services:
     networks:
       - internal
     environment:
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=AdvertisementsDB;User Id=postgres;Password=123456
       - Logging__LogLevel__Default=Information
       - Logging__LogLevel__Microsoft.AspNetCore=Warning
       - AllowedHosts=*

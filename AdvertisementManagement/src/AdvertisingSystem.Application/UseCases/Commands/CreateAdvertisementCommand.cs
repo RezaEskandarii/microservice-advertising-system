@@ -1,4 +1,3 @@
-using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Application.ViewModels;
 using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Domain.ValueObjects;
@@ -18,6 +17,6 @@ public class CreateAdvertisementCommand : IRequest<GetAdvertisementViewModel>
     public int CategoryId { get; set; }
     public ICollection<ThumbnailFileViewModel> Thumbnails { get; set; } = new List<ThumbnailFileViewModel>();
     public string[]? Tags { get; set; }
-    public Property[] Properties { get; set; }
+    public List<Property> Properties { get; set; } = new();
     public int? LocationId { get; set; }
 }

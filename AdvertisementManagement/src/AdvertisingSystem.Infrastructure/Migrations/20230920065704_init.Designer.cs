@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AdvertisingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230827090556_AddTagsPropertyToAdvertisement")]
-    partial class AddTagsPropertyToAdvertisement
+    [Migration("20230920065704_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,10 +49,19 @@ namespace AdvertisingSystem.Infrastructure.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<decimal>("Price")
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("Properties")
+                        .HasColumnType("JSON");
+
                     b.Property<string[]>("Tags")
+                        .HasColumnType("text[]");
+
+                    b.Property<string[]>("Thumbnails")
                         .HasColumnType("text[]");
 
                     b.Property<string>("Title")

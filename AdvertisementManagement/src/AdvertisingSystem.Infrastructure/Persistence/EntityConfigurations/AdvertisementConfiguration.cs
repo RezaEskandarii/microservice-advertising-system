@@ -2,6 +2,7 @@ using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Infrastructure.Persistence.ValueConverters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
 namespace AdvertisingSystem.Infrastructure.Persistence.EntityConfigurations;
 
@@ -18,7 +19,12 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         builder.Property(x => x.Price).HasConversion(new PriceConverter());
         builder.Property(x => x.Tags).HasColumnType("text[]");
         builder.Property(x => x.Thumbnails).HasColumnType("text[]");
-        builder.Property(x => x.Properties).HasColumnType("JSONB");
+        builder.Property(x => x.Properties).HasColumnType("JSON");
+
+        builder.Property(e => e.Properties)
+            .HasConversion(
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<List<Property>>(v) ?? new List<Property>());
 
         builder.ToTable("Advertisements");
     }

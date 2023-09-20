@@ -19,12 +19,12 @@ public class Advertisement : AggregateRoot
     public int CategoryId { get; set; }
     public string[]? Tags { get; set; }
     public string[]? Thumbnails { get; set; }
-    public Property[] Properties { get; set; }
+    public List<Property>? Properties { get; set; } = new List<Property>();
     public int? LocationId { get; set; }
 
     public static Advertisement CreateNew(string title, string userId, string description, Price price,
         CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt, Address? address, int categoryId,
-        string[]? tags, Property[] properties, int? locaqtionId)
+        string[]? tags, List<Property>? properties, int? locaqtionId)
     {
         return new Advertisement()
         {

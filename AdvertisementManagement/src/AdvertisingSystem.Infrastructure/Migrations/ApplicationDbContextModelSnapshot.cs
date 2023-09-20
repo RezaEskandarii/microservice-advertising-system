@@ -47,8 +47,14 @@ namespace AdvertisingSystem.Infrastructure.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("integer");
+
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("JSON");
 
                     b.Property<string[]>("Tags")
                         .HasColumnType("text[]");

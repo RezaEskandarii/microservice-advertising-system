@@ -4,6 +4,7 @@ using AdvertisingSystem.Infrastructure.Messaging.EventPublishers;
 using AdvertisingSystem.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AdvertisingSystem.Infrastructure;
@@ -12,15 +13,18 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfraStructureServices(this IServiceCollection services)
     {
-        services.AddScoped<ISecretManager, SecretManager>();
-        var secretManager = services.BuildServiceProvider().GetRequiredService<ISecretManager>();
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(secretManager.GetConnectionStringAsync().Result,
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
 
+        services.AddScoped<ISecretManager, SecretManager>();
         services.AddScoped<IEventPublisher, AdvertisementCreatedEventPublisher>();
         services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
         services.AddScoped<IServiceDiscovery, ServiceDiscovery>();

@@ -19,12 +19,16 @@ namespace AdvertisingSystem.Infrastructure.Migrations
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false)
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    Tags = table.Column<string[]>(type: "text[]", nullable: true),
+                    Thumbnails = table.Column<string[]>(type: "text[]", nullable: true),
+                    Properties = table.Column<string>(type: "JSON", nullable: true),
+                    LocationId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
