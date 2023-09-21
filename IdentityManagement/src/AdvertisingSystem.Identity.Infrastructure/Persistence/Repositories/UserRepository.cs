@@ -1,10 +1,8 @@
 using AdvertisingSystem.Identity.Domain.Entities;
-using AdvertisingSystem.Identity.Domain.Interfaces;
 using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Identity.Shared;
-using AdvertisingSystem.Identity.Shared.Enums;
-using AdvertisingSystem.Identity.Shared.Filters;
 using AdvertisingSystem.Identity.Shared.ExtensionMethods;
+using AdvertisingSystem.Identity.Shared.Filters;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -86,17 +84,7 @@ public class UserRepository
             TotalCount = totalRecords
         };
     }
-
-    public async Task ChangeStatusAsync(string id, UserStatuses status)
-    {
-        var user = await _dbContext.Users.FindAsync(id);
-        if (user != null)
-        {
-            user.Status = status;
-            await _dbContext.SaveChangesAsync();
-        }
-    }
-
+    
     public async Task<AppUser?> FindByUserNameAsync(string username)
     {
         return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);

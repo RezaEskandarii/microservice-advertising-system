@@ -24,8 +24,10 @@ builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange
 
 builder.Services.AddOcelot(builder.Configuration);
 
-var secretManager = builder.Services.BuildServiceProvider().GetRequiredService<ISecretManager>();
-var jwtSecretKey = await secretManager.ReadAsync("jwt-secret-key");
+//var secretManager = builder.Services.BuildServiceProvider().GetRequiredService<ISecretManager>();
+//var jwtSecretKey = await secretManager.ReadAsync("jwt-secret-key");
+
+var jwtSecretKey = builder.Configuration["JWTSecretKey"];
 
 builder. // Add authentication services
     Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

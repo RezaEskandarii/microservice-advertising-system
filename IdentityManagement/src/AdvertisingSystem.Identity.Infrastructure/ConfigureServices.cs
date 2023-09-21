@@ -1,6 +1,4 @@
-﻿using AdvertisingSystem.Identity.Domain.Interfaces;
-using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
-using AdvertisingSystem.Identity.Infrastructure.Persistence.Repositories;
+﻿using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Identity.Infrastructure.Services;
 using AdvertisingSystem.Identity.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +18,9 @@ public static class ConfigureServices
 
         services.AddSingleton<ISecretManager, SecretManager>();
 
-        // Build the service provider.
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
-
-        // Get an instance of the interface from the service provider.
-        var secretManager = serviceProvider.GetService<ISecretManager>();
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(secretManager.GetConnectionStringAsync().Result,
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
 

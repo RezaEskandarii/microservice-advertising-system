@@ -23,8 +23,8 @@ services:
   
   vault:
     image: hashicorp/vault:latest
-    ports:
-      - "8200:8200"
+    #ports:
+    #  - "8200:8200"
     networks:
       - internal
     environment:
@@ -185,6 +185,7 @@ services:
       - internal
     restart: always
     environment:
+      - JWTSecretKey=TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM=
       - Logging__LogLevel__Default=Information
       - Logging__LogLevel__Microsoft.AspNetCore=Warning
       - AllowedHosts=*

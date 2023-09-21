@@ -18,13 +18,8 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
             .Build();
 
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        var serviceProvider = new ServiceCollection()
-            .AddInfrastructureServices(configuration)
-            .BuildServiceProvider();
 
-        var secretManager = serviceProvider.GetRequiredService<ISecretManager>();
-
-        builder.UseNpgsql(secretManager.GetConnectionStringAsync().Result);
+        builder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
 
         return new ApplicationDbContext(builder.Options);
     }

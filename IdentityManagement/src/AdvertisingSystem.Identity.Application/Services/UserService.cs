@@ -125,7 +125,7 @@ public class UserService : IUserService
         if (user != null)
         {
             // Update user status
-            user.Status = status;
+            user.SetStatus(status);
 
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)

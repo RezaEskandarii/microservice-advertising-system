@@ -83,7 +83,7 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/v1/Advertisement/{id}",
+      "UpstreamPathTemplate": "/api/v1/Advertisement/Remove/{id}",
       "UpstreamHttpMethod": [
         "DELETE"
       ],
@@ -103,7 +103,7 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/api/v1/Advertisement/{id}",
+      "UpstreamPathTemplate": "/api/v1/Advertisement/Update/{id}",
       "UpstreamHttpMethod": [
         "PUT"
       ],
