@@ -111,7 +111,7 @@ services:
       - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
       - thumbnail-service=thumbnail-management.api
   
-  email-sender:
+  email-sender.api:
     build:
       context: ./EmailSender
       dockerfile: ./Dockerfile
@@ -124,6 +124,7 @@ services:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
       vault_address: http://vault:8200
       app_port: 5007
+      rabbitmq_addr: amqp://guest:guest@rabbitmq:5672/
     networks:
       - internal
   

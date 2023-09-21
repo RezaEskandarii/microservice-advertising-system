@@ -12,7 +12,7 @@ import (
 
 func main() {
 	app := application.New()
-	portStr := env.GetFromDotENV("app_port")
+	portStr := env.Load("app_port")
 
 	if port, err := strconv.Atoi(portStr); err != nil {
 

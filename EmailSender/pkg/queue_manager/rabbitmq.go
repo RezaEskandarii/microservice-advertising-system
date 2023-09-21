@@ -3,7 +3,7 @@ package queue_manager
 import (
 	"category-management/internal/models"
 	"category-management/pkg/email_sender"
-	"category-management/pkg/secret_manager"
+	"category-management/pkg/env_manager"
 	"encoding/json"
 	"fmt"
 	"github.com/streadway/amqp"
@@ -12,14 +12,12 @@ import (
 )
 
 type QueueManager struct {
-	SecretManger *secret_manager.SecretManager
-	EmailSender  email_sender.EmailSender
+	EmailSender email_sender.EmailSender
 }
 
-func New(sm *secret_manager.SecretManager, em email_sender.EmailSender) QueueManager {
+func New(em email_sender.EmailSender) QueueManager {
 	return QueueManager{
-		SecretManger: sm,
-		EmailSender:  em,
+		EmailSender: em,
 	}
 }
 
@@ -28,10 +26,10 @@ func (q *QueueManager) Listen() {
 	fmt.Println("start to listen to events")
 
 	// RabbitMQ connection string
-	connString := "amqp://guest:guest@localhost:5672/"
+	rabbitMqAddr := env_manager.Load("rabbitmq_addr")
 
 	// Connect to RabbitMQ
-	conn, err := amqp.Dial(connString)
+	conn, err := amqp.Dial(rabbitMqAddr)
 	if err != nil {
 		log.Printf("Failed to connect to RabbitMQ: %s", err)
 		return

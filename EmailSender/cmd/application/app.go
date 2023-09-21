@@ -3,7 +3,6 @@ package application
 import (
 	"category-management/pkg/email_sender"
 	"category-management/pkg/queue_manager"
-	"category-management/pkg/secret_manager"
 	"fmt"
 	"log"
 	"net/http"
@@ -25,9 +24,8 @@ func (a App) Run(portNumber int) {
 		}
 	}()
 
-	secretManager := secret_manager.SecretManager{}
 	emailSender := email_sender.EmailSenderImpl{}
-	queueManager := queue_manager.New(&secretManager, emailSender)
+	queueManager := queue_manager.New(emailSender)
 
 	go queueManager.Listen()
 
