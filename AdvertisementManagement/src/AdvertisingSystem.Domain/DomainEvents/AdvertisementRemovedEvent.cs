@@ -2,11 +2,13 @@ namespace AdvertisingSystem.Domain.DomainEvents;
 
 public class AdvertisementRemovedEvent : IDomainEvent
 {
-    public AdvertisementRemovedEvent(long advertisementIdf)
+    public AdvertisementRemovedEvent(long advertisementId)
     {
-        AdvertisementIdf = advertisementIdf;
+        AdvertisementId = advertisementId;
+        Id = Guid.NewGuid();
     }
 
     public object Data { get; set; }
-    public long AdvertisementIdf { get; set; }
+    public Guid Id { get; set; }
+    public long AdvertisementId { get; set; }
 }

@@ -109,6 +109,7 @@ services:
       - Kestrel__Endpoints__Http__Url=http://0.0.0.0:5006
       - Vault__Address=http://vault:8200
       - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
+      - thumbnail-service=thumbnail-management.api
   
   email-sender:
     build:
@@ -126,7 +127,7 @@ services:
     networks:
       - internal
   
-  thumbnail-management:
+  thumbnail-management.api:
     build:
       context: ./ThumbnailManagement
       dockerfile: ./Dockerfile
@@ -140,7 +141,7 @@ services:
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
       vault_address: http://vault:8200
       port_number: 5002
-      host_name: thumbnail-management
+      host_name: thumbnail-management.api
     networks:
       - internal
   

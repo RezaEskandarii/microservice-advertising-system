@@ -11,6 +11,7 @@ using File;
 using Google.Protobuf;
 using Grpc.Net.Client;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace AdvertisingSystem.Application.Handlers.CommandHandlers;
 
@@ -18,16 +19,16 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IEventPublisher _eventPublisher;
-    private readonly IServiceDiscovery _serviceDiscovery;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
 
     public CreateAdvertisementCommandHandler(IAdvertisementRepository advertisementRepository,
-        IEventPublisher eventPublisher, IServiceDiscovery serviceDiscovery, IMapper mapper)
+        IEventPublisher eventPublisher, IMapper mapper, IConfiguration configuration)
     {
         _advertisementRepository = advertisementRepository;
         _eventPublisher = eventPublisher;
-        _serviceDiscovery = serviceDiscovery;
         _mapper = mapper;
+        _configuration = configuration;
     }
 
     public async Task<GetAdvertisementViewModel> Handle(CreateAdvertisementCommand command,
@@ -42,7 +43,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         await UploadImagesAsync(command, result.Id);
 
         var obj = new { Title = result.Title, UserEmail = "" };
-        var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(obj));
+        var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(obj), Guid.NewGuid());
 
         await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
 
@@ -54,11 +55,10 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         if (!command.Thumbnails.Any())
             return;
 
-        var discoveredAddresses = await _serviceDiscovery.DiscoverAsync("thumbnail-service");
-        var address = discoveredAddresses.FirstOrDefault();
-
+        var thumbnailServiceAddr = _configuration["thumbnail-service"];
+        
         // Create a gRPC channel and client
-        var channel = GrpcChannel.ForAddress(address.FullAddress);
+        var channel = GrpcChannel.ForAddress(thumbnailServiceAddr);
         var client = new FileService.FileServiceClient(channel);
 
         // Read the image file into a byte array
