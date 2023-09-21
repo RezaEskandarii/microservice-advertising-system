@@ -3,22 +3,15 @@ package database
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
-	"thumbnail-management/pkg/secret_manager"
+	"thumbnail-management/pkg/env_manager"
 )
-
-var (
-	secretManager *secret_manager.SecretManager
-)
-
-func init() {
-	secretManager = secret_manager.New()
-}
 
 func GetDb(ctx context.Context) *sql.DB {
 
-	db, err := sql.Open("postgres", fmt.Sprintf("%s", secretManager.GetConnectionString(ctx, "advertisement_thumbnails")))
+	sdn := env_manager.Load("thumbnail_management_full_db")
+
+	db, err := sql.Open("postgres", sdn)
 	if err != nil {
 		log.Fatal(err)
 	}

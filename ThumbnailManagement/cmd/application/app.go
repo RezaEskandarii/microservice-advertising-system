@@ -1,12 +1,11 @@
 package application
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"thumbnail-management/grpc"
-	"thumbnail-management/pkg/secret_manager"
+	"thumbnail-management/pkg/env_manager"
 )
 
 type App struct {
@@ -18,15 +17,15 @@ func New() *App {
 
 func (a App) Run(portNumber int64) {
 
-	secretManager := secret_manager.New()
 	dbName := "advertisement_thumbnails"
 
-	ctx := context.Background()
+	baseSdn := env_manager.Load("thumbnail_management_db")
+	fullSdn := env_manager.Load("thumbnail_management_db")
 
-	a.createDatabase(dbName, fmt.Sprintf("%s", secretManager.GetConnectionString(ctx, "")))
+	a.createDatabase(dbName, baseSdn)
 
 	// Connect to PostgreSQL
-	db, err := sql.Open("postgres", fmt.Sprintf("%s", secretManager.GetConnectionString(ctx, "advertisement_thumbnails")))
+	db, err := sql.Open("postgres", fullSdn)
 	if err != nil {
 		log.Fatal(err)
 	}

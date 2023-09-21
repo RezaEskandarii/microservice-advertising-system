@@ -142,6 +142,8 @@ services:
       vault_address: http://vault:8200
       port_number: 5002
       host_name: thumbnail-management.api
+      thumbnail_management_base_db: "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
+      thumbnail_management_full_db: "user=postgres password=123456 host=postgres port=5432 dbname=advertisement_thumbnails sslmode=disable"
     networks:
       - internal
   

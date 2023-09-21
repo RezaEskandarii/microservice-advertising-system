@@ -13,6 +13,6 @@ func LoadEnv(key string) string {
 	return os.Getenv(key)
 }
 
-func GetFromOsENV(key string) string {
+func Load(key string) string {
 	return os.Getenv(key)
 }
