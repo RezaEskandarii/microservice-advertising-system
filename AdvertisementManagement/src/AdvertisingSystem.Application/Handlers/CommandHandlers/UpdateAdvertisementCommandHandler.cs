@@ -19,21 +19,24 @@ public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertise
         _mapper = mapper;
     }
 
-    public async Task<GetAdvertisementViewModel> Handle(UpdateAdvertisementCommand command, CancellationToken cancellationToken)
+    public async Task<GetAdvertisementViewModel> Handle(UpdateAdvertisementCommand command,
+        CancellationToken cancellationToken)
     {
         var advertisement = await _repository.GetByIdAsync(command.AdvertsiementId, command.UserId);
 
-        advertisement.Title = command.Title;
-        advertisement.Description = command.Description;
-        advertisement.Price = new Price(command.Price, "USDT");
-        advertisement.ExpiresAt = new ExpiryDate(command.ExpiresAt);
-        advertisement.Address = command.Address;
-        advertisement.CategoryId = command.CategoryId;
+        advertisement.UpdateTitle(command.Title);
+        advertisement.UpdateDescription(command.Description);
+        advertisement.UpdatePrice(new Price(command.Price, "USDT"));
+        advertisement.UpdateExpiresAt(new ExpiryDate(command.ExpiresAt));
+        advertisement.UpdateAddress(command.Address);
+        advertisement.UpdateCategoryId(command.CategoryId);
+
         if (command.Thumbnails.Any())
         {
-            advertisement.Thumbnails = command.Thumbnails.Select(t => t.FileName).ToArray();
+            advertisement.UpdateThumbnails(command.Thumbnails.Select(t => t.FileName).ToArray());
         }
-        advertisement.Tags = command.Tags;
+
+        advertisement.UpdateTags(command.Tags);
 
         var result = await _repository.UpdateAsync(advertisement);
         return _mapper.Map<GetAdvertisementViewModel>(result);

@@ -7,21 +7,6 @@ public class Advertisement : AggregateRoot
     private Advertisement()
     {
     }
-
-    public string Title { get; set; }
-    public string UserId { get; set; }
-    public string Description { get; set; }
-    public Price? Price { get; set; }
-    public CreateDate CreatedAt { get; set; }
-    public UpdateDate UpdatedAt { get; set; }
-    public ExpiryDate ExpiresAt { get; set; }
-    public Address? Address { get; set; }
-    public int CategoryId { get; set; }
-    public string[]? Tags { get; set; }
-    public string[]? Thumbnails { get; set; }
-    public List<Property>? Properties { get; set; } = new List<Property>();
-    public int? LocationId { get; set; }
-
     public static Advertisement CreateNew(string title, string userId, string description, Price price,
         CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt, Address? address, int categoryId,
         string[]? tags, List<Property>? properties, int? locaqtionId)
@@ -41,5 +26,60 @@ public class Advertisement : AggregateRoot
             Properties = properties,
             LocationId = locaqtionId
         };
+    }
+    
+    public string Title { get; private set; }
+    public string UserId { get; private set; }
+    public string Description { get; private set; }
+    public Price? Price { get; private set; }
+    public CreateDate CreatedAt { get; private set; }
+    public UpdateDate UpdatedAt { get; private set; }
+    public ExpiryDate ExpiresAt { get; private set; }
+    public Address? Address { get; private set; }
+    public int CategoryId { get; private set; }
+    public string[]? Tags { get; private set; }
+    public string[]? Thumbnails { get; private set; } = new[] { "" };
+    public List<Property>? Properties { get; private set; } = new List<Property>();
+    public int? LocationId { get; private set; }
+    
+    
+    public void UpdateTitle(string newTitle)
+    {
+        Title = newTitle;
+    }
+    
+    public void UpdateDescription(string newDescription)
+    {
+        Description = newDescription;
+    }
+    
+    public void UpdatePrice(Price newPrice)
+    {
+        Price = newPrice;
+    }
+    
+    public void UpdateExpiresAt(ExpiryDate newExpiresAt)
+    {
+        ExpiresAt = newExpiresAt;
+    }
+    
+    public void UpdateAddress(Address newAddress)
+    {
+        Address = newAddress;
+    }
+    
+    public void UpdateCategoryId(int newCategoryId)
+    {
+        CategoryId = newCategoryId;
+    }
+
+    public void UpdateTags(string[]? newTags)
+    {
+        this.Tags = newTags;
+    }
+
+    public void UpdateThumbnails(string[] newThumbnails)
+    {
+        Thumbnails = newThumbnails;
     }
 }

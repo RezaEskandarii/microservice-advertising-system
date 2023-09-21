@@ -38,9 +38,9 @@ public class AdvertisementRepository : IAdvertisementRepository
     public async Task<Advertisement> UpdateAsync(long id, Advertisement advertisement)
     {
         var entity = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id);
-        entity.Title = advertisement.Title;
-        entity.Description = advertisement.Description;
-        entity.Tags = advertisement.Tags;
+        entity.UpdateTitle(advertisement.Title);
+        entity.UpdateDescription(advertisement.Description);
+        entity.UpdateTags(advertisement.Tags);
         var result = _context.Advertisements.Update(entity);
         await _context.SaveChangesAsync();
 
@@ -84,12 +84,12 @@ public class AdvertisementRepository : IAdvertisementRepository
 
         if (advertisement.Thumbnails == null)
         {
-            advertisement.Thumbnails = new[] { thumbnailFileName };
+            advertisement.UpdateThumbnails(new[] { thumbnailFileName });
         }
         else
         {
             var thumbnails = new List<string>(advertisement.Thumbnails) { thumbnailFileName };
-            advertisement.Thumbnails = thumbnails.ToArray();
+            advertisement.UpdateThumbnails(thumbnails.ToArray());
         }
 
         _context.Advertisements.Update(advertisement);
