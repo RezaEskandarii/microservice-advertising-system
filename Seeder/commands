@@ -1,4 +1,0 @@
-vault server -dev  -dev-root-token-id 58ec2667-a9f4-455b-b89b-914fe565b7ea  -config=config.hcl
-
-
-protoc --go_out=. --go-grpc_out=. file.proto
