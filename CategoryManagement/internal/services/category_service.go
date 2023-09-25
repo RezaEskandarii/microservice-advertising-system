@@ -1,7 +1,9 @@
 package services
 
-import . "category-management/internal/repositories"
-import . "category-management/internal/models"
+import (
+	. "category-management/internal/models"
+	. "category-management/internal/repositories"
+)
 
 type CategoryService struct {
 	repo CategoryRepository
