@@ -69,7 +69,7 @@ services:
     networks:
       - internal
     environment:
-      - DefaultConnection=Server=postgres;Port=5432;Database=AdvertisementsIdentityDB;User Id=postgres;Password=123456
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=AdvertisementsIdentityDB;User Id=postgres;Password=123456
       - Kestrel__Endpoints__Http__Url=http://0.0.0.0:5004
       - Logging__LogLevel__Default=Information
       - Logging__LogLevel__Microsoft.AspNetCore=Warning
@@ -142,6 +142,8 @@ services:
       - vault
       - consul
     environment:
+      categories_full_db_connection: user=postgres password=123456 host=postgres port=5432 dbname=category_management sslmode=disable
+      categories_base_db_connection: user=postgres password=123456 host=postgres port=5432 sslmode=disable
       vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
       vault_address: http://vault:8200
     networks:

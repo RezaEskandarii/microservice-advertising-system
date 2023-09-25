@@ -11,13 +11,9 @@ namespace AdvertisingSystem.Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfraStructureServices(this IServiceCollection services)
+    public static IServiceCollection AddInfraStructureServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
