@@ -17,6 +17,6 @@ public class CreateAdvertisementCommand : IRequest<GetAdvertisementViewModel>
     public int CategoryId { get; set; }
     public ICollection<ThumbnailFileViewModel> Thumbnails { get; set; } = new List<ThumbnailFileViewModel>();
     public string[]? Tags { get; set; }
-    public List<Property> Properties { get; set; } = new();
+    public List<Property>? Properties { get; set; } = new();
     public int? LocationId { get; set; }
 }

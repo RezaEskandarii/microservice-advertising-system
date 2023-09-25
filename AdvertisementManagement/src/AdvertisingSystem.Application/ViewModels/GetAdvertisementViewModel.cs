@@ -15,5 +15,6 @@ public class GetAdvertisementViewModel
     public Address? Address { get; set; }
     public int CategoryId { get; set; }
     public ICollection<string> Thumbnails { get; set; } = new List<string>();
+    public ICollection<KeyValuePair<string, string>>? Properties { get; set; }
     public string[]? Tags { get; set; }
 }

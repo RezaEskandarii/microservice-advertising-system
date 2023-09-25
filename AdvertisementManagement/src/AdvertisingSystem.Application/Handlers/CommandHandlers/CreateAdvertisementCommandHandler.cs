@@ -40,12 +40,12 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
             command.Address, command.CategoryId, command.Tags, command.Properties, command.LocationId);
 
         var result = await _advertisementRepository.AddAsync(advertisement);
-        await UploadImagesAsync(command, result.Id);
+        UploadImagesAsync(command, result.Id);
 
         var obj = new { Title = result.Title, UserEmail = "" };
         var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(obj), Guid.NewGuid());
 
-        await _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
+        _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
 
         return _mapper.Map<GetAdvertisementViewModel>(result);
     }
@@ -56,7 +56,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
             return;
 
         var thumbnailServiceAddr = _configuration["thumbnail-service"];
-        
+
         // Create a gRPC channel and client
         var channel = GrpcChannel.ForAddress(thumbnailServiceAddr);
         var client = new FileService.FileServiceClient(channel);

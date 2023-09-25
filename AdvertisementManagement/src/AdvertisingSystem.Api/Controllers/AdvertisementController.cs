@@ -3,8 +3,10 @@ using AdvertisingSystem.Api.ViewModels;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Application.ViewModels;
+using AdvertisingSystem.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace AdvertisingSystem.Api.Controllers;
 
@@ -13,19 +15,20 @@ namespace AdvertisingSystem.Api.Controllers;
 public class AdvertisementController : BaseController
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<AdvertisementController> _logger;
 
-    public AdvertisementController(IMediator mediator)
+    public AdvertisementController(IMediator mediator, ILogger<AdvertisementController> logger) : base(logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateAsync([FromForm] CreateAdvertisementCommand command,
-        [FromForm] List<IFormFile> thumbnails)
+    public async Task<ActionResult> CreateAsync([FromForm] CreateAdvertisementCommand command)
     {
         command.UserId = GetUserIdFromToken();
         command.Thumbnails = await GetThumbnailsFromRequestAsync();
-
+      
         var result = await _mediator.Send(command);
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
@@ -72,7 +75,7 @@ public class AdvertisementController : BaseController
         {
             using var memoryStream = new MemoryStream();
             await thumbnail.CopyToAsync(memoryStream);
-            
+
             result.Add(new ThumbnailFileViewModel()
             {
                 Bytes = memoryStream.ToArray(),
