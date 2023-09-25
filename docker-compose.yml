@@ -69,14 +69,14 @@ services:
     networks:
       - internal
     environment:
-      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=AdvertisementsIdentityDB;User Id=postgres;Password=123456
-      - Kestrel__Endpoints__Http__Url=http://0.0.0.0:5004
-      - Logging__LogLevel__Default=Information
-      - Logging__LogLevel__Microsoft.AspNetCore=Warning
-      - Vault__Address=http://vault:8200
-      - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
-      - AllowedHosts=*
-      - JWTSecretKey="TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM="
+      ConnectionStrings__DefaultConnection: "Server=postgres;Port=5432;Database=AdvertisementsIdentityDB;User Id=postgres;Password=123456"
+      Kestrel__Endpoints__Http__Url: "http://0.0.0.0:5004"
+      Logging__LogLevel__Default: "Information"
+      Logging__LogLevel__Microsoft.AspNetCore: "Warning"
+      Vault__Address: "http://vault:8200"
+      Vault__Token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
+      AllowedHosts: "*"
+      JWTSecretKey: "TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM="
   
   advertisement-management.api:
     build:
@@ -89,14 +89,14 @@ services:
     networks:
       - internal
     environment:
-      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=AdvertisementsDB;User Id=postgres;Password=123456
-      - Logging__LogLevel__Default=Information
-      - Logging__LogLevel__Microsoft.AspNetCore=Warning
-      - AllowedHosts=*
-      - Kestrel__Endpoints__Http__Url=http://0.0.0.0:5006
-      - Vault__Address=http://vault:8200
-      - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
-      - thumbnail-service=thumbnail-management.api
+      ConnectionStrings__DefaultConnection: "Server=postgres;Port=5432;Database=AdvertisementsDB;User Id=postgres;Password=123456"
+      Logging__LogLevel__Default: "Information"
+      Logging__LogLevel__Microsoft.AspNetCore: "Warning"
+      AllowedHosts: "*"
+      Kestrel__Endpoints__Http__Url: "http://0.0.0.0:5006"
+      Vault__Address: "http://vault:8200"
+      Vault__Token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
+      thumbnail-service: "thumbnail-management.api"
   
   email-sender.api:
     build:
@@ -124,8 +124,8 @@ services:
       - vault
       - consul
     environment:
-      vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
-      vault_address: http://vault:8200
+      vault_token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
+      vault_address: "http://vault:8200"
       port_number: 5002
       host_name: thumbnail-management.api
       thumbnail_management_base_db: "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
@@ -142,10 +142,10 @@ services:
       - vault
       - consul
     environment:
-      categories_full_db_connection: user=postgres password=123456 host=postgres port=5432 dbname=category_management sslmode=disable
-      categories_base_db_connection: user=postgres password=123456 host=postgres port=5432 sslmode=disable
-      vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
-      vault_address: http://vault:8200
+      categories_full_db_connection: "user=postgres password=123456 host=postgres port=5432 dbname=category_management sslmode=disable"
+      categories_base_db_connection: "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
+      vault_token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
+      vault_address: "http://vault:8200"
     networks:
       - internal
 
@@ -180,13 +180,13 @@ services:
       - internal
     restart: always
     environment:
-      - JWTSecretKey=TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM=
-      - Logging__LogLevel__Default=Information
-      - Logging__LogLevel__Microsoft.AspNetCore=Warning
-      - AllowedHosts=*
-      - Kestrel__Endpoints__http__Url=http://0.0.0.0:5009
-      - Vault__Address=http://vault:8200
-      - Vault__Token=58ec2667-a9f4-455b-b89b-914fe565b7ea
+      JWTSecretKey: "TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM="
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+      AllowedHosts: "*"
+      Kestrel__Endpoints__http__Url: "http://0.0.0.0:5009"
+      Vault__Address: "http://vault:8200"
+      Vault__Token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
 
 networks:
   internal:

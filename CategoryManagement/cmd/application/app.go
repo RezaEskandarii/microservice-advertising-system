@@ -85,6 +85,8 @@ func (a App) createCategoriesTable(db *sql.DB) error {
 		    properties JSON
 		)
 	`
+	log.Println(createTableQuery)
+
 	_, err := db.Exec(createTableQuery)
 	if err != nil {
 		return err

@@ -125,7 +125,7 @@ func (r *CategoryPostgresRepository) FindAll() ([]Category, error) {
 
 // findSubcategories
 func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category, error) {
-	rows, err := r.db.Query("SELECT id, name,parent_id FROM categories WHERE parent_id = $1", parentID)
+	rows, err := r.db.Query("SELECT id, name, parent_id, properties FROM categories WHERE parent_id = $1", parentID)
 	if err != nil {
 		return nil, handleNoRowsError(err)
 	}
@@ -134,7 +134,7 @@ func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category
 	subcategories := []Category{}
 	for rows.Next() {
 		category := Category{}
-		err := rows.Scan(&category.ID, &category.Name, &category.ParentID)
+		err := rows.Scan(&category.ID, &category.Name, &category.ParentID, &category.Properties)
 		if err != nil {
 			return nil, err
 		}
@@ -155,7 +155,7 @@ func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category
 func (r *CategoryPostgresRepository) Seed() error {
 
 	db := r.db
-	jsonFile, err := os.Open("./categories.json")
+	jsonFile, err := os.Open("./categories_seed_data.json")
 	if err != nil {
 		log.Fatal(err)
 	}
