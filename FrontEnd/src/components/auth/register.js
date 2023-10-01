@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Container, Grid, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Grid, MenuItem, Select, TextField, Typography} from "@mui/material";
 import axios from "axios";
 import {ApiRoutes} from "../../constants/apiRoutes";
+import CustomSnackbar from "../snackbar";
 
 const RegistrationPage = () => {
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
     const handleRegistration = () => {
-        console.log(formData);
+        setSnackbarOpen(true);
     };
 
     const [formData, setFormData] = useState({
@@ -69,7 +72,7 @@ const RegistrationPage = () => {
     };
 
     return (<>
-        <Container sx={{display: 'flex', justifyContent: 'center', mt: 4}}>
+        <Container sx={{display: 'flex', justifyContent: 'center', mt: 1}}>
             <Box
                 sx={{
                     backgroundColor: 'white',
@@ -78,183 +81,163 @@ const RegistrationPage = () => {
                     maxWidth: '70%',
                     alignContent: 'center',
                     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                }}
-            >
-                <div style={{backgroundColor: 'white', padding: '20px', width: '70%', margin: 'center'}}>
-                    <Typography variant="h2" sx={{mb: 4}}>
-                        Registration
-                    </Typography>
-                    <form>
+                    marginTop: '80px'
+                }}>
 
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="First Name"
-                                    variant="outlined"
-                                    size="small"
-                                    name="firstName"
-                                    value={formData.firstName}
-                                    onChange={handleChange}
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="Last Name"
-                                    variant="outlined"
-                                    size="small"
-                                    name="lastName"
-                                    value={formData.lastName}
-                                    onChange={handleChange}
-                                    fullWidth
-                                />
-                            </Grid>
+                <Typography variant="h5" sx={{mb: 4}}>
+                    Registration
+                </Typography>
+                <form>
+
+                    <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                            <TextField
+                                label="First Name"
+                                variant="outlined"
+                                size="small"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                label="Last Name"
+                                variant="outlined"
+                                size="small"
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <TextField
+                        label="Cell Number"
+                        variant="outlined"
+                        size="small"
+                        name="cellNumber"
+                        value={formData.cellNumber}
+                        onChange={handleChange}
+                        fullWidth
+                        sx={{mt: 2}}
+                    />
+
+                    <Grid container spacing={2}>
+                        <Grid item xs={6}>
+
+                            <Select
+                                sx={{mt: 2}}
+                                labelId="country-label"
+                                id="country"
+                                value={selectedCountry}
+                                onChange={handleCountryChange}
+                                label="Country"
+                                size="small"
+                                fullWidth
+                            >
+                                <MenuItem value="">
+                                    <em>Select Country</em>
+                                </MenuItem>
+                                {Object.keys(locations).map(country => (
+                                    <MenuItem key={country} value={country}>{country}</MenuItem>))}
+                            </Select>
                         </Grid>
 
-                        <TextField
-                            label="Cell Number"
-                            variant="outlined"
-                            size="small"
-                            name="cellNumber"
-                            value={formData.cellNumber}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
+                        <Grid item xs={6}>
 
-                        <TextField
-                            label="Street"
-                            variant="outlined"
-                            size="small"
-                            name="street"
-                            value={formData.address.street}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
+                            <Select
+                                sx={{mt: 2}}
+                                labelId="city-label"
+                                id="city"
+                                value={selectedCity}
+                                onChange={handleCityChange}
+                                label="City"
+                                size="small"
+                                fullWidth>
+                                <MenuItem value="">
+                                    <em>Select City</em>
+                                </MenuItem>
+                                {cities.map(city => (<MenuItem key={city} value={city}>{city}</MenuItem>))}
+                            </Select>
 
-
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-
-                                <InputLabel id="country-label">Country</InputLabel>
-                                <Select
-                                    labelId="country-label"
-                                    id="country"
-                                    value={selectedCountry}
-                                    onChange={handleCountryChange}
-                                    label="Country"
-                                    size="small"
-                                    fullWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>Select Country</em>
-                                    </MenuItem>
-                                    {Object.keys(locations).map(country => (
-                                        <MenuItem key={country} value={country}>{country}</MenuItem>
-                                    ))}
-                                </Select>
-
-                            </Grid>
-                            <Grid item xs={6}>
-
-                                <InputLabel id="city-label">City</InputLabel>
-                                <Select
-                                    labelId="city-label"
-                                    id="city"
-                                    value={selectedCity}
-                                    onChange={handleCityChange}
-                                    label="City"
-                                    size="small"
-                                    fullWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>Select City</em>
-                                    </MenuItem>
-                                    {cities.map(city => (
-                                        <MenuItem key={city} value={city}>{city}</MenuItem>
-                                    ))}
-                                </Select>
-
-                            </Grid>
                         </Grid>
+                    </Grid>
 
-                        <TextField
-                            label="State"
-                            variant="outlined"
-                            size="small"
-                            name="state"
-                            value={formData.address.state}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
-
-                        <TextField
-                            label="Postal Code"
-                            variant="outlined"
-                            size="small"
-                            name="postalCode"
-                            value={formData.address.postalCode}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
+                    <TextField
+                        label="Postal Code"
+                        variant="outlined"
+                        size="small"
+                        name="address.postalCode"
+                        value={formData.address.postalCode}
+                        onChange={handleChange}
+                        fullWidth
+                        sx={{mt: 2}}
+                    />
 
 
-                        <TextField
-                            label="Email"
-                            variant="outlined"
-                            size="small"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
+                    <TextField
+                        label="Email"
+                        variant="outlined"
+                        size="small"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        fullWidth
+                        sx={{mt: 2}}
+                    />
 
-                        <TextField
-                            label="Phone Number"
-                            variant="outlined"
-                            size="small"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
+                    <TextField
+                        label="Phone Number"
+                        variant="outlined"
+                        size="small"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        fullWidth
+                        sx={{mt: 2}}
+                    />
 
-                        <TextField
-                            label="Password"
-                            variant="outlined"
-                            size="small"
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
+                    <TextField
+                        label="Password"
+                        variant="outlined"
+                        size="small"
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        fullWidth
+                        sx={{mt: 2}}
+                    />
 
-                        <TextField
-                            label="Confirm Password"
-                            variant="outlined"
-                            size="small"
-                            type="password"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            fullWidth
-                            sx={{mt: 2}}
-                        />
+                    <TextField
+                        label="Confirm Password"
+                        variant="outlined"
+                        size="small"
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        fullWidth
+                        sx={{mt: 2}}
+                    />
 
-                        <Button variant="contained" onClick={handleRegistration} sx={{mt: 4}}>
-                            Register
-                        </Button>
-                    </form>
-                </div>
+                    <Button variant="contained" onClick={handleRegistration} sx={{mt: 4}}>
+                        Register
+                    </Button>
+                </form>
+
             </Box>
         </Container>
+
+        <CustomSnackbar
+            open={snackbarOpen}
+            message={"dd"}
+            severity={"success"}
+        />
+
     </>);
 };
 
