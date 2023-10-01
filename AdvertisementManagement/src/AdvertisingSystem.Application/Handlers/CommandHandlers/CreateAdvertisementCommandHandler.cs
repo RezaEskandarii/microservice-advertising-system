@@ -1,6 +1,5 @@
 using System.Text.Json;
 using AdvertisingSystem.Application.UseCases.Commands;
-using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Application.ViewModels;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.DomainEvents;

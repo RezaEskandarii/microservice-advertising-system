@@ -62,6 +62,11 @@ app.UseAuthorization();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
+app.UseCors(c =>
+{
+    c.AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
+});
 await app.UseOcelot();
 app.Run();
