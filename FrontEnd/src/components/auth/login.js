@@ -1,8 +1,15 @@
 import {Box, Button, Container, Grid, TextField, Typography} from "@mui/material";
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import HttpService from "../../services/httpService";
+import {ApiRoutes} from "../../constants/apiRoutes";
+import {NotificationContext} from "../notification/notificationContext ";
 
 
 const LoginPage = () => {
+
+    const httpService = new HttpService();
+    const {showNotification} = useContext(NotificationContext);
+
     const [authParams, setAuthParams] = useState({
         username: '', password: ''
     });
@@ -17,6 +24,15 @@ const LoginPage = () => {
     };
 
     const handleLoginForm = () => {
+
+        // const resp = httpService.post(ApiRoutes.Login, authParams)
+        //     .then(resp => {
+        //         console.log(resp)
+        //     })
+        //     .catch(error => {
+        //         const errors = error.response.data.errorMessages;
+        //         alert(errors)
+        //     })
 
     };
 

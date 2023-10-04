@@ -4,6 +4,7 @@ import RegistrationPage from "./components/auth/register";
 import React from "react";
 import Header from "./components/header";
 import LoginPage from "./components/auth/login";
+import {NotificationProvider} from "./components/notification/notificationContext ";
 
 
 function NoPage() {
@@ -11,19 +12,19 @@ function NoPage() {
 }
 
 const App = () => {
-    return (
-
-        <BrowserRouter>
-            <Header/>
-            <Routes>
-                <Route path="/">
-                    <Route/>
-                    <Route path="*" element={<NoPage/>}/>
-                    <Route path="Registration" element={<RegistrationPage/>}/>
-                    <Route path="Login" element={<LoginPage/>}/>
-                </Route>
-            </Routes>
-        </BrowserRouter>
+    return (<NotificationProvider>
+            <BrowserRouter>
+                <Header/>
+                <Routes>
+                    <Route path="/">
+                        <Route/>
+                        <Route path="*" element={<NoPage/>}/>
+                        <Route path="Registration" element={<RegistrationPage/>}/>
+                        <Route path="Login" element={<LoginPage/>}/>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </NotificationProvider>
 
     );
 };

@@ -15,19 +15,21 @@ class HttpService {
         });
     }
 
-    get(url, config) {
+    get(url, config): Promise<> {
         return this.instance.get(url, config);
     }
 
-    post(url, data, config) {
+    post(url, data, config): Promise<> {
         return this.instance.post(url, data, config);
     }
 
-    put(url, data, config) {
+    put(url, data, config): Promise<> {
         return this.instance.put(url, data, config);
     }
 
-    delete(url, config) {
+    delete(url, config): Promise<> {
         return this.instance.delete(url, config);
     }
 }
+
+export default HttpService;
