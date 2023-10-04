@@ -1,24 +1,31 @@
 import './App.css';
-import {BrowserRouter, Route, Router, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import RegistrationPage from "./components/auth/register";
 import React from "react";
 import Header from "./components/header";
+import LoginPage from "./components/auth/login";
+
 
 function NoPage() {
     return (<div><h3>not found</h3></div>);
 }
 
 const App = () => {
-    return (<BrowserRouter>
-        <Header/>
-        <Routes>
-            <Route path="/">
-                <Route/>
-                <Route path="*" element={<NoPage/>}/>
-                <Route path="Registration" element={<RegistrationPage/>}/>
-            </Route>
-        </Routes>
-    </BrowserRouter>);
+    return (
+
+        <BrowserRouter>
+            <Header/>
+            <Routes>
+                <Route path="/">
+                    <Route/>
+                    <Route path="*" element={<NoPage/>}/>
+                    <Route path="Registration" element={<RegistrationPage/>}/>
+                    <Route path="Login" element={<LoginPage/>}/>
+                </Route>
+            </Routes>
+        </BrowserRouter>
+
+    );
 };
 
 

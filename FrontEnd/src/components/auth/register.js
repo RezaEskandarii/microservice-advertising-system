@@ -1,16 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Container, Grid, MenuItem, Select, TextField, Typography} from "@mui/material";
-import axios from "axios";
-import {ApiRoutes} from "../../constants/apiRoutes";
-import CustomSnackbar from "../snackbar";
+import {
+    Box, Button, Container, Grid, MenuItem, Select, TextField, Typography,
+} from '@mui/material';
+import axios from 'axios';
+import {ApiRoutes} from '../../constants/apiRoutes';
 
 const RegistrationPage = () => {
-
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-    const handleRegistration = () => {
-        setSnackbarOpen(true);
-    };
 
     const [formData, setFormData] = useState({
         firstName: '', lastName: '', cellNumber: '', address: {
@@ -18,24 +13,22 @@ const RegistrationPage = () => {
         }, email: '', phoneNumber: '', password: '', confirmPassword: '',
     });
 
-
     const [locations, setLocations] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
     const [cities, setCities] = useState([]);
 
-    useEffect(() => {
 
-        axios.get(ApiRoutes.Locations)
-            .then(response => {
+    useEffect(() => {
+        axios
+            .get(ApiRoutes.Locations)
+            .then((response) => {
                 setLocations(response.data);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error fetching locations:', error);
             });
-
     }, []);
-
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -59,19 +52,30 @@ const RegistrationPage = () => {
         setSelectedCountry(selectedCountry);
 
         const countryLocations = locations[selectedCountry] || [];
-        const cityNames = countryLocations.map(location => location.city_name);
+        const cityNames = countryLocations.map((location) => location.city_name);
         setCities(cityNames);
-        formData.address.country = selectedCountry;
+        setFormData((prevFormData) => ({
+            ...prevFormData, address: {
+                ...prevFormData.address, country: selectedCountry,
+            },
+        }));
     };
-
 
     const handleCityChange = (event) => {
         const selectedCity = event.target.value;
         setSelectedCity(selectedCity);
-        formData.address.city = selectedCity;
+        setFormData((prevFormData) => ({
+            ...prevFormData, address: {
+                ...prevFormData.address, city: selectedCity,
+            },
+        }));
     };
 
-    return (<>
+    const registerUser = () => {
+        console.log(formData)
+    };
+
+    return (
         <Container sx={{display: 'flex', justifyContent: 'center', mt: 1}}>
             <Box
                 sx={{
@@ -81,14 +85,13 @@ const RegistrationPage = () => {
                     maxWidth: '70%',
                     alignContent: 'center',
                     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                    marginTop: '80px'
-                }}>
-
+                    marginTop: '80px',
+                }}
+            >
                 <Typography variant="h5" sx={{mb: 4}}>
                     Registration
                 </Typography>
                 <form>
-
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <TextField
@@ -127,7 +130,6 @@ const RegistrationPage = () => {
 
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-
                             <Select
                                 sx={{mt: 2}}
                                 labelId="country-label"
@@ -141,13 +143,13 @@ const RegistrationPage = () => {
                                 <MenuItem value="">
                                     <em>Select Country</em>
                                 </MenuItem>
-                                {Object.keys(locations).map(country => (
-                                    <MenuItem key={country} value={country}>{country}</MenuItem>))}
+                                {Object.keys(locations).map((country) => (<MenuItem key={country} value={country}>
+                                    {country}
+                                </MenuItem>))}
                             </Select>
                         </Grid>
 
                         <Grid item xs={6}>
-
                             <Select
                                 sx={{mt: 2}}
                                 labelId="city-label"
@@ -156,13 +158,15 @@ const RegistrationPage = () => {
                                 onChange={handleCityChange}
                                 label="City"
                                 size="small"
-                                fullWidth>
+                                fullWidth
+                            >
                                 <MenuItem value="">
                                     <em>Select City</em>
                                 </MenuItem>
-                                {cities.map(city => (<MenuItem key={city} value={city}>{city}</MenuItem>))}
+                                {cities.map((city) => (<MenuItem key={city} value={city}>
+                                    {city}
+                                </MenuItem>))}
                             </Select>
-
                         </Grid>
                     </Grid>
 
@@ -176,7 +180,6 @@ const RegistrationPage = () => {
                         fullWidth
                         sx={{mt: 2}}
                     />
-
 
                     <TextField
                         label="Email"
@@ -213,6 +216,7 @@ const RegistrationPage = () => {
                     />
 
                     <TextField
+                        required
                         label="Confirm Password"
                         variant="outlined"
                         size="small"
@@ -224,21 +228,15 @@ const RegistrationPage = () => {
                         sx={{mt: 2}}
                     />
 
-                    <Button variant="contained" onClick={handleRegistration} sx={{mt: 4}}>
+                    <Button variant="contained" onClick={() => registerUser()}
+                            sx={{mt: 4}}>
                         Register
                     </Button>
                 </form>
 
+
             </Box>
-        </Container>
-
-        <CustomSnackbar
-            open={snackbarOpen}
-            message={"dd"}
-            severity={"success"}
-        />
-
-    </>);
+        </Container>);
 };
 
 export default RegistrationPage;
