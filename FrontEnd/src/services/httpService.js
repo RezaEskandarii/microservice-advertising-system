@@ -6,7 +6,6 @@ class HttpService {
         this.accessToken = localStorage.getItem('accessToken');
         this.instance = axios.create();
 
-        // Add request interceptor
         this.instance.interceptors.request.use((config) => {
             if (this.accessToken) {
                 config.headers['Authorization'] = `Bearer ${this.accessToken}`;

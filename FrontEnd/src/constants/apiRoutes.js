@@ -2,5 +2,6 @@ export const apiBaseRoute = "http://127.0.0.1:5009/api/v1";
 
 export class ApiRoutes {
     static Locations = `${apiBaseRoute}/Locations`;
-    static Login = `${apiBaseRoute}/Identity/SignIn`;
+    static SignIn = `${apiBaseRoute}/Identity/SignIn`;
+    static SignUp = `${apiBaseRoute}/Identity/SignUp`;
 }

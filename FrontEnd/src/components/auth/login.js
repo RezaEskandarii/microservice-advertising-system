@@ -3,12 +3,14 @@ import React, {useState, useContext} from "react";
 import HttpService from "../../services/httpService";
 import {ApiRoutes} from "../../constants/apiRoutes";
 import {NotificationContext} from "../notification/notificationContext ";
-
+import {useNavigate} from "react-router-dom";
 
 const LoginPage = () => {
 
     const httpService = new HttpService();
     const {showNotification} = useContext(NotificationContext);
+    const navigate = useNavigate();
+
 
     const [authParams, setAuthParams] = useState({
         username: '', password: ''
@@ -25,14 +27,18 @@ const LoginPage = () => {
 
     const handleLoginForm = () => {
 
-        // const resp = httpService.post(ApiRoutes.Login, authParams)
-        //     .then(resp => {
-        //         console.log(resp)
-        //     })
-        //     .catch(error => {
-        //         const errors = error.response.data.errorMessages;
-        //         alert(errors)
-        //     })
+        httpService.post(ApiRoutes.SignIn, authParams)
+            .then(resp => {
+                const respObj = resp.data.responseObject;
+                localStorage.setItem("authToken", respObj.authToken);
+                localStorage.setItem("refreshToken", respObj.refreshToken);
+
+                navigate("/");
+            })
+            .catch(error => {
+                const errors = error.response.data.errorMessages;
+                showNotification(errors, 'warning');
+            })
 
     };
 
@@ -49,8 +55,7 @@ const LoginPage = () => {
                     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
                     marginTop: '80px',
                     display: 'flex',
-                }}
-            >
+                }}>
                 <Box sx={{flex: '1', backgroundImage: 'url(/images/login.jpg)', backgroundSize: 'cover'}}/>
                 <Box sx={{flex: '1', padding: '20px'}}>
                     <Typography variant="h5" sx={{mb: 24}}>
