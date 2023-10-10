@@ -1,8 +1,6 @@
 ﻿using AdvertisingSystem.Identity.Api.ViewModels;
 using AdvertisingSystem.Identity.Application.UseCases.Commands;
 using AdvertisingSystem.Identity.Shared.Constants;
-using AdvertisingSystem.Identity.Shared.Enums;
-using AdvertisingSystem.Identity.Shared.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

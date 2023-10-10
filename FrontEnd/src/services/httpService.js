@@ -8,7 +8,7 @@ class HttpService {
 
         this.instance.interceptors.request.use((config) => {
             if (this.accessToken) {
-                config.headers['Authorization'] = `Bearer ${this.accessToken}`;
+              ///  config.headers['Authorization'] = `Bearer ${this.accessToken}`;
             }
             return config;
         });

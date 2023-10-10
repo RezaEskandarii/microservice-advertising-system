@@ -1,8 +1,9 @@
 import React from 'react';
-import {AppBar, Toolbar, Typography, Container} from '@mui/material';
+import {AppBar, Container, TextField, Toolbar} from '@mui/material';
 import {Link} from 'react-router-dom';
 import {GetAuthToken} from "../helpers/tokenHelper";
 import jwt from "jwt-decode";
+import {Nav} from "react-bootstrap";
 
 const Header = () => {
 
@@ -22,7 +23,7 @@ const Header = () => {
         <Toolbar>
             <Container>
 
-                <nav>
+                <Nav>
                     {fullName && (<>
                         <Link style={{marginRight: 10, color: 'white', textDecoration: 'none'}}>
                             welcome {fullName}
@@ -42,7 +43,9 @@ const Header = () => {
                     {token ? <Link to="/login" style={{color: 'white', textDecoration: 'none'}}>
                         Profile
                     </Link> : null}
-                </nav>
+
+
+                </Nav>
             </Container>
         </Toolbar>
     </AppBar>);
