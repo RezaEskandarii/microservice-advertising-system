@@ -4,5 +4,5 @@ namespace AdvertisingSystem.Identity.Shared.Interfaces;
 
 public interface IDistributedTracer
 {
-    Task TraceAsync(TracingRequest tracingRequest);
+    void LogTraces(TracingRequest tracingRequest);
 }

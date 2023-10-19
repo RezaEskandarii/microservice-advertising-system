@@ -2,7 +2,6 @@
 using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Identity.Infrastructure.Services;
 using AdvertisingSystem.Identity.Shared.Interfaces;
-using AdvertisingSystem.Identity.Shared.ViewModels;
 using Jaeger;
 using Jaeger.Reporters;
 using Jaeger.Samplers;
@@ -15,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using OpenTracing;
 using OpenTracing.Contrib.NetCore.Configuration;
 using OpenTracing.Util;
+using OpenTelemetry.Trace;
 
 namespace AdvertisingSystem.Identity.Infrastructure;
 
@@ -26,8 +26,9 @@ public static class ConfigureServices
         services.AddLogging(options => options.AddConsole())
             .AddSingleton<IConfiguration>(configuration);
 
-        ConfigureJaegerTracer(services);
+        services.AddJaeger(configuration);
 
+        services.AddScoped<IHealthCheckService, HealthCheckService>();
         services.AddScoped<IDistributedTracer, DistributedTracer>();
         services.AddSingleton<ISecretManager, SecretManager>();
 
@@ -36,7 +37,6 @@ public static class ConfigureServices
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
-
         
         MigrateAsync(services).Wait();
 
@@ -45,28 +45,48 @@ public static class ConfigureServices
 
 
     // Configure Jaeger Tracer
-    private static void ConfigureJaegerTracer(IServiceCollection serviceCollection)
+    public static void AddJaeger(this IServiceCollection services, IConfiguration configuration)
     {
-        serviceCollection.AddOpenTracing();
-        // Adds the Jaeger Tracer.
-        serviceCollection.AddSingleton<ITracer>(sp =>
+        var config = configuration.GetSection("JaegerConfig").Get<JaegerConfig>();
+
+        if (!(config?.IsEnabled ?? false))
+            return;
+
+        if (string.IsNullOrEmpty(config?.Host))
+            throw new Exception("invalid JaegerConfig");
+
+        services.AddSingleton<ITracer>(serviceProvider =>
         {
-            var serviceName = sp.GetRequiredService<IWebHostEnvironment>().ApplicationName;
-            var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-            var reporter = new RemoteReporter.Builder().WithLoggerFactory(loggerFactory).WithSender(new UdpSender())
+            string serviceName = Assembly.GetEntryAssembly()?.GetName().Name;
+
+            ILoggerFactory loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
+            var sampler = new ProbabilisticSampler(config.SamplingRate);
+
+            var reporter = new RemoteReporter.Builder()
+                .WithLoggerFactory(loggerFactory)
+                .WithSender(new UdpSender(config.Host, config.Port, 0))
+                .WithFlushInterval(TimeSpan.FromSeconds(15))
+                .WithMaxQueueSize(300)
                 .Build();
-            var tracer = new Tracer.Builder(serviceName)
-                // The constant sampler reports every span.
-                .WithSampler(new ConstSampler(true))
-                // LoggingReporter prints every reported span to the logging framework.
+
+            ITracer tracer = new Tracer.Builder(serviceName)
+                .WithLoggerFactory(loggerFactory)
+                .WithSampler(sampler)
                 .WithReporter(reporter)
                 .Build();
+
+            GlobalTracer.Register(tracer);
+
             return tracer;
         });
 
-        serviceCollection.Configure<HttpHandlerDiagnosticOptions>(options =>
-            options.OperationNameResolver =
-                request => $"{request.Method.Method}: {request?.RequestUri?.AbsoluteUri}");
+        services.AddOpenTracing();
+        
+        services.opent()
+            .WithTracing(builder => builder
+                .AddAspNetCoreInstrumentation()
+                .AddConsoleExporter());
     }
 
     private static async Task MigrateAsync(IServiceCollection serviceCollection)
@@ -80,4 +100,12 @@ public static class ConfigureServices
             await context.Database.MigrateAsync();
         }
     }
+}
+
+public class JaegerConfig
+{
+    public bool IsEnabled { get; set; }
+    public double SamplingRate { get; set; }
+    public int Port { get; set; }
+    public string? Host { get; set; }
 }
