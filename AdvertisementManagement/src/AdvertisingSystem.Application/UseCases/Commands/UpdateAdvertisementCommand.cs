@@ -1,4 +1,3 @@
-using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Application.ViewModels;
 using AdvertisingSystem.Domain.ValueObjects;
 using MediatR;

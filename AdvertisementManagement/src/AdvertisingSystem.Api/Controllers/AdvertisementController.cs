@@ -3,10 +3,8 @@ using AdvertisingSystem.Api.ViewModels;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Application.ViewModels;
-using AdvertisingSystem.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace AdvertisingSystem.Api.Controllers;
 
