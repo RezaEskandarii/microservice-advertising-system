@@ -6,10 +6,8 @@ public class AdvertisementSpecifications
 {
     public bool IsFree(Advertisement advertisement)
     {
-        if (advertisement.Price == null)
+        if (advertisement.Price?.Amount <= 0)
             return true;
-        return advertisement.Price.Amount == 0;
+        return advertisement.Price?.Amount == 0;
     }
-    
-    
 }
