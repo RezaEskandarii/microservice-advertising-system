@@ -24,7 +24,7 @@ public class AdvertisementController : BaseController
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromForm] CreateAdvertisementCommand command)
     {
-        command.UserId = GetUserIdFromToken();
+        command.UserId = ExtractUserIdFromJwt();
         command.Thumbnails = await GetThumbnailsFromRequestAsync();
       
         var result = await _mediator.Send(command);
@@ -41,7 +41,7 @@ public class AdvertisementController : BaseController
     [HttpDelete("{id:long}")]
     public async Task<ActionResult> DeleteAsync(long id)
     {
-        await _mediator.Send(new DeleteAdvertisementCommand() { Id = id, UserId = GetUserIdFromToken() });
+        await _mediator.Send(new DeleteAdvertisementCommand() { Id = id, UserId = ExtractUserIdFromJwt() });
         return Ok(new ApiResponse(HttpStatusCode.OK));
     }
 
@@ -49,7 +49,7 @@ public class AdvertisementController : BaseController
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromForm] UpdateAdvertisementCommand command)
     {
         command.AdvertsiementId = id;
-        command.UserId = GetUserIdFromToken();
+        command.UserId = ExtractUserIdFromJwt();
         command.Thumbnails = await GetThumbnailsFromRequestAsync();
 
         var result = await _mediator.Send(command);

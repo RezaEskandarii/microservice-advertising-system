@@ -4,7 +4,7 @@ using AdvertisingSystem.Contract.Interfaces;
 using AutoMapper;
 using MediatR;
 
-namespace AdvertisingSystem.Application.Handlers;
+namespace AdvertisingSystem.Application.Handlers.QueryHandlers;
 
 public class GetAdvertisementCommandHandler : IRequestHandler<GetAdvertisementQuery, GetAdvertisementViewModel>
 {

@@ -65,11 +65,11 @@ public class AdvertisementRepository : IAdvertisementRepository
     public async Task<bool> DeleteAsync(long id, string userId)
     {
         if (string.IsNullOrWhiteSpace(userId))
-            throw new Exception("user id is null");
+            throw new ArgumentException("user id is null");
 
         var entity = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
         if (entity == null)
-            throw new Exception($"advertisement with id {id} is null");
+            throw new ArgumentException($"advertisement with id {id} is null");
 
         _context.Advertisements.Remove(entity);
         await _context.SaveChangesAsync();

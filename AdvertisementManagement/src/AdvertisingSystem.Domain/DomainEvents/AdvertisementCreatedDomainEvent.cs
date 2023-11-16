@@ -2,16 +2,12 @@ namespace AdvertisingSystem.Domain.DomainEvents;
 
 public class AdvertisementCreatedDomainEvent : IDomainEvent
 {
-    public object Data { get; set; }
-    public Guid Id { get; set; }
+    public object Data { get; }
+    public Guid Id { get; }
 
-    public AdvertisementCreatedDomainEvent()
+    public AdvertisementCreatedDomainEvent(Guid id, object data)
     {
-    }
-
-    public AdvertisementCreatedDomainEvent(object data,Guid id)
-    {
-        Data = data;
         Id = id;
+        Data = data;
     }
 }

@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace AdvertisingSystem.Api.Controllers;
 
@@ -12,14 +13,16 @@ public class BaseController : ControllerBase
         _logger = logger;
     }
 
-    public string GetUserIdFromToken()
+    protected string ExtractUserIdFromJwt()
     {
+        var requestHeader = StringValues.Empty;
+
         try
         {
-            if (Request.Headers.TryGetValue("Authorization", out var headerValue))
+            if (Request.Headers.TryGetValue("Authorization", out requestHeader))
             {
-                var token = headerValue.FirstOrDefault()
-                    .Replace("Bearer", "")
+                var token = requestHeader.FirstOrDefault()
+                    ?.Replace("Bearer", "")
                     .Replace(" ", "");
 
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -41,21 +44,9 @@ public class BaseController : ControllerBase
             _logger.LogDebug(e.Message);
             _logger.LogDebug(e.StackTrace);
 
-            throw new Exception("could process JWT token");
+            throw new AggregateException($"could process JWT token: {requestHeader.FirstOrDefault()}");
         }
 
-        // userId claim not found;
-        throw new Exception("user id is null in jwt claims");
-    }
-
-    public string? GetRequestIDFromHeader()
-    {
-        // Read requestID from request header
-        if (Request.Headers.TryGetValue("X-Request-ID", out var requestID))
-        {
-            return requestID;
-        }
-
-        return string.Empty;
+        throw new ArgumentException("user id is null in jwt claims");
     }
 }

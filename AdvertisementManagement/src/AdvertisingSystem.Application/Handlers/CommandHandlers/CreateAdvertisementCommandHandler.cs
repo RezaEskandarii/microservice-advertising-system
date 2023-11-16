@@ -33,16 +33,18 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
     public async Task<GetAdvertisementViewModel> Handle(CreateAdvertisementCommand command,
         CancellationToken cancellationToken)
     {
-        var advertisement = Advertisement.CreateNew(command.Title, command.UserId, command.Description,
+        var advertisement = Advertisement.CreateNew(
+            command.Title, command.UserId, command.Description,
             new Price(command.Price, "USD"),
             new CreateDate(DateTime.Now), new UpdateDate(DateTime.Now), new ExpiryDate(command.ExpiresAt),
-            command.Address, command.CategoryId, command.Tags, command.Properties, command.LocationId);
+            command.Address, command.CategoryId, command.Tags, command.Properties, command.LocationId
+        );
 
         var result = await _advertisementRepository.AddAsync(advertisement);
         UploadImagesAsync(command, result.Id);
 
         var obj = new { Title = result.Title, UserEmail = "" };
-        var @event = new AdvertisementCreatedDomainEvent(JsonSerializer.Serialize(obj), Guid.NewGuid());
+        var @event = new AdvertisementCreatedDomainEvent(Guid.NewGuid(), JsonSerializer.Serialize(obj));
 
         _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
 
