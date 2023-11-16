@@ -2,7 +2,7 @@ using AdvertisingSystem.Domain.DomainEvents;
 
 namespace AdvertisingSystem.Domain.Entities;
 
-public abstract class AggregateRoot : IEntity<long>, IAggregateRoot<long>
+public abstract class AggregateRoot : IAggregateRoot<long>
 {
     private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
