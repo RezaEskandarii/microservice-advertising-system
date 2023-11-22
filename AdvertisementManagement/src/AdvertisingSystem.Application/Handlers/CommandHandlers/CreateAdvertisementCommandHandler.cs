@@ -44,7 +44,7 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         UploadImagesAsync(command, result.Id);
 
         var obj = new { Title = result.Title, UserEmail = "" };
-        var @event = new AdvertisementCreatedDomainEvent(Guid.NewGuid(), JsonSerializer.Serialize(obj));
+        var @event = new AdvertisementCreatedEvent(Guid.NewGuid(), JsonSerializer.Serialize(obj));
 
         _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
 

@@ -1,13 +1,11 @@
-using AdvertisingSystem.Domain.ValueObjects;
-
 namespace AdvertisingSystem.Contract.Interfaces;
 
 public interface IServiceDiscovery
 {
-    Task<ICollection<ServiceResponse>> DiscoverAsync(string serviceID);
+    Task<ICollection<ServiceDiscoveryResponse>> DiscoverAsync(string serviceID);
 }
 
-public class ServiceResponse
+public class ServiceDiscoveryResponse
 {
     public string Address { get; set; }
     public int Port { get; set; }
