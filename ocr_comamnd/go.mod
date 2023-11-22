@@ -1,1 +1,0 @@
-module ocr_comamnd
