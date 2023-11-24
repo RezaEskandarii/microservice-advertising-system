@@ -74,6 +74,11 @@ public class Advertisement : AggregateRoot
         CategoryId = newCategoryId;
     }
 
+    public void UpdateIsSyncedInReadDb(bool isSyncedInReadDb)
+    {
+        IsSyncedInReadDb = isSyncedInReadDb;
+    }
+    
     public void UpdateTags(string[]? newTags)
     {
         this.Tags = newTags;
@@ -83,4 +88,6 @@ public class Advertisement : AggregateRoot
     {
         Thumbnails = newThumbnails;
     }
+    
+    
 }

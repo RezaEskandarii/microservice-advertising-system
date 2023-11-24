@@ -1,5 +1,6 @@
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Infrastructure.ExternalServices;
+using AdvertisingSystem.Infrastructure.Jobs;
 using AdvertisingSystem.Infrastructure.Messaging.EventPublishers;
 using AdvertisingSystem.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Infrastructure.Persistence.Repositories;
@@ -26,6 +27,9 @@ public static class ConfigureServices
         services.AddScoped<IServiceDiscovery, ServiceDiscovery>();
 
         MigrateAsync(services).Wait();
+
+        services.RunSyncReadDatabaseJob();
+
         return services;
     }
 
