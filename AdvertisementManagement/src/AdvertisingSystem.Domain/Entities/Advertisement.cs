@@ -7,6 +7,7 @@ public class Advertisement : AggregateRoot
     private Advertisement()
     {
     }
+
     public static Advertisement CreateNew(string title, string userId, string description, Price price,
         CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt, Address? address, int categoryId,
         string[]? tags, List<Property>? properties, int? locaqtionId)
@@ -27,7 +28,7 @@ public class Advertisement : AggregateRoot
             LocationId = locaqtionId
         };
     }
-    
+
     public string Title { get; private set; }
     public string UserId { get; private set; }
     public string Description { get; private set; }
@@ -41,33 +42,33 @@ public class Advertisement : AggregateRoot
     public string[]? Thumbnails { get; private set; } = new[] { "" };
     public List<Property>? Properties { get; private set; } = new List<Property>();
     public int? LocationId { get; private set; }
-    
-    
+    public bool IsSyncedInReadDb { get; private set; }
+
     public void UpdateTitle(string newTitle)
     {
         Title = newTitle;
     }
-    
+
     public void UpdateDescription(string newDescription)
     {
         Description = newDescription;
     }
-    
+
     public void UpdatePrice(Price newPrice)
     {
         Price = newPrice;
     }
-    
+
     public void UpdateExpiresAt(ExpiryDate newExpiresAt)
     {
         ExpiresAt = newExpiresAt;
     }
-    
+
     public void UpdateAddress(Address newAddress)
     {
         Address = newAddress;
     }
-    
+
     public void UpdateCategoryId(int newCategoryId)
     {
         CategoryId = newCategoryId;
