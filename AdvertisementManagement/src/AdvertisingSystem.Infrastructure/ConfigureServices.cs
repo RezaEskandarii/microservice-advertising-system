@@ -1,4 +1,5 @@
 using AdvertisingSystem.Contract.Interfaces;
+using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Infrastructure.ExternalServices;
 using AdvertisingSystem.Infrastructure.Jobs;
 using AdvertisingSystem.Infrastructure.Messaging.EventPublishers;
@@ -25,6 +26,7 @@ public static class ConfigureServices
         services.AddScoped<IEventPublisher, AdvertisementCreatedEventPublisher>();
         services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
         services.AddScoped<IServiceDiscovery, ServiceDiscovery>();
+        services.AddScoped(typeof(IElasticsearchRepository<Advertisement>), typeof(AdvertisementElasticsearchRepository));
 
         MigrateAsync(services).Wait();
 
