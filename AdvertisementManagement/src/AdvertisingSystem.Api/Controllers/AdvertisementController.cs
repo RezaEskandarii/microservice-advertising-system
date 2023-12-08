@@ -26,7 +26,7 @@ public class AdvertisementController : BaseController
     {
         command.UserId = ExtractUserIdFromJwt();
         command.Thumbnails = await GetThumbnailsFromRequestAsync();
-      
+
         var result = await _mediator.Send(command);
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
@@ -35,6 +35,13 @@ public class AdvertisementController : BaseController
     public async Task<ActionResult> FindByIdAsync(long id)
     {
         var result = await _mediator.Send(new GetAdvertisementQuery() { Id = id });
+        return Ok(new ApiResponse(HttpStatusCode.OK, result));
+    }
+
+    [HttpGet("Search")]
+    public async Task<ActionResult> SearchAsync([FromQuery] SearchAdvertisementQuery searchQuery)
+    {
+        var result = await _mediator.Send(searchQuery);
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 

@@ -1,3 +1,4 @@
+using System.Text;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
@@ -14,30 +15,70 @@ public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Adv
         var settings = new ConnectionSettings(new Uri(configuration["Elasticsearch:Url"]))
             .DefaultIndex("advertisements");
 
+        var debugMode = bool.Parse(configuration["Elasticsearch:DebugMode"]);
+
+        if (debugMode)
+        {
+            settings = settings.EnableDebugMode(response =>
+            {
+                if (response.RequestBodyInBytes != null)
+                    Console.WriteLine($"Request:\n{Encoding.UTF8.GetString(response.RequestBodyInBytes)}");
+
+                if (response.ResponseBodyInBytes != null)
+                    Console.WriteLine($"Response:\n{Encoding.UTF8.GetString(response.ResponseBodyInBytes)}");
+            });
+        }
+
+
         _elasticClient = new ElasticClient(settings);
     }
 
-    public async Task<List<Advertisement>> SearchAsync(string searchText, int page, int pageSize)
+    public async Task<List<Advertisement>> SearchAsync(string? searchText, int? page, int? pageSize)
     {
-        var searchResponse = await _elasticClient.SearchAsync<Advertisement>(s => s
-            .Query(q => q
-                .MultiMatch(m => m
-                    .Fields(fs => fs
-                        .Field(f => f.Title)
-                        .Field(f => f.Description)
-                    )
-                    .Query(searchText)
-                )
-            )
-            .From((page - 1) * pageSize)
-            .Size(pageSize)
-        );
-
-        if (!searchResponse.IsValid)
+        try
         {
-            throw new Exception("Error occurred while querying Elasticsearch.");
-        }
+            Func<QueryContainerDescriptor<Advertisement>, QueryContainer> querySelector;
 
-        return searchResponse.Documents.ToList();
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                // If searchText is null or empty, match all documents
+                querySelector = q => q.MatchAll();
+            }
+            else
+            {
+                // Use wildcard query for "like" functionality
+                querySelector = q => q
+                    .Bool(b => b
+                        .Should(sh => sh
+                            .MultiMatch(m => m
+                                .Fields(fs => fs
+                                )
+                                .Query($"*{searchText}*")
+                            )
+                        )
+                    );
+            }
+
+            var searchResponse = await _elasticClient.SearchAsync<Advertisement>(s => s
+                .Query(q => querySelector(q))
+                .From((page - 1) * pageSize)
+                .Size(pageSize)
+            );
+
+            if (!searchResponse.IsValid)
+            {
+                // Log Elasticsearch error
+                Console.WriteLine($"Elasticsearch Error: {searchResponse.DebugInformation}");
+                throw new Exception("Error occurred while querying Elasticsearch.");
+            }
+       
+            return new List<Advertisement>();
+        }
+        catch (Exception ex)
+        {
+            // Log and handle the exception
+            Console.WriteLine($"Exception occurred: {ex.Message}");
+            throw;
+        }
     }
 }
