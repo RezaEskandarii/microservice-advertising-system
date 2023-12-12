@@ -1,0 +1,109 @@
+@page "/SignUp"
+
+@using FrontEnd.Models
+@using System.Text.Json
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header text-center">Register</div>
+            <EditForm Model="@registrationModel" OnValidSubmit="@HandleValidSubmit">
+                <div class="card-body">
+                    <DataAnnotationsValidator/>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <InputText id="firstName" class="form-control" @bind-Value="@registrationModel.FirstName"/>
+                                <ValidationMessage For="@(() => registrationModel.FirstName)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <InputText id="lastName" class="form-control" @bind-Value="@registrationModel.LastName"/>
+                                <ValidationMessage For="@(() => registrationModel.LastName)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cellNumber">Cell Number</label>
+                                <InputText id="cellNumber" class="form-control" @bind-Value="@registrationModel.CellNumber"/>
+                                <ValidationMessage For="@(() => registrationModel.CellNumber)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <InputText id="email" class="form-control" @bind-Value="@registrationModel.Email"/>
+                                <ValidationMessage For="@(() => registrationModel.Email)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <InputText id="phoneNumber" class="form-control" @bind-Value="@registrationModel.PhoneNumber"/>
+                                <ValidationMessage For="@(() => registrationModel.PhoneNumber)"/>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <InputText id="password" class="form-control" @bind-Value="@registrationModel.Password"/>
+                                <ValidationMessage For="@(() => registrationModel.Password)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <InputText id="confirmPassword" class="form-control" @bind-Value="@registrationModel.ConfirmPassword"/>
+                                <ValidationMessage For="@(() => registrationModel.ConfirmPassword)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="street">Street</label>
+                                <InputText id="street" class="form-control" @bind-Value="@registrationModel.Address.Street"/>
+                                <ValidationMessage For="@(() => registrationModel.Address.Street)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <InputText id="city" class="form-control" @bind-Value="@registrationModel.Address.City"/>
+                                <ValidationMessage For="@(() => registrationModel.Address.City)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <InputText id="state" class="form-control" @bind-Value="@registrationModel.Address.State"/>
+                                <ValidationMessage For="@(() => registrationModel.Address.State)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code</label>
+                                <InputText id="postalCode" class="form-control" @bind-Value="@registrationModel.Address.PostalCode"/>
+                                <ValidationMessage For="@(() => registrationModel.Address.PostalCode)"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <InputText id="country" class="form-control" @bind-Value="@registrationModel.Address.Country"/>
+                                <ValidationMessage For="@(() => registrationModel.Address.Country)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private UserRegistrationModel registrationModel = new UserRegistrationModel();
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine(JsonSerializer.Serialize(registrationModel));
+    }
+
+}

@@ -1,0 +1,13 @@
+#navbarNav {
+    background-color: purple;
+    color: #ffffff;
+}
+
+main {
+    position: relative;
+    top: 30px;
+}
+
+.card {
+    box-shadow: 1px 1px 2px grey;
+}
