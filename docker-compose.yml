@@ -64,9 +64,6 @@ services:
       - "9300:9300" # Elasticsearch TCP transport
     volumes:
       - esdata:/usr/share/elasticsearch/data
-  volumes:
-    esdata:
-      driver: local
 
   redis:
     image: redis:latest
@@ -207,3 +204,7 @@ services:
 networks:
   internal:
     driver: bridge
+    
+volumes:
+  esdata:
+    driver: local

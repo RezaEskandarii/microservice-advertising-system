@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FrontEnd.Models;
 
-public class UserRegistrationModel
+public class UserRegistrationModel : BaseModel
 {
     public UserRegistrationModel()
     {

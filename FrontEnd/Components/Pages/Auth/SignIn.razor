@@ -1,0 +1,64 @@
+@page "/signin"
+@using FrontEnd.Models
+@using FrontEnd.Constants
+@using FrontEnd.Extensions
+@inject IHttpClientFactory _HttpClientFactory;
+@inject NavigationManager _NavigationManager;
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    Sign In
+                </div>
+                <EditForm Model="@SignInData" OnValidSubmit="@SignInUser" class="needs-validation">
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <InputText id="username" @bind-Value="@SignInData.Username" class="form-control"/>
+                            <ValidationMessage For="@(() => SignInData.Username)"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <InputText id="password" @bind-Value="@SignInData.Password" type="password" class="form-control"/>
+                            <ValidationMessage For="@(() => SignInData.Password)"/>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                        @StatusMessage
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+
+    SignInModel SignInData = new SignInModel();
+    private string StatusMessage = "";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async Task SignInUser()
+    {
+        var client = _HttpClientFactory.CreateClient(ApiConfigs.AdvertisementClient);
+        var resp = await client.PostAsJsonAsync(ApiConfigs.SignInApiAddress, SignInData);
+
+        var respObj = resp.DeserializeContentAsync<ApiResponse<SignInResponse>>();
+
+        if (resp.IsSuccessStatusCode)
+        {
+            
+        }
+    }
+
+}

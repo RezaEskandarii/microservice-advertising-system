@@ -1,0 +1,23 @@
+@if (ErrorsList.Any())
+{
+    <div class="row">
+        @foreach (var error in ErrorsList)
+        {
+            <div class="@ColClass" id="errors-row">
+                <div class="alert alert-danger">
+                    @error
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public List<string> ErrorsList { get; set; } = new List<string>();
+
+    [Parameter]
+    public string ColClass { get; set; } = "col-md-12";
+
+}
