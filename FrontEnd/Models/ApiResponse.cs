@@ -3,7 +3,7 @@ namespace FrontEnd.Models;
 public class ApiResponse<T>
 {
     public T responseObject { get; set; }
-    public List<string> errorMessages { get; set; } = new List<string>();
+    public List<string>? errorMessages { get; set; } = new List<string>();
     public object message { get; set; }
     public int statusCode { get; set; }
     public DateTime dateTime { get; set; }

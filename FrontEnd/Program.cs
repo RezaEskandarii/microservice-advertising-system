@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using FrontEnd;
 using FrontEnd.Components;
 using FrontEnd.Constants;
 using FrontEnd.Handlers;
@@ -17,6 +18,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 
 builder.Services.AddTransient<TokenService>();
+builder.Services.AddSingleton<Events>();
 builder.Services.AddTransient<RefreshTokenHandler>();
 
 
@@ -28,4 +30,11 @@ builder.Services.AddHttpClient(ApiConfigs.AdvertisementClient, client =>
     .AddHttpMessageHandler<RefreshTokenHandler>();
 
 
-await builder.Build().RunAsync();
+try
+{
+    await builder.Build().RunAsync();
+}
+catch (Exception e)
+{
+    Console.Error.WriteLine(e);
+}

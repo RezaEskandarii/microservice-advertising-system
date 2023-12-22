@@ -108,10 +108,12 @@
 @code {
     readonly UserRegistrationModel _registrationModel = new UserRegistrationModel();
 
-    List<string> _errors = new List<string>();
+    List<string>? _errors = new List<string>();
 
     private async Task HandleSubmit()
     {
+        _errors.Clear();
+        StateHasChanged();
         var client = _HttpClientFactory.CreateClient(ApiConfigs.AdvertisementClient);
 
         var resp = await client.PostAsJsonAsync(ApiConfigs.SignUpApiAddress, _registrationModel);

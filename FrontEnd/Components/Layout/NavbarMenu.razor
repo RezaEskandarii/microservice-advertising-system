@@ -1,16 +1,34 @@
-<!-- NavMenu.razor -->
+@using FrontEnd.Services
+@inject TokenService _TokenService;
+@inject Events _Events;
+@inject NavigationManager _NavigationManager;
 
 @code {
-    private bool IsUserLoggedIn => !string.IsNullOrEmpty(GetTokenFromLocalStorage());
 
-    private string GetTokenFromLocalStorage()
+    private bool IsUserLoggedIn;
+
+
+    protected override async Task OnInitializedAsync()
     {
-        return "";
+        IsUserLoggedIn = await _TokenService.HasValidTokenAsync();
+        _Events.OnSignIn += HandleOnSignIn;
     }
 
-    private void Logout()
+    private void HandleOnSignIn()
     {
-    // Clear JWT token from LocalStorage or perform logout logic
+        IsUserLoggedIn = true;
+        StateHasChanged();
+    }
+
+
+    private async Task Logout()
+    {
+        await _TokenService.ClearAsync();
+        IsUserLoggedIn = false;
+        
+        StateHasChanged();
+
+        _NavigationManager.NavigateTo("/SignIn");
     }
 
 }

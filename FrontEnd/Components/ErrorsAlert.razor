@@ -1,4 +1,4 @@
-@if (ErrorsList.Any())
+@if (ErrorsList is {Count: > 0})
 {
     <div class="row">
         @foreach (var error in ErrorsList)

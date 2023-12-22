@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Components\CustomComponents\" />
+    <Folder Include="Events\" />
   </ItemGroup>
 
 </Project>
