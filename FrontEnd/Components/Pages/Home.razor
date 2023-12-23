@@ -1,7 +1,22 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<div class="container-fluid">
+    <div class="row">
 
-<h1>Hello, world!</h1>
+        <div class="col-md-2">
+            <Categories/>
+        </div>
 
-Welcome to your new app.
+        <div class="col-md-10">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Search..."/>
+                </div>
+                <div class="search-button">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

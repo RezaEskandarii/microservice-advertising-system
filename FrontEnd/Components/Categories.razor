@@ -1,0 +1,77 @@
+@using FrontEnd.Models
+@using FrontEnd.Constants
+@inject IHttpClientFactory _HttpClientFactory;
+
+<div class="accordion" style="width: 300px;">
+    @foreach (var category in _categories)
+    {
+        <div class="card">
+            <div class="card-header pointer-cursor" @onclick="() => ToggleAccordion(category.id)">
+                @category.name
+            </div>
+            @if (category.expanded)
+            {
+                <div class="card-body">
+                    @foreach (var subcategory in category.subcategories)
+                    {
+                        <div class="accordion">
+                            <div class="card">
+                                <div class="card-header pointer-cursor" @onclick="() => ToggleAccordion(subcategory.id)">
+                                    <a href=""> @subcategory.name</a>
+                                </div>
+                                @if (subcategory.expanded)
+                                {
+                                    <div class="card-body">
+                                        <ul>
+                                            @foreach (var property in subcategory.properties)
+                                            {
+                                                <li>
+                                                    <a>@property.name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code
+{
+    private List<Category>? _categories = new List<Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = _HttpClientFactory.CreateClient(ApiConfigs.AdvertisementClient);
+        _categories = await httpClient.GetFromJsonAsync<List<Category>>(ApiConfigs.CategoriesApiAddress);
+    }
+
+    private void ToggleAccordion(int id)
+    {
+        foreach (var category in _categories)
+        {
+            category.expanded = category.id == id && !category.expanded;
+        }
+
+        StateHasChanged();
+    }
+
+    private void ToggleSubcategory(int categoryId, int subcategoryId)
+    {
+        var category = _categories.FirstOrDefault(c => c.id == categoryId);
+        if (category != null)
+        {
+            foreach (var subcategory in category.subcategories)
+            {
+                subcategory.expanded = subcategory.id == subcategoryId && !subcategory.expanded;
+            }
+        }
+
+        StateHasChanged();
+    }
+}

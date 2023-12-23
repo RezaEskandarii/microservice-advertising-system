@@ -6,6 +6,7 @@ public static class ApiConfigs
 
     public static readonly string SignUpApiAddress = "/api/v1/Identity/SignUp";
     public static readonly string SignInApiAddress = "/api/v1/Identity/SignIn";
+    public static readonly string CategoriesApiAddress = "/api/v1/Categories";
 
 
     public static readonly string AdvertisementClient = "AdvertisementApi";
