@@ -1,5 +1,7 @@
 using AdvertisingSystem.Contract.Interfaces;
+using AdvertisingSystem.Domain;
 using AdvertisingSystem.Domain.Entities;
+using AdvertisingSystem.Infrastructure.ExtensionMethods;
 using AdvertisingSystem.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,5 +96,26 @@ public class AdvertisementRepository : IAdvertisementRepository
 
         _context.Advertisements.Update(advertisement);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<PaginatedList<Advertisement>> SearchAsync(int pageNumber, int pageSize,
+        string? requestFilter)
+    {
+        var query = _context.Advertisements.AsNoTracking();
+        query = GetFilteredQuery(query, requestFilter);
+
+        return await query.PaginateAsync(pageNumber, pageSize);
+    }
+
+    private IQueryable<Advertisement> GetFilteredQuery(IQueryable<Advertisement> query, string? requestFilter)
+    {
+        if (!string.IsNullOrWhiteSpace(requestFilter))
+        {
+            query = query.Where(x => x.Tags.Contains(requestFilter)
+                                     || x.Title.Contains(requestFilter)
+                                     || x.Description.Contains(requestFilter));
+        }
+
+        return query;
     }
 }

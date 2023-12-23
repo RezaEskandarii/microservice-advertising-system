@@ -4,6 +4,11 @@ namespace AdvertisingSystem.Application.ViewModels;
 
 public class GetAdvertisementViewModel
 {
+    private GetAdvertisementViewModel()
+    {
+        
+    }
+    
     public long Id { get; set; }
     public string Title { get; set; }
     public string UserId { get; set; }

@@ -71,8 +71,8 @@ public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Adv
                 Console.WriteLine($"Elasticsearch Error: {searchResponse.DebugInformation}");
                 throw new Exception("Error occurred while querying Elasticsearch.");
             }
-       
-            return new List<Advertisement>();
+
+            return searchResponse.Documents.ToList();
         }
         catch (Exception ex)
         {

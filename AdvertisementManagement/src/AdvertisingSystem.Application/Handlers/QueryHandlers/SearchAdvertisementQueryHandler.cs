@@ -1,31 +1,29 @@
 using AdvertisingSystem.Application.UseCases.Queries;
 using AdvertisingSystem.Application.ViewModels;
 using AdvertisingSystem.Contract.Interfaces;
-using AdvertisingSystem.Domain.Entities;
+using AdvertisingSystem.Domain;
 using AutoMapper;
 using MediatR;
 
 namespace AdvertisingSystem.Application.Handlers.QueryHandlers;
 
 public class
-    SearchAdvertisementQueryHandler : IRequestHandler<SearchAdvertisementQuery, ICollection<GetAdvertisementViewModel>>
+    SearchAdvertisementQueryHandler : IRequestHandler<SearchAdvertisementQuery, PaginatedList<GetAdvertisementViewModel>>
 {
-    private readonly IElasticsearchRepository<Advertisement> _elasticsearchRepository;
+    private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IMapper _mapper;
 
-    public SearchAdvertisementQueryHandler(IElasticsearchRepository<Advertisement> elasticsearchRepository,
-        IMapper mapper)
+    public SearchAdvertisementQueryHandler(IMapper mapper, IAdvertisementRepository advertisementRepository)
     {
-        _elasticsearchRepository = elasticsearchRepository;
         _mapper = mapper;
+        _advertisementRepository = advertisementRepository;
     }
 
-    public async Task<ICollection<GetAdvertisementViewModel>> Handle(SearchAdvertisementQuery request,
+    public async Task<PaginatedList<GetAdvertisementViewModel>> Handle(SearchAdvertisementQuery request,
         CancellationToken cancellationToken)
     {
-        var advertisements =
-            await _elasticsearchRepository.SearchAsync(request.Filter, request.PageNumber, request.PageSize);
-
-        return _mapper.Map<ICollection<GetAdvertisementViewModel>>(advertisements);
+        var advertisements = await _advertisementRepository.SearchAsync(request.PageNumber,request.PageSize,request.Filter);
+        
+        return _mapper.Map<PaginatedList<GetAdvertisementViewModel>>(advertisements);
     }
 }
