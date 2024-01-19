@@ -5,9 +5,9 @@ using AdvertisingSystem.Identity.Application.Behaviors;
 using AdvertisingSystem.Identity.Application.Interfaces;
 using AdvertisingSystem.Identity.Application.Services;
 using AdvertisingSystem.Identity.Domain.Entities;
-using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Identity.Infrastructure;
-using AdvertisingSystem.Identity.Shared.Interfaces;
+using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +21,7 @@ public static class ConfigureServices
 {
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -31,8 +32,6 @@ public static class ConfigureServices
         services.AddScoped<IUserService, UserService>();
         services.AddInfrastructureServices(configuration);
         services.AddAutoMapper(Assembly.Load("AdvertisingSystem.Identity.Application"));
-
-        var secretManager = services.BuildServiceProvider().GetRequiredService<ISecretManager>();
 
         services.AddIdentity<AppUser, AppRole>(options =>
             {
@@ -60,7 +59,7 @@ public static class ConfigureServices
                     ValidateIssuerSigningKey = true,
                     ValidAudience = "http://127.0.0.1:5004",
                     IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretManager.GetJwtSecretKeyAsync().Result))
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSecretKey"]))
                 };
             });
     }

@@ -32,16 +32,15 @@ public class ErrorHandlingMiddleware
     {
         var statusCode = HttpStatusCode.InternalServerError;
         const string defaultErrorMessage = "Please try again";
-        
+
         var errorMessages = new List<string>();
-        
+
         if (ex is BusinessException exception)
         {
             statusCode = HttpStatusCode.BadRequest;
             errorMessages = exception.Errors.Any() ? exception.Errors.ToList() : new List<string> { exception.Message };
         }
-
-        if (errorMessages.Count == 0)
+        else
         {
             errorMessages.Add(defaultErrorMessage);
         }
@@ -57,12 +56,12 @@ public class ErrorHandlingMiddleware
         };
 
         var respObj = JsonSerializer.Serialize(new ApiResponse(statusCode)
-            {
-                ErrorMessages = errorMessages
-            },
-            serializeOptions);
+        {
+            ErrorMessages = errorMessages
+        }, serializeOptions);
 
         await context.Response.WriteAsync(respObj);
+
     }
 
     private static void LogExceptions(Exception exception, HttpContext context)

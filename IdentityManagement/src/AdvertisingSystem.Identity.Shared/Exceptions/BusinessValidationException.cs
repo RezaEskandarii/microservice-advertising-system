@@ -4,8 +4,11 @@ namespace AdvertisingSystem.Identity.Shared.Exceptions;
 
 public class BusinessValidationException : BusinessException
 {
-  
-    public BusinessValidationException(ICollection<ValidationError> errors)  
+    public BusinessValidationException(ICollection<string> errors) : base(errors)
+    {
+    }
+
+    public BusinessValidationException(ICollection<ValidationError> errors)
     {
     }
 }

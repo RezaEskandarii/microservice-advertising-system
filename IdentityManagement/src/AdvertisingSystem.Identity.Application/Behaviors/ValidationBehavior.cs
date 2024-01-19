@@ -5,7 +5,8 @@ using MediatR;
 
 namespace AdvertisingSystem.Identity.Application.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -25,7 +26,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         var validationErrors = validationFailures.Where(result => !result.IsValid)
             .SelectMany(result => result.Errors)
-            .Select(error => new ValidationError(error.PropertyName, error.ErrorMessage))
+            .Select(error => error.ErrorMessage)
             .ToList();
 
         if (validationErrors.Any())
