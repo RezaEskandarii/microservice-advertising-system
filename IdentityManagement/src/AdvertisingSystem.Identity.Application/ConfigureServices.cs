@@ -1,12 +1,14 @@
 ﻿using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using AdvertisingSystem.Identity.Application.Behaviors;
 using AdvertisingSystem.Identity.Application.Interfaces;
 using AdvertisingSystem.Identity.Application.Services;
 using AdvertisingSystem.Identity.Domain.Entities;
 using AdvertisingSystem.Identity.Infrastructure.Persistence.Context;
 using AdvertisingSystem.Identity.Infrastructure;
 using AdvertisingSystem.Identity.Shared.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -19,9 +21,10 @@ public static class ConfigureServices
 {
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMediatR(mediatRServiceConfiguration =>
+        services.AddMediatR(config =>
         {
-            mediatRServiceConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
         services.AddScoped<IJwtUtils, JwtUtils>();
