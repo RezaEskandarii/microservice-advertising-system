@@ -104,7 +104,7 @@ public class AdvertisementRepository : IAdvertisementRepository
         var query = _context.Advertisements.AsNoTracking();
         query = GetFilteredQuery(query, requestFilter);
 
-        return await query.PaginateAsync(pageNumber, pageSize);
+        return await query.PaginateAsync(pageNumber);
     }
 
     private IQueryable<Advertisement> GetFilteredQuery(IQueryable<Advertisement> query, string? requestFilter)

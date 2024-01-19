@@ -1,6 +1,6 @@
 namespace FrontEnd.Models;
 
-public class ResponseObject<T>
+public class PaginatedResponseObject<T>
 {
     public int PageNumber { get; set; }
     public int TotalPages { get; set; }

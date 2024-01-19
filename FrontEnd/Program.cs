@@ -7,6 +7,7 @@ using FrontEnd.Handlers;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddTransient<TokenService>();
 builder.Services.AddSingleton<Events>();
 builder.Services.AddTransient<RefreshTokenHandler>();
-
+builder.Services.AddTransient<UserContext>();
 
 builder.Services.AddHttpClient(ApiConfigs.AdvertisementClient, client =>
     {

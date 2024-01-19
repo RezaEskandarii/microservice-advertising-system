@@ -7,8 +7,7 @@ using MediatR;
 
 namespace AdvertisingSystem.Application.Handlers.QueryHandlers;
 
-public class
-    SearchAdvertisementQueryHandler : IRequestHandler<SearchAdvertisementQuery, PaginatedList<GetAdvertisementViewModel>>
+public class SearchAdvertisementQueryHandler : IRequestHandler<SearchAdvertisementQuery, PaginatedList<GetAdvertisementViewModel>>
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IMapper _mapper;

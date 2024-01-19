@@ -9,14 +9,13 @@ public class TokenService
 
     private const string AccessToken = "accessToken";
     private const string RefreshToken = "refreshToken";
-    private const string AuthTokenExpiresAt = "authTokenExpiresAt";
+    private const string AuthTokenExpiresAt = "accessTokenExpiresAt";
     private const string RefreshTokenExpiresAt = "refreshTokenExpiresAt";
 
     public TokenService(ILocalStorageService localStorageService)
     {
         _localStorageService = localStorageService;
     }
-
 
     public async ValueTask<string?> GetAccessTokenAsync()
     {
@@ -45,6 +44,6 @@ public class TokenService
     public async ValueTask<bool> HasValidTokenAsync()
     {
         var expiresAt = await _localStorageService.GetItemAsStringAsync(RefreshTokenExpiresAt);
-        return string.IsNullOrWhiteSpace(expiresAt) ? false : DateTime.Parse(expiresAt)  > DateTime.Now;
+        return string.IsNullOrWhiteSpace(expiresAt) ? false : DateTime.Parse(expiresAt) > DateTime.Now;
     }
 }

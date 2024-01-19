@@ -69,6 +69,20 @@
       }
     },
     {
+      "UpstreamPathTemplate": "/api/v1/Advertisement/Search",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/v1/Advertisement/Search",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "advertisement-management.api",
+          "Port": 5006
+        }
+      ]
+    },
+    {
       "UpstreamPathTemplate": "/api/v1/Advertisement/{id}",
       "UpstreamHttpMethod": [
         "GET"

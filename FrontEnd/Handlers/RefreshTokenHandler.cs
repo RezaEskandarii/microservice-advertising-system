@@ -17,9 +17,12 @@ public class RefreshTokenHandler : DelegatingHandler
         CancellationToken cancellationToken)
     {
 
-        var accessToken = await _tokenService.GetAccessTokenAsync() ?? "";
+        var accessToken = await _tokenService.GetAccessTokenAsync();
 
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        if (!string.IsNullOrWhiteSpace(accessToken))
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        }
 
         var response = await base.SendAsync(request, cancellationToken);
 
