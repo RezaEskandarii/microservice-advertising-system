@@ -141,6 +141,20 @@
       "AddHeadersToRequest": {
         "Authorization": "Bearer {token}"
       }
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/Advertisement/healthcheck",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/v1/Advertisement/healthcheck",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5006
+        }
+      ]
     }
   ]
 }
