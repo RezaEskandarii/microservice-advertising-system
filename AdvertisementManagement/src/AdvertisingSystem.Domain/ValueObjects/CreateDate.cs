@@ -1,7 +1,5 @@
 namespace AdvertisingSystem.Domain.ValueObjects;
 
-using System;
-
 public class CreateDate
 {
     public DateTime Value { get; }
@@ -61,7 +59,7 @@ public class CreateDate
         return left.Value >= right.Value;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
         {

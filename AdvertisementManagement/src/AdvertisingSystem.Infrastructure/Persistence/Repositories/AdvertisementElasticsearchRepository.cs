@@ -58,7 +58,7 @@ public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Adv
                         )
                     );
             }
-
+ 
             var searchResponse = await _elasticClient.SearchAsync<Advertisement>(s => s
                 .Query(q => querySelector(q))
                 .From((page - 1) * pageSize)
