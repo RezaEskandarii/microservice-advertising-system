@@ -64,6 +64,17 @@ services:
       - "9300:9300" # Elasticsearch TCP transport
     volumes:
       - esdata:/usr/share/elasticsearch/data
+  
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
 
   redis:
     image: redis:latest
@@ -204,7 +215,7 @@ services:
 networks:
   internal:
     driver: bridge
-    
+
 volumes:
   esdata:
     driver: local
