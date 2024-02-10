@@ -36,6 +36,10 @@ public static class HttpContextMethods
                     return userId;
                 }
             }
+            else
+            {
+                throw new ArgumentException("HttpRequest header does not contains Bearer token");
+            }
         }
         catch (Exception e)
         {
