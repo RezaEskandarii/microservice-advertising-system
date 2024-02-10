@@ -25,12 +25,12 @@ public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertise
 
         advertisement.UpdateTitle(command.Title);
         advertisement.UpdateDescription(command.Description);
-        advertisement.UpdatePrice(new Price(command.Price, "USDT"));
+        advertisement.UpdatePrice(new Price(command.Price, "USD"));
         advertisement.UpdateExpiresAt(new ExpiryDate(command.ExpiresAt));
         advertisement.UpdateAddress(command.Address);
         advertisement.UpdateCategoryId(command.CategoryId);
 
-        if (command.Thumbnails.Any())
+        if (command.Thumbnails is { Count: > 0 })
         {
             advertisement.UpdateThumbnails(command.Thumbnails.Select(t => t.FileName).ToArray());
         }

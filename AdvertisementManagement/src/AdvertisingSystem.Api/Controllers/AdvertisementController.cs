@@ -1,8 +1,8 @@
 using System.Net;
+using AdvertisingSystem.Api.ExtensionMethods;
 using AdvertisingSystem.Api.ViewModels;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.UseCases.Queries;
-using AdvertisingSystem.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,8 +24,8 @@ public class AdvertisementController : BaseController
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromForm] CreateAdvertisementCommand command)
     {
-        command.UserId = ExtractUserIdFromJwt();
-        command.Thumbnails = await GetThumbnailsFromRequestAsync();
+        command.UserId = Request.GetUserId();
+        command.Thumbnails = await Request.GetThumbnailsAsync();
 
         var result = await _mediator.Send(command);
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
@@ -48,7 +48,7 @@ public class AdvertisementController : BaseController
     [HttpDelete("{id:long}")]
     public async Task<ActionResult> DeleteAsync(long id)
     {
-        await _mediator.Send(new DeleteAdvertisementCommand() { Id = id, UserId = ExtractUserIdFromJwt() });
+        await _mediator.Send(new DeleteAdvertisementCommand(id, Request.GetUserId()));
         return Ok(new ApiResponse(HttpStatusCode.OK));
     }
 
@@ -56,39 +56,10 @@ public class AdvertisementController : BaseController
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromForm] UpdateAdvertisementCommand command)
     {
         command.AdvertsiementId = id;
-        command.UserId = ExtractUserIdFromJwt();
-        command.Thumbnails = await GetThumbnailsFromRequestAsync();
+        command.UserId = Request.GetUserId();
+        command.Thumbnails = await Request.GetThumbnailsAsync();
 
         var result = await _mediator.Send(command);
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
-    }
-
-    /// <summary>
-    /// set thumbnails byte array
-    /// </summary>
-    /// <param name="command"></param>
-    /// <param name="thumbnails"></param>
-    private async Task<ICollection<ThumbnailFileViewModel>> GetThumbnailsFromRequestAsync()
-    {
-        var result = new List<ThumbnailFileViewModel>();
-        var thumbnails = Request.Form.Files.Where(x => x.Name == "Thumbnails").ToList();
-
-        if (!thumbnails.Any())
-            return result;
-
-        foreach (var thumbnail in thumbnails)
-        {
-            using var memoryStream = new MemoryStream();
-            await thumbnail.CopyToAsync(memoryStream);
-
-            result.Add(new ThumbnailFileViewModel()
-            {
-                Bytes = memoryStream.ToArray(),
-                FileName = thumbnail.FileName
-            });
-            memoryStream.Close();
-        }
-
-        return result;
     }
 }
