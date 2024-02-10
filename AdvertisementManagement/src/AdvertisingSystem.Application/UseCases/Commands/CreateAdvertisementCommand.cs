@@ -15,7 +15,7 @@ public class CreateAdvertisementCommand : IRequest<GetAdvertisementViewModel>
     public DateTime ExpiresAt { get; set; }
     public Address? Address { get; set; }
     public int CategoryId { get; set; }
-    public ICollection<ThumbnailFileViewModel> Thumbnails { get; set; } = new List<ThumbnailFileViewModel>();
+    public ICollection<ThumbnailFileViewModel>? Thumbnails { get; set; } = new List<ThumbnailFileViewModel>();
     public string[]? Tags { get; set; }
     public List<Property>? Properties { get; set; } = new();
     public int? LocationId { get; set; }
