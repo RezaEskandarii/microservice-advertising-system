@@ -34,7 +34,7 @@ public class AdvertisementController : BaseController
     [HttpGet("{id:long}")]
     public async Task<ActionResult> FindByIdAsync(long id)
     {
-        var result = await _mediator.Send(new GetAdvertisementQuery() { Id = id });
+        var result = await _mediator.Send(new GetAdvertisementQuery(id));
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 
