@@ -43,6 +43,7 @@ public class Advertisement : AggregateRoot
     public List<Property>? Properties { get; private set; } = new List<Property>();
     public int? LocationId { get; private set; }
     public bool IsSyncedInReadDb { get; private set; }
+    public long ViewCount { get; private set; }
 
     public void UpdateTitle(string newTitle)
     {
@@ -78,7 +79,7 @@ public class Advertisement : AggregateRoot
     {
         IsSyncedInReadDb = isSyncedInReadDb;
     }
-    
+
     public void UpdateTags(string[]? newTags)
     {
         this.Tags = newTags;
@@ -88,6 +89,9 @@ public class Advertisement : AggregateRoot
     {
         Thumbnails = newThumbnails;
     }
-    
-    
+
+    public void UpdateViewCount(long viewCount)
+    {
+        ViewCount = viewCount;
+    }
 }
