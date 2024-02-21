@@ -1,6 +1,6 @@
 # Online Advertisement Website - Docker Compose Setup
 
-This repository contains the Docker Compose setup for an online advertisement website built with microservices architecture using C# with CQRS pattern. The project utilizes various technologies and services such as PostgreSQL, RabbitMQ, Vault, Consul, Minio, Elasticsearch, Kibana, Redis, and multiple microservices written in C#(ASP.NET Core) and Golang.
+This repository contains the Docker Compose setup for an online advertisement website built with microservices architecture using C# (with CQRS pattern) and Golang. The project utilizes various technologies and services such as PostgreSQL, RabbitMQ, Vault, Consul, Minio, Elasticsearch, Kibana, Redis, and multiple microservices written in C#(ASP.NET Core) and Golang.
 
 ## Prerequisites
 - Docker
