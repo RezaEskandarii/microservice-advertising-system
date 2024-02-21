@@ -18,8 +18,7 @@ public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertise
         _mapper = mapper;
     }
 
-    public async Task<GetAdvertisementViewModel> Handle(UpdateAdvertisementCommand command,
-        CancellationToken cancellationToken)
+    public async Task<GetAdvertisementViewModel> Handle(UpdateAdvertisementCommand command, CancellationToken cancellationToken)
     {
         var advertisement = await _repository.GetByIdAsync(command.AdvertsiementId, command.UserId);
 
