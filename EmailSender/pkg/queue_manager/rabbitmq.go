@@ -21,6 +21,13 @@ func New(em email_sender.EmailSender) QueueManager {
 	}
 }
 
+// Listen starts listening to events from a RabbitMQ queue.
+// It connects to RabbitMQ using the provided address,
+// declares an exchange named "ad_events" of type "topic",
+// declares a durable queue named "email_queue", binds it to the exchange
+// with routing key "ad_events.OnAdvertisementAdded", and starts consuming messages.
+// Upon receiving a message, it invokes the sendEmail method of the QueueManager
+// for further processing.
 func (q *QueueManager) Listen() {
 
 	fmt.Println("start to listen to events")
