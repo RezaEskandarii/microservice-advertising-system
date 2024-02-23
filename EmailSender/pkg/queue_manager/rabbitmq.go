@@ -15,6 +15,13 @@ type QueueManager struct {
 	EmailSender email_sender.EmailSender
 }
 
+// New creates a new instance of QueueManager with the provided EmailSender.
+//
+// Parameters:
+//   - em: An implementation of the email_sender.EmailSender interface to be used for sending emails.
+//
+// Returns:
+//   - QueueManager: A new instance of QueueManager initialized with the provided EmailSender.
 func New(em email_sender.EmailSender) QueueManager {
 	return QueueManager{
 		EmailSender: em,
@@ -112,44 +119,75 @@ func (q *QueueManager) Listen() {
 
 }
 
+// sendEmail sends an email based on the message received from the queue.
+// It processes the message to extract relevant information about the advertisement,
+// and if the event corresponds to "OnAdvertisementAdded", it sends an email to
+// the user who added the advertisement to notify them about its successful registration.
+//
+// Parameters:
+//   - msg: The message received from the queue, typically containing information about
+//     the advertisement event.
+//
+// Behavior:
+//  1. Processes the message to extract advertisement details from its body.
+//  2. Checks if the event corresponds to "OnAdvertisementAdded".
+//  3. If the event matches, constructs an email message with details of the registered ad
+//     and sends it to the user who added the advertisement.
+//
+// Note: This method assumes that the advertisement information can be extracted from
+//
+//	the message body and that the email sender is configured appropriately.
+//	Errors encountered during email sending are logged but not handled within this method.
 func (q *QueueManager) sendEmail(msg amqp.Delivery) {
 	// Process the message
 	body := string(msg.Body)
 	log.Printf("Received message: %s", body)
 
 	// Check if the event is "OnAdvertisementAdded"
-	if msg.RoutingKey == "ad_events.OnAdvertisementAdded" {
+	if msg.RoutingKey != "ad_events.OnAdvertisementAdded" {
+		return
+	}
 
-		var ad = fetchAdvertisementFromMessageBody(body)
+	ad := fetchAdvertisementFromMessageBody(body)
+	if ad == nil {
+		return
+	}
 
-		if ad != nil {
-			request := email_sender.SendEmailRequest{
-				Subject: "Your ad has been successfully registered.",
-				Body:    fmt.Sprintf("Your ad has been successfully registered., ad titile is %s", ad.Title),
-				To:      ad.UserEmail,
-			}
-			// Send email
-			err := q.EmailSender.Send(request)
-			if err != nil {
-				return
-			}
-		}
+	// Prepare email request
+	request := email_sender.SendEmailRequest{
+		Subject: "Your ad has been successfully registered.",
+		Body:    fmt.Sprintf("Your ad has been successfully registered. Ad title is %s", ad.Title),
+		To:      ad.UserEmail,
+	}
+
+	// Send email
+	if err := q.EmailSender.Send(request); err != nil {
+		log.Printf("Error sending email: %v", err)
 	}
 }
 
-// fetchAdvertisementFromMessageBody convert given message into advertisement struct
+// fetchAdvertisementFromMessageBody parses the JSON-encoded advertisement data
+// from the given message body and returns an Advertisement struct pointer.
+// If there are any decoding errors, it logs the error and returns nil.
+//
+// Parameters:
+//   - jsonStr: The JSON-encoded string containing advertisement data.
+//
+// Returns:
+//   - *models.Advertisement: A pointer to the Advertisement struct if decoding is successful,
+//     otherwise nil.
 func fetchAdvertisementFromMessageBody(jsonStr string) *models.Advertisement {
 	var result models.Advertisement
 
 	unquotedStr, err := strconv.Unquote(jsonStr)
 	if err != nil {
-		log.Printf("Error in decode utf8 json %s", err.Error())
+		log.Printf("Error decoding UTF-8 JSON: %s", err.Error())
 		return nil
 	}
 
 	err = json.Unmarshal([]byte(unquotedStr), &result)
 	if err != nil {
-		log.Printf("Error in decode utf8 json %s", err.Error())
+		log.Printf("Error decoding JSON: %s", err.Error())
 		return nil
 	}
 
