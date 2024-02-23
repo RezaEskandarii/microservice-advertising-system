@@ -23,45 +23,59 @@ var (
 	db               *sql.DB
 )
 
+// init initializes the necessary dependencies for the package.
 func init() {
+	// Initialize the storage manager
 	sm, err := services.NewStorageManager("127.0.0.1:9000", "minioadmin", "minioadmin")
 	if err != nil {
-		//	panic(err.Error())
+		// Handle initialization error
+		// panic(err.Error())
 	}
 
+	// Initialize the database
 	ctx := context.Background()
 	db = database.GetDb(ctx)
 
+	// Create a PostgreSQL repository for thumbnails
 	thumbnailRepo := repositories.NewPostgreSQLRepository(db)
+	// Create a ThumbnailService with the repository and storage manager
 	thumbnailService = services.NewThumbnailService(thumbnailRepo, sm)
 }
 
+// FileServer represents a gRPC file server.
 type FileServer struct {
 	pb.FileServiceServer
 }
 
-func NewFleServer() FileServer {
+// NewFileServer creates a new instance of FileServer.
+func NewFileServer() FileServer {
 	return FileServer{}
 }
 
+// UploadFile handles the upload of a file.
 func (s *FileServer) UploadFile(ctx context.Context, req *pb.FileRequest) (*pb.FileResponse, error) {
-
+	// List of allowed file extensions
 	allowedExtensions := []string{".jpg", ".jpeg", ".png"}
 
+	// Extract the extension of the file
 	ext := strings.ToLower(filepath.Ext(req.FileName))
+	// Check if the file extension is allowed
 	if !slices.Contains(allowedExtensions, ext) {
 		return nil, fmt.Errorf("invalid file extension: %s", req.GetFileName())
 	}
 
+	// Generate a unique filename
 	uuidStr := uuid.New()
 	fileName := fmt.Sprintf("%s_%s", uuidStr.String(), req.GetFileName())
-	// Return a success response
+
+	// Prepare the response
 	response := &pb.FileResponse{
 		Success:  true,
 		Message:  "File uploaded successfully",
 		FileName: fileName,
 	}
 
+	// Create a Thumbnail model
 	thumbnail := models.Thumbnail{
 		ImageName:       fileName,
 		ImageBucket:     "",
@@ -69,10 +83,12 @@ func (s *FileServer) UploadFile(ctx context.Context, req *pb.FileRequest) (*pb.F
 		AdvertisementID: req.GetAdvertisementId(),
 	}
 
+	// Create the thumbnail using the ThumbnailService
 	thumbnailService.CreateThumbnail(&thumbnail)
 	return response, nil
 }
 
+// Start starts the gRPC server on the specified port.
 func (s *FileServer) Start(port string) {
 	// Create the gRPC server
 	grpcServer := grpc.NewServer()
