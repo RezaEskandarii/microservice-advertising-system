@@ -33,7 +33,7 @@ func (a App) Run(portNumber int64) {
 
 	a.createThumbnailsTable(db)
 
-	fs := grpc.NewFleServer()
+	fs := grpc.NewFileServer()
 
 	fs.Start(fmt.Sprintf("%d", portNumber))
 

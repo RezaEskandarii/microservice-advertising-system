@@ -16,25 +16,27 @@ import (
 	"thumbnail-management/internal/models"
 	"thumbnail-management/internal/repositories"
 	"thumbnail-management/internal/services"
+	"thumbnail-management/pkg/env_manager"
 )
 
 var (
-	thumbnailService *services.ThumbnailService
-	db               *sql.DB
+	thumbnailService       *services.ThumbnailService
+	db                     *sql.DB
+	objectStorageAddr      = env_manager.Load("object_storage_address")
+	objectStorageAccessKey = env_manager.Load("object_storage_access_key")
+	objectStorageSecretKey = env_manager.Load("object_storage_secret_key")
 )
 
 // init initializes the necessary dependencies for the package.
 func init() {
 	// Initialize the storage manager
-	sm, err := services.NewStorageManager("127.0.0.1:9000", "minioadmin", "minioadmin")
+	sm, err := services.NewStorageManager(objectStorageAddr, objectStorageAccessKey, objectStorageSecretKey)
 	if err != nil {
-		// Handle initialization error
 		// panic(err.Error())
 	}
 
 	// Initialize the database
-	ctx := context.Background()
-	db = database.GetDb(ctx)
+	db = database.GetDb(context.Background())
 
 	// Create a PostgreSQL repository for thumbnails
 	thumbnailRepo := repositories.NewPostgreSQLRepository(db)
@@ -55,7 +57,7 @@ func NewFileServer() FileServer {
 // UploadFile handles the upload of a file.
 func (s *FileServer) UploadFile(ctx context.Context, req *pb.FileRequest) (*pb.FileResponse, error) {
 	// List of allowed file extensions
-	allowedExtensions := []string{".jpg", ".jpeg", ".png"}
+	allowedExtensions := []string{".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"}
 
 	// Extract the extension of the file
 	ext := strings.ToLower(filepath.Ext(req.FileName))
