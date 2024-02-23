@@ -148,6 +148,9 @@ services:
       - vault
       - consul
     environment:
+      object_storage_address: "minio:9000"
+      object_storage_access_key: minioadmin
+      object_storage_secret_key: minioadmin
       vault_token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
       vault_address: "http://vault:8200"
       port_number: 5002
