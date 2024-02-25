@@ -12,11 +12,15 @@ import (
 	"os"
 )
 
+// LocationService defines the interface for location management services.
 type LocationService interface {
+	// Seed populates the database with initial data.
 	Seed() error
+	// GetAll retrieves all cities from the database.
 	GetAll() (map[string][]models.GetCity, error)
 }
 
+// LocationServiceImp is the implementation of the LocationService interface.
 type LocationServiceImp struct {
 	db *sql.DB
 	LocationService
