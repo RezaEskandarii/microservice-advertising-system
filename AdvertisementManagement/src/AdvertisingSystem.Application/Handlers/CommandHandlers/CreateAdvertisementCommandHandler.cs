@@ -51,6 +51,11 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
         return _mapper.Map<GetAdvertisementViewModel>(result);
     }
 
+    /// <summary>
+    /// upload thumbnails to thumbnail microservice
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="advertisementId"></param>
     private async Task UploadImagesAsync(CreateAdvertisementCommand command, long advertisementId)
     {
         if (!command.Thumbnails.Any())
