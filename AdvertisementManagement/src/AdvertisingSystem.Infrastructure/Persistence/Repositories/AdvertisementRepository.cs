@@ -126,7 +126,7 @@ public class AdvertisementRepository : IAdvertisementRepository
                     property.Name != null &&
                     property.Value != null &&
                     properties.ContainsKey(property.Name) &&
-                    properties[property.Value] == property.Value
+                    properties[property.Name] == property.Value
                 ));
         }
 
