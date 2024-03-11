@@ -21,7 +21,7 @@ public class SearchAdvertisementQueryHandler : IRequestHandler<SearchAdvertiseme
     public async Task<PaginatedList<GetAdvertisementViewModel>> Handle(SearchAdvertisementQuery request,
         CancellationToken cancellationToken)
     {
-        var advertisements = await _advertisementRepository.SearchAsync(request.PageNumber,request.PageSize,request.Filter);
+        var advertisements = await _advertisementRepository.SearchAsync(request.PageNumber,request.PageSize,request.Filter,request.Properties);
         
         return _mapper.Map<PaginatedList<GetAdvertisementViewModel>>(advertisements);
     }

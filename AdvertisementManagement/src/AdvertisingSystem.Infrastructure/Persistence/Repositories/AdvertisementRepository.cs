@@ -99,21 +99,35 @@ public class AdvertisementRepository : IAdvertisementRepository
     }
 
     public async Task<PaginatedList<Advertisement>> SearchAsync(int pageNumber, int pageSize,
-        string? requestFilter)
+        string? requestFilter, Dictionary<string, string>? properties)
     {
         var query = _context.Advertisements.AsNoTracking();
-        query = GetFilteredQuery(query, requestFilter);
+        query = GetFilteredQuery(query, requestFilter, properties);
 
         return await query.PaginateAsync(pageNumber);
     }
 
-    private IQueryable<Advertisement> GetFilteredQuery(IQueryable<Advertisement> query, string? requestFilter)
+    private IQueryable<Advertisement> GetFilteredQuery(IQueryable<Advertisement> query, string? requestFilter, Dictionary<string, string>? properties)
     {
         if (!string.IsNullOrWhiteSpace(requestFilter))
         {
-            query = query.Where(x => x.Tags.Contains(requestFilter)
-                                     || x.Title.Contains(requestFilter)
-                                     || x.Description.Contains(requestFilter));
+            query = query.Where(x
+                => x.Tags != null &&
+                   (x.Tags.Contains(requestFilter)
+                    || x.Title.Contains(requestFilter)
+                    || x.Description.Contains(requestFilter)));
+        }
+
+        if (properties != null)
+        {
+            query = query.Where(x =>
+                x.Properties != null &&
+                x.Properties.Any(property =>
+                    property.Name != null &&
+                    property.Value != null &&
+                    properties.ContainsKey(property.Name) &&
+                    properties[property.Value] == property.Value
+                ));
         }
 
         return query;
