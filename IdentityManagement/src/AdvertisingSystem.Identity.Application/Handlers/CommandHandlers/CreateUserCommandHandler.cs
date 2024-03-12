@@ -22,8 +22,11 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUs
 
     public async Task<GetUser> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var appUser = AppUser.CreateNew(new(command.FirstName), new(command.LastName),
-            new(command.PhoneNumber), new(command.Email), command.Address, UserStatuses.Enable);
+        var appUser = AppUser.CreateNew(
+            new(command.FirstName), new(command.LastName),
+            new(command.PhoneNumber), new(command.Email),
+            command.Address, UserStatuses.Enable
+        );
 
         appUser.UserName = appUser.Email.Value;
 
