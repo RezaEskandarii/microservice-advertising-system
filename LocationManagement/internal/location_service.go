@@ -20,8 +20,8 @@ type LocationService interface {
 	GetAll() (map[string][]models.GetCity, error)
 }
 
-// LocationServiceImp is the implementation of the LocationService interface.
-type LocationServiceImp struct {
+// LocationServiceImpl is the implementation of the LocationService interface.
+type LocationServiceImpl struct {
 	db *sql.DB
 	LocationService
 }
@@ -30,11 +30,13 @@ const (
 	dbName = "location_management"
 )
 
-func NewLocationService(db *sql.DB) *LocationServiceImp {
-	return &LocationServiceImp{db: db}
+// NewLocationService creates a new instance of LocationServiceImpl.
+func NewLocationService(db *sql.DB) *LocationServiceImpl {
+	return &LocationServiceImpl{db: db}
 }
 
-func (s *LocationServiceImp) CreateDB() error {
+// CreateDB creates the database if it does not exist.
+func (s *LocationServiceImpl) CreateDB() error {
 
 	sdn := env_manager.GetFromDotENV("location_management_base_sdn")
 
@@ -63,7 +65,8 @@ func (s *LocationServiceImp) CreateDB() error {
 	return nil
 }
 
-func (s *LocationServiceImp) CreateTables() error {
+// CreateTables creates necessary tables in the database.
+func (s *LocationServiceImpl) CreateTables() error {
 	sdn := env_manager.GetFromDotENV("location_management_full_sdn")
 
 	db, err := sql.Open("postgres", sdn)
@@ -87,6 +90,7 @@ func (s *LocationServiceImp) CreateTables() error {
 	return nil
 }
 
+// createCountriesTable creates the countries table
 func createCountriesTable(db *sql.DB) error {
 	createCountriesTableQuery := `
 		CREATE TABLE IF NOT EXISTS countries(
@@ -104,6 +108,7 @@ func createCountriesTable(db *sql.DB) error {
 	return nil
 }
 
+// createLocationsTable creates the locations table.
 func createLocationsTable(db *sql.DB) error {
 	createLocationsTableQuery := `
 		CREATE TABLE IF NOT EXISTS locations(
@@ -122,7 +127,8 @@ func createLocationsTable(db *sql.DB) error {
 	return nil
 }
 
-func (s *LocationServiceImp) Seed() error {
+// Seed populates the database with initial data from a JSON file.
+func (s *LocationServiceImpl) Seed() error {
 	file, err := readLocationsJson()
 
 	data, err := ioutil.ReadAll(file)
@@ -159,7 +165,9 @@ func (s *LocationServiceImp) Seed() error {
 	return nil
 }
 
-func (s *LocationServiceImp) insertCityFromCountry(country models.Country, db *sql.DB, countryID int) {
+// insertCityFromCountry iterates over cities in a country, checks if a city exists in the database by name,
+// and inserts the city if it does not exist.
+func (s *LocationServiceImpl) insertCityFromCountry(country models.Country, db *sql.DB, countryID int) {
 	for _, city := range country.Cities {
 		cityID, err := getCityID(db, city.Name, countryID)
 		if err != nil {
@@ -177,6 +185,8 @@ func (s *LocationServiceImp) insertCityFromCountry(country models.Country, db *s
 	}
 }
 
+// readLocationsJson opens and reads the "locations.json" file. If an error occurs while opening the file,
+// it logs the error and returns nil along with the error. It ensures the file is closed before returning.
 func readLocationsJson() (*os.File, error) {
 	file, err := os.Open("locations.json")
 	if err != nil {
@@ -225,7 +235,8 @@ func insertCity(db *sql.DB, cityName string, countryID int, latitude float64, lo
 	return cityID, nil
 }
 
-func (s *LocationServiceImp) GetAll() (map[string][]models.GetCity, error) {
+// GetAll retrieves all cities from the database and organizes them by country.
+func (s *LocationServiceImpl) GetAll() (map[string][]models.GetCity, error) {
 
 	db := s.db
 	data := make(map[string][]models.GetCity)
