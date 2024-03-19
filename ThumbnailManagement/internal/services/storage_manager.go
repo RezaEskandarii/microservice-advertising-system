@@ -17,12 +17,12 @@ type StorageManager interface {
 	GetDirectLink(bucketName string, objectName string) (string, error)
 	RemoveFile(bucketName string, objectName string) error
 }
-
 type StorageManagerImpl struct {
 	minioClient *minio.Client
 	StorageManager
 }
 
+// NewStorageManager creates a new instance of StorageManagerImpl with the provided endpoint, access key, and secret key.
 func NewStorageManager(endpoint string, accessKey string, secretKey string) (StorageManager, error) {
 	minioClient, err := minio.New(endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(accessKey, secretKey, ""),
@@ -37,6 +37,7 @@ func NewStorageManager(endpoint string, accessKey string, secretKey string) (Sto
 	}, nil
 }
 
+// EnsureBucketExists checks if a bucket exists in the storage and creates it if it doesn't.
 func (s *StorageManagerImpl) EnsureBucketExists(bucketName string) error {
 	ctx := context.Background()
 
@@ -58,6 +59,7 @@ func (s *StorageManagerImpl) EnsureBucketExists(bucketName string) error {
 	return nil
 }
 
+// UploadFile uploads a file to the specified bucket in the storage.
 func (s *StorageManagerImpl) UploadFile(bucketName string, objectName string, fileBytes []byte) error {
 	ctx := context.Background()
 	s.EnsureBucketExists(bucketName)
@@ -70,6 +72,7 @@ func (s *StorageManagerImpl) UploadFile(bucketName string, objectName string, fi
 	return nil
 }
 
+// DownloadFile downloads a file from the specified bucket in the storage to a local file path.
 func (s *StorageManagerImpl) DownloadFile(bucketName string, objectName string, filePath string) error {
 	ctx := context.Background()
 
@@ -82,6 +85,7 @@ func (s *StorageManagerImpl) DownloadFile(bucketName string, objectName string, 
 	return nil
 }
 
+// GetDirectLink generates a presigned URL for direct access to a specific object in the storage.
 func (s *StorageManagerImpl) GetDirectLink(bucketName string, objectName string) (string, error) {
 	ctx := context.Background()
 
@@ -94,6 +98,7 @@ func (s *StorageManagerImpl) GetDirectLink(bucketName string, objectName string)
 	return presignedURL.String(), nil
 }
 
+// RemoveFile removes a file from the specified bucket in the storage.
 func (s *StorageManagerImpl) RemoveFile(bucketName string, objectName string) error {
 	ctx := context.Background()
 
