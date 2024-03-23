@@ -52,8 +52,6 @@ func (s *StorageManagerImpl) EnsureBucketExists(bucketName string) error {
 			return err
 		}
 		log.Println("Bucket created successfully.")
-	} else {
-		log.Println("Bucket already exists.")
 	}
 
 	return nil
@@ -62,8 +60,12 @@ func (s *StorageManagerImpl) EnsureBucketExists(bucketName string) error {
 // UploadFile uploads a file to the specified bucket in the storage.
 func (s *StorageManagerImpl) UploadFile(bucketName string, objectName string, fileBytes []byte) error {
 	ctx := context.Background()
-	s.EnsureBucketExists(bucketName)
-	_, err := s.minioClient.PutObject(ctx, bucketName, objectName, bytes.NewReader(fileBytes), int64(len(fileBytes)), minio.PutObjectOptions{})
+	err := s.EnsureBucketExists(bucketName)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.minioClient.PutObject(ctx, bucketName, objectName, bytes.NewReader(fileBytes), int64(len(fileBytes)), minio.PutObjectOptions{})
 	if err != nil {
 		return err
 	}
