@@ -4,18 +4,17 @@ import (
 	"bytes"
 	"context"
 	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 	"log"
 	"net/url"
-
-	"github.com/minio/minio-go/v7/pkg/credentials"
 )
 
 type StorageManager interface {
-	EnsureBucketExists(bucketName string) error
-	UploadFile(bucketName string, objectName string, fileBytes []byte) error
-	DownloadFile(bucketName string, objectName string, filePath string) error
-	GetDirectLink(bucketName string, objectName string) (string, error)
-	RemoveFile(bucketName string, objectName string) error
+	EnsureBucketExists(ctx context.Context, bucketName string) error
+	UploadFile(ctx context.Context, bucketName string, objectName string, fileBytes []byte) error
+	DownloadFile(ctx context.Context, bucketName string, objectName string, filePath string) error
+	GetDirectLink(ctx context.Context, bucketName string, objectName string) (string, error)
+	RemoveFile(ctx context.Context, bucketName string, objectName string) error
 }
 type StorageManagerImpl struct {
 	minioClient *minio.Client
@@ -38,9 +37,7 @@ func NewStorageManager(endpoint string, accessKey string, secretKey string) (Sto
 }
 
 // EnsureBucketExists checks if a bucket exists in the storage and creates it if it doesn't.
-func (s *StorageManagerImpl) EnsureBucketExists(bucketName string) error {
-	ctx := context.Background()
-
+func (s *StorageManagerImpl) EnsureBucketExists(ctx context.Context, bucketName string) error {
 	exists, err := s.minioClient.BucketExists(ctx, bucketName)
 	if err != nil {
 		return err
@@ -58,9 +55,9 @@ func (s *StorageManagerImpl) EnsureBucketExists(bucketName string) error {
 }
 
 // UploadFile uploads a file to the specified bucket in the storage.
-func (s *StorageManagerImpl) UploadFile(bucketName string, objectName string, fileBytes []byte) error {
-	ctx := context.Background()
-	err := s.EnsureBucketExists(bucketName)
+func (s *StorageManagerImpl) UploadFile(ctx context.Context, bucketName string, objectName string, fileBytes []byte) error {
+
+	err := s.EnsureBucketExists(ctx, bucketName)
 	if err != nil {
 		return err
 	}
@@ -75,8 +72,7 @@ func (s *StorageManagerImpl) UploadFile(bucketName string, objectName string, fi
 }
 
 // DownloadFile downloads a file from the specified bucket in the storage to a local file path.
-func (s *StorageManagerImpl) DownloadFile(bucketName string, objectName string, filePath string) error {
-	ctx := context.Background()
+func (s *StorageManagerImpl) DownloadFile(ctx context.Context, bucketName string, objectName string, filePath string) error {
 
 	err := s.minioClient.FGetObject(ctx, bucketName, objectName, filePath, minio.GetObjectOptions{})
 	if err != nil {
@@ -88,9 +84,7 @@ func (s *StorageManagerImpl) DownloadFile(bucketName string, objectName string, 
 }
 
 // GetDirectLink generates a presigned URL for direct access to a specific object in the storage.
-func (s *StorageManagerImpl) GetDirectLink(bucketName string, objectName string) (string, error) {
-	ctx := context.Background()
-
+func (s *StorageManagerImpl) GetDirectLink(ctx context.Context, bucketName string, objectName string) (string, error) {
 	reqParams := url.Values{}
 	presignedURL, err := s.minioClient.PresignedGetObject(ctx, bucketName, objectName, 24*60*60, reqParams)
 	if err != nil {
@@ -101,8 +95,7 @@ func (s *StorageManagerImpl) GetDirectLink(bucketName string, objectName string)
 }
 
 // RemoveFile removes a file from the specified bucket in the storage.
-func (s *StorageManagerImpl) RemoveFile(bucketName string, objectName string) error {
-	ctx := context.Background()
+func (s *StorageManagerImpl) RemoveFile(ctx context.Context, bucketName string, objectName string) error {
 
 	err := s.minioClient.RemoveObject(ctx, bucketName, objectName, minio.RemoveObjectOptions{})
 	if err != nil {
