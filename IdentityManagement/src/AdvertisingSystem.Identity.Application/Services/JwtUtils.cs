@@ -29,7 +29,7 @@ public class JwtUtils : IJwtUtils
         var tokenExpiresAt = DateTime.UtcNow.AddMinutes(15);
         var token = GenerateToken(tokenExpiresAt, user);
 
-        var refreshToken = await GenerateRefreshToken(user.UserName, DateTime.Now.AddMonths(1));
+        var refreshToken = await GenerateRefreshTokenAsync(user.UserName, DateTime.Now.AddMonths(1));
 
         return new LoginResponse()
         {
@@ -77,7 +77,7 @@ public class JwtUtils : IJwtUtils
         return tokenHandler.WriteToken(token);
     }
 
-    private async Task<RefreshTokenResult> GenerateRefreshToken(string username, DateTime expiresAt)
+    private async Task<RefreshTokenResult> GenerateRefreshTokenAsync(string username, DateTime expiresAt)
     {
         var user = await _userManager.FindByNameAsync(username);
 
