@@ -38,7 +38,7 @@ func createIdempotencyTable(err error, db *sql.DB) error {
 	CREATE TABLE IF NOT EXISTS idempotent_history (
 		id SERIAL PRIMARY KEY,
 		user_id VARCHAR(255),
-		idempotent_key VARCHAR(80),
+		idempotent_key VARCHAR(80) UNIQUE,
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	)`)
 	if err != nil {

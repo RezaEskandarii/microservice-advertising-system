@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"time"
 	"wallet-api/internal/models"
 
 	_ "github.com/lib/pq"
@@ -32,18 +33,18 @@ func NewPostgreSQLRepository(db *sql.DB) *PostgreSQLRepository {
 }
 
 // Deposit adds the specified amount to the user's wallet.
-func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotencyKey uuid.UUID) error {
+func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotencyKey string) error {
 	err := r.checkIdempotency(userID, idempotencyKey)
 	if err == DuplicatedRequestError {
 		return nil
 	}
 
-	_, err = r.db.Exec("INSERT INTO wallets (user_id,balance) VALUES ($1,$2) ON CONFLICT (user_id) DO UPDATE SET balance = (select balance from wallets where user_id = $1) + $2", userID, amount)
+	_, err = r.db.Exec("INSERT INTO wallets (user_id,balance,created_at) VALUES ($1,$2,$3) ON CONFLICT (user_id) DO UPDATE SET balance = (select balance from wallets where user_id = $1) + $2", userID, amount, time.Now())
 	if err != nil {
 		return err
 	}
 
-	_, err = r.db.Exec("INSERT INTO transactions (id, user_id, amount, type) VALUES (NULL, $1, $2, 'deposit')", userID, amount)
+	_, err = r.db.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, 'deposit')", userID, amount)
 	if err != nil {
 		return err
 	}
@@ -109,7 +110,7 @@ func (r *PostgreSQLRepository) GetAmount(userID string) (float64, error) {
 // checkIdempotency checks if the idempotency key has been used before.
 func (r *PostgreSQLRepository) checkIdempotency(userID string, idempotencyKey string) error {
 	var exists bool
-	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM idempotency WHERE user_id = $1 AND idemotent_key=$2)", userID, idempotencyKey).Scan(&exists)
+	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM idempotent_history WHERE user_id = $1 AND idempotent_key=$2)", userID, idempotencyKey).Scan(&exists)
 	if err != nil {
 		return err
 	}
@@ -117,7 +118,7 @@ func (r *PostgreSQLRepository) checkIdempotency(userID string, idempotencyKey st
 		return DuplicatedRequestError
 	}
 
-	_, err = r.db.Exec("INSERT INTO idempotencies (user_id,idempotent_history) VALUES ($1,$2)", userID, idempotencyKey)
+	_, err = r.db.Exec("INSERT INTO  idempotent_history(user_id,idempotent_key) VALUES ($1,$2)", userID, idempotencyKey)
 	if err != nil {
 		return err
 	}
