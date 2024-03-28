@@ -25,11 +25,13 @@ type CategoryPostgresRepository struct {
 	db *sql.DB
 }
 
-// NewCategoryPostgresRepository{
+// NewCategoryPostgresRepository creates a new instance of CategoryPostgresRepository
+// It takes an *sql.DB as a parameter and returns a pointer to a CategoryPostgresRepository
 func NewCategoryPostgresRepository(db *sql.DB) *CategoryPostgresRepository {
 	return &CategoryPostgresRepository{db: db}
 }
 
+// Create inserts a new category into the database
 func (r *CategoryPostgresRepository) Create(category *Category) (*Category, error) {
 	query := "INSERT INTO categories (name,parent_id) VALUES ($1,$2) RETURNING id"
 	err := r.db.QueryRow(query, category.Name, category.ParentID).Scan(&category.ID)
@@ -40,6 +42,9 @@ func (r *CategoryPostgresRepository) Create(category *Category) (*Category, erro
 	return category, nil
 }
 
+// Update updates an existing category in the database
+// It takes the ID of the category to update and a pointer to a Category as parameters
+// It returns the updated category and an error
 func (r *CategoryPostgresRepository) Update(id int, category *Category) (*Category, error) {
 	query := "UPDATE categories SET name = $1 WHERE id = $2 RETURNING id"
 	err := r.db.QueryRow(query, category.Name, id).Scan(&category.ID)
@@ -49,7 +54,7 @@ func (r *CategoryPostgresRepository) Update(id int, category *Category) (*Catego
 	return category, nil
 }
 
-// DeleteCategory
+// DeleteCategory deletes a category from the database
 func (r *CategoryPostgresRepository) DeleteCategory(id int) error {
 	_, err := r.db.Exec("DELETE FROM categories WHERE id = $1", id)
 	if err != nil {
@@ -58,7 +63,7 @@ func (r *CategoryPostgresRepository) DeleteCategory(id int) error {
 	return nil
 }
 
-// FindByID
+// FindByID retrieves a category from the database by its ID
 func (r *CategoryPostgresRepository) FindByID(id int) (*Category, error) {
 	category := &Category{}
 
@@ -78,6 +83,7 @@ func (r *CategoryPostgresRepository) FindByID(id int) (*Category, error) {
 	return category, nil
 }
 
+// FindByName retrieves a category from the database by its name
 func (r *CategoryPostgresRepository) FindByName(name string) (*Category, error) {
 	category := &Category{}
 	name = strings.TrimSpace(name)
@@ -95,7 +101,8 @@ func (r *CategoryPostgresRepository) FindByName(name string) (*Category, error) 
 	return category, nil
 }
 
-// FindAll
+// FindAll retrieves all top-level categories from the database
+// It returns a slice of Category and an error
 func (r *CategoryPostgresRepository) FindAll() ([]Category, error) {
 	rows, err := r.db.Query("SELECT id, name FROM categories WHERE parent_id IS NULL")
 	if err != nil {
@@ -123,7 +130,8 @@ func (r *CategoryPostgresRepository) FindAll() ([]Category, error) {
 	return categories, nil
 }
 
-// findSubcategories
+// findSubcategories retrieves all subcategories for a given parent category ID
+// It takes the parent category ID as a parameter and returns a slice of Category and an error
 func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category, error) {
 	rows, err := r.db.Query("SELECT id, name, parent_id, properties FROM categories WHERE parent_id = $1", parentID)
 	if err != nil {
@@ -151,7 +159,8 @@ func (r *CategoryPostgresRepository) findSubcategories(parentID int) ([]Category
 	return subcategories, nil
 }
 
-// Seed read default categories and subcategories from json file and insert to database
+// Seed reads default categories and subcategories from a JSON file and inserts them into the database
+// It returns an error if any issues occur during the seeding process
 func (r *CategoryPostgresRepository) Seed() error {
 
 	db := r.db
@@ -225,6 +234,8 @@ func (r *CategoryPostgresRepository) Seed() error {
 	return nil
 }
 
+// handleNoRowsError is a helper function that checks if the provided error is a "no rows" error
+// and returns a nil error if it is, or the original error if it's not
 func handleNoRowsError(err error) error {
 	if err == sql.ErrNoRows {
 		return nil
@@ -232,6 +243,8 @@ func handleNoRowsError(err error) error {
 	return err
 }
 
+// categoryExists checks if a category with the given name already exists in the database
+// It takes the database connection and the category name as parameters and returns a boolean
 func categoryExists(db *sql.DB, name string) bool {
 	var count int = 0
 	queryStr := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE name = $1", config.CategoriesTblName)
