@@ -4,8 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"wallet-api/internal/models"
-)
-import (
+
 	_ "github.com/lib/pq"
 )
 
