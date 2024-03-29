@@ -3,45 +3,54 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"sync"
 	"time"
+	"wallet-api/internal/application_errors"
 	"wallet-api/internal/models"
 
 	_ "github.com/lib/pq"
 )
 
-var (
-	DuplicatedRequestError = errors.New("duplicate request")
-)
-
 type WalletRepository interface {
 	Deposit(userID string, amount float64, idempotencyKey string) error
-	Withdraw(userID string, amount float64, idempotencyKey string) error
+	Withdrawal(userID string, amount float64, idempotencyKey string) error
 	GetTransactions(userID string) ([]models.Transaction, error)
 	GetAmount(userID string) (float64, error)
 }
 
 // PostgreSQLRepository is an implementation of the WalletRepository interface using PostgreSQL.
 type PostgreSQLRepository struct {
-	db *sql.DB
+	db   *sql.DB
+	lock *sync.Mutex
 }
 
 // NewPostgreSQLRepository creates a new instance of PostgreSQLRepository.
 func NewPostgreSQLRepository(db *sql.DB) *PostgreSQLRepository {
 	return &PostgreSQLRepository{
-		db: db,
+		db:   db,
+		lock: &sync.Mutex{},
 	}
 }
 
 // Deposit adds the specified amount to the user's wallet.
 func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotencyKey string) error {
+
 	err := r.checkIdempotency(userID, idempotencyKey)
-	if err == DuplicatedRequestError {
+	if err == application_errors.DuplicatedRequestError {
 		return nil
 	}
 
-	_, err = r.db.Exec("INSERT INTO wallets (user_id,balance,created_at) VALUES ($1,$2,$3) ON CONFLICT (user_id) DO UPDATE SET balance = (select balance from wallets where user_id = $1) + $2", userID, amount, time.Now())
+	res, err := r.db.Exec("INSERT INTO wallets (user_id,balance,created_at) VALUES ($1,$2,$3) ON CONFLICT (user_id) DO UPDATE SET balance = (select balance from wallets where user_id = $1) + $2", userID, amount, time.Now())
 	if err != nil {
 		return err
+	}
+
+	n, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if n == 0 {
+		return application_errors.InsufficientWalletBalance
 	}
 
 	_, err = r.db.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, 'deposit')", userID, amount)
@@ -52,19 +61,23 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 	return nil
 }
 
-// Withdraw subtracts the specified amount from the user's wallet.
-func (r *PostgreSQLRepository) Withdraw(userID string, amount float64, idempotencyKey string) error {
+// Withdrawal subtracts the specified amount from the user's wallet.
+func (r *PostgreSQLRepository) Withdrawal(userID string, amount float64, idempotencyKey string) error {
 	err := r.checkIdempotency(userID, idempotencyKey)
-	if err == DuplicatedRequestError {
+	if err == application_errors.DuplicatedRequestError {
 		return nil
 	}
 
-	_, err = r.db.Exec("UPDATE wallets SET amount = amount - $2 WHERE user_id = $1 AND amount >= $2", userID, amount)
+	res, err := r.db.Exec("UPDATE wallets SET amount = amount - $2 WHERE user_id = $1 AND amount >= $2", userID, amount)
 	if err != nil {
 		return err
 	}
 
-	if r.dbChanges() == 0 {
+	n, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if n == 0 {
 		return errors.New("insufficient funds")
 	}
 
@@ -115,7 +128,7 @@ func (r *PostgreSQLRepository) checkIdempotency(userID string, idempotencyKey st
 		return err
 	}
 	if exists {
-		return DuplicatedRequestError
+		return application_errors.DuplicatedRequestError
 	}
 
 	_, err = r.db.Exec("INSERT INTO  idempotent_history(user_id,idempotent_key) VALUES ($1,$2)", userID, idempotencyKey)
@@ -124,11 +137,4 @@ func (r *PostgreSQLRepository) checkIdempotency(userID string, idempotencyKey st
 	}
 
 	return nil
-}
-
-// dbChanges returns the number of rows affected by the last database operation.
-func (r *PostgreSQLRepository) dbChanges() int64 {
-	var changes int64
-	r.db.QueryRow("SELECT SUM(changed_rows) FROM pg_stat_database WHERE datname = current_database()").Scan(&changes)
-	return changes
 }
