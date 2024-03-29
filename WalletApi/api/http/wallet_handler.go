@@ -23,7 +23,6 @@ func (h *WalletHandler) InitRoutes() {
 }
 
 type depositRequest struct {
-	UserID         string
 	Amount         float64
 	IdempotencyKey string
 }
@@ -33,13 +32,17 @@ func (h *WalletHandler) Deposit(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "MethodNotAllowed", http.StatusMethodNotAllowed)
 		return
 	}
+	userID, err := GetUserId(r)
+	if err != nil {
+		http.Error(w, "user id is required", http.StatusForbidden)
+	}
 	var req depositRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	if err := h.Service.Deposit(req.UserID, req.Amount, req.IdempotencyKey); err != nil {
+	if err := h.Service.Deposit(userID, req.Amount, req.IdempotencyKey); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -48,10 +51,9 @@ func (h *WalletHandler) Deposit(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *WalletHandler) GetTransactions(w http.ResponseWriter, r *http.Request) {
-	userID := r.URL.Query().Get("userID")
-	if userID == "" {
-		http.Error(w, "userID is required", http.StatusBadRequest)
-		return
+	userID, err := GetUserId(r)
+	if err != nil {
+		http.Error(w, "user id is required", http.StatusForbidden)
 	}
 
 	transactions, err := h.Service.GetTransactions(userID)
@@ -68,10 +70,9 @@ func (h *WalletHandler) GetTransactions(w http.ResponseWriter, r *http.Request) 
 }
 
 func (h *WalletHandler) GetAmount(w http.ResponseWriter, r *http.Request) {
-	userID := r.URL.Query().Get("userID")
-	if userID == "" {
-		http.Error(w, "userID is required", http.StatusBadRequest)
-		return
+	userID, err := GetUserId(r)
+	if err != nil {
+		http.Error(w, "user id is required", http.StatusForbidden)
 	}
 
 	amount, err := h.Service.GetAmount(userID)
