@@ -22,7 +22,7 @@ func GetPostgresDB(ctx context.Context) (*sql.DB, error) {
 
 // GetWalletApiDB retrieves a connection to the wallet api database using the provided context.
 func GetWalletApiDB(ctx context.Context) (*sql.DB, error) {
-	sdn := env_manager.Load("wallet_api_connection_string")
+	sdn := env_manager.LoadEnv("wallet_api_connection_string")
 
 	// Open a connection to the PostgreSQL database using the connection string.
 	db, err := sql.Open("postgres", sdn)
