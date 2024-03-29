@@ -66,7 +66,7 @@ func createTransactionsTable(err error, db *sql.DB) error {
 	CREATE TABLE IF NOT EXISTS transactions (
 		id SERIAL PRIMARY KEY,
 		user_id VARCHAR(255),
-		amount FLOAT,
+		amount DECIMAL,
 		type VARCHAR(50),
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	)`)
