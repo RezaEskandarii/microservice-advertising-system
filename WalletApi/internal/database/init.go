@@ -11,26 +11,38 @@ const (
 	DBName = "wallet_api"
 )
 
-func Init(ctx context.Context) {
+func Init(ctx context.Context) error {
 
 	// Create the wallet database if not exists
 	err := createDBIfNotExists(ctx)
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 	log.Println("wallet database created or already exists")
 
 	db, err := GetWalletApiDB(ctx)
+	if err != nil {
+		return err
+	}
 
 	defer db.Close()
 
-	err = createWalletsTable(err, db)
+	if err = createWalletsTable(err, db); err != nil {
+		return err
+	}
 
-	err = createTransactionsTable(err, db)
+	if err = createTransactionsTable(err, db); err != nil {
+		return err
+	}
 
-	err = createIdempotencyTable(err, db)
+	if err = createIdempotencyTable(err, db); err != nil {
+		return err
+	}
 
 	log.Println("Database and tables created successfully")
+
+	return nil
 }
 
 func createIdempotencyTable(err error, db *sql.DB) error {
