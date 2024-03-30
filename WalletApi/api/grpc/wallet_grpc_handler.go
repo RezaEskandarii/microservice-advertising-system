@@ -16,26 +16,36 @@ type TransactionServer struct {
 	service services.WalletService
 }
 
+// Register registers the TransactionServer with the gRPC server and starts the server
 func (s *TransactionServer) Register(service services.WalletService) {
 	s.service = service
 
-	var port = fmt.Sprintf(":%s", env_manager.LoadEnv("wallet_grpc_port"))
+	// Load the wallet gRPC port from the environment
+	port := fmt.Sprintf(":%s", env_manager.LoadEnv("wallet_grpc_port"))
+
+	// Listen for incoming gRPC connections on the specified port
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	// Create a new gRPC server
 	gs := grpc.NewServer()
-	pb.RegisterTransactionServiceServer(gs, &TransactionServer{service: service})
-	fmt.Printf("###### transaction grpc server listen on: %s ######", port)
 
+	// Register the TransactionServer with the gRPC server
+	pb.RegisterTransactionServiceServer(gs, &TransactionServer{service: service})
+	fmt.Printf("###### wallet grpc server listen on: %s ######", port)
+
+	// Start the gRPC server
 	if err := gs.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
+// ProcessTransaction processes a transaction request
 func (s *TransactionServer) ProcessTransaction(ctx context.Context, in *pb.Transaction) (*pb.TransactionResult, error) {
-	var err = s.service.Withdrawal(in.UserId, in.Amount, in.IdempotencyKey)
+	// Call the Withdrawal method on the wallet service
+	err := s.service.Withdrawal(in.UserId, in.Amount, in.IdempotencyKey)
 	if err != nil {
 		return &pb.TransactionResult{Status: false, ErrorMessage: err.Error()}, nil
 	}
