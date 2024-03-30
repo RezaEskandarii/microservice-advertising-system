@@ -64,29 +64,27 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 // Withdrawal subtracts the specified amount from the user's wallet.
 func (r *PostgreSQLRepository) Withdrawal(userID string, amount float64, idempotencyKey string) error {
 	err := r.checkIdempotency(userID, idempotencyKey)
-	if err == application_errors.DuplicatedRequestError {
-		return nil
+	if err == nil {
+		res, err := r.db.Exec("UPDATE wallets SET balance = balance - $2 WHERE user_id = $1 AND balance >= $2", userID, amount)
+		if err != nil {
+			return err
+		}
+
+		n, err := res.RowsAffected()
+		if err != nil {
+			return err
+		}
+		if n == 0 {
+			return errors.New("insufficient funds")
+		}
+
+		_, err = r.db.Exec("INSERT INTO transactions (id, user_id, amount, type) VALUES (NULL,$1, $2, 'withdraw')", userID, amount)
+		if err != nil {
+			return err
+		}
 	}
 
-	res, err := r.db.Exec("UPDATE wallets SET amount = amount - $2 WHERE user_id = $1 AND amount >= $2", userID, amount)
-	if err != nil {
-		return err
-	}
-
-	n, err := res.RowsAffected()
-	if err != nil {
-		return err
-	}
-	if n == 0 {
-		return errors.New("insufficient funds")
-	}
-
-	_, err = r.db.Exec("INSERT INTO transactions (id, user_id, amount, type) VALUES (NULL,$1, $2, 'withdraw')", userID, amount)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // GetTransactions retrieves the transaction history for a user.
