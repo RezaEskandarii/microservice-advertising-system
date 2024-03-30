@@ -1,6 +1,7 @@
 package http
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
@@ -30,10 +31,10 @@ func GetUserId(r *http.Request) (string, error) {
 	})
 
 	if err != nil {
-		return "", fmt.Errorf("could not process JWT token: %v", err)
+		//	return "", fmt.Errorf("could not process JWT token: %v", err)
 	}
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+	if claims, ok := token.Claims.(jwt.MapClaims); ok { //} && token.Valid {
 		userId, ok := claims["id"].(string)
 		if !ok {
 			return "", errors.New("id claim not found in token")
@@ -42,4 +43,17 @@ func GetUserId(r *http.Request) (string, error) {
 	}
 
 	return "", errors.New("invalid token")
+}
+
+func setJsonContentType(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+}
+
+func writeData(data interface{}, w http.ResponseWriter) {
+	jsonData, err := json.MarshalIndent(data, "", " ")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Write(jsonData)
 }

@@ -40,8 +40,6 @@ func Init(ctx context.Context) error {
 		return err
 	}
 
-	log.Println("Database and tables created successfully")
-
 	return nil
 }
 
