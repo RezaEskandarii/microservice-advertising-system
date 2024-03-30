@@ -17,24 +17,24 @@ func NewWalletHandler(service services.WalletService) *WalletHandler {
 
 // InitRoutes initialize http routes
 func (h *WalletHandler) InitRoutes() {
-	http.HandleFunc("/deposit", h.Deposit)
-	http.HandleFunc("/transactions", h.GetTransactions)
-	http.HandleFunc("/amount", h.GetAmount)
+	http.HandleFunc("/api/v1/deposit", h.deposit)
+	http.HandleFunc("/api/v1/transactions", h.getTransactions)
+	http.HandleFunc("/api/v1/balance", h.getBalance)
 }
 
 type depositRequest struct {
-	Amount         float64
-	IdempotencyKey string
+	Amount float64
 }
 
-func (h *WalletHandler) Deposit(w http.ResponseWriter, r *http.Request) {
+func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
+	setJsonContentType(w)
 	if strings.ToUpper(r.Method) != "POST" {
 		http.Error(w, "MethodNotAllowed", http.StatusMethodNotAllowed)
 		return
 	}
 	userID, err := GetUserId(r)
 	if err != nil {
-		http.Error(w, "user id is required", http.StatusForbidden)
+		http.Error(w, err.Error(), http.StatusForbidden)
 	}
 	var req depositRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -42,18 +42,27 @@ func (h *WalletHandler) Deposit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.Service.Deposit(userID, req.Amount, req.IdempotencyKey); err != nil {
+	idempotencyKey := r.Header.Get("X-Idempotency-Key")
+
+	if err := h.Service.Deposit(userID, req.Amount, idempotencyKey); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
+
+	amount, _ := h.Service.GetAmount(userID)
+
+	if err := json.NewEncoder(w).Encode(map[string]float64{"balance": amount}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
-func (h *WalletHandler) GetTransactions(w http.ResponseWriter, r *http.Request) {
+func (h *WalletHandler) getTransactions(w http.ResponseWriter, r *http.Request) {
 	userID, err := GetUserId(r)
 	if err != nil {
-		http.Error(w, "user id is required", http.StatusForbidden)
+		http.Error(w, err.Error(), http.StatusForbidden)
 	}
 
 	transactions, err := h.Service.GetTransactions(userID)
@@ -62,17 +71,19 @@ func (h *WalletHandler) GetTransactions(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	response := ApiResponse{Data: transactions}
 	setJsonContentType(w)
-	if err := json.NewEncoder(w).Encode(transactions); err != nil {
+	if err := json.NewEncoder(w).Encode(response); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
 
-func (h *WalletHandler) GetAmount(w http.ResponseWriter, r *http.Request) {
+func (h *WalletHandler) getBalance(w http.ResponseWriter, r *http.Request) {
+	setJsonContentType(w)
 	userID, err := GetUserId(r)
 	if err != nil {
-		http.Error(w, "user id is required", http.StatusForbidden)
+		http.Error(w, err.Error(), http.StatusForbidden)
 	}
 
 	amount, err := h.Service.GetAmount(userID)
@@ -81,13 +92,11 @@ func (h *WalletHandler) GetAmount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	setJsonContentType(w)
-	if err := json.NewEncoder(w).Encode(map[string]float64{"amount": amount}); err != nil {
+	data := ApiResponse{
+		Data: map[string]float64{"balance": amount},
+	}
+	if err := json.NewEncoder(w).Encode(data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-}
-
-func setJsonContentType(w http.ResponseWriter) {
-	w.Header().Set("Content-Type", "application/json")
 }
