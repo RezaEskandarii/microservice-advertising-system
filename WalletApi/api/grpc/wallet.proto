@@ -1,0 +1,17 @@
+syntax = "proto3";
+option go_package = "wallet-api/grpc";
+
+message Transaction {
+  string UserId = 1;
+  string IdempotencyKey = 2;
+  double Amount = 3;
+}
+
+message TransactionResult{
+  bool Status = 1;
+  string ErrorMessage = 2;
+}
+
+service TransactionService {
+  rpc ProcessTransaction(Transaction) returns (TransactionResult) {}
+}
