@@ -113,7 +113,7 @@ func (r *PostgreSQLRepository) GetTransactions(userID string) ([]models.Transact
 // GetAmount retrieves the current amount in a user's wallet.
 func (r *PostgreSQLRepository) GetAmount(userID string) (float64, error) {
 	var amount float64
-	err := r.db.QueryRow("SELECT amount FROM wallets WHERE user_id = $1", userID).Scan(&amount)
+	err := r.db.QueryRow("SELECT balance FROM wallets WHERE user_id = $1", userID).Scan(&amount)
 	if err != nil {
 		return 0, err
 	}
