@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 	"wallet-api/internal/application_errors"
+	"wallet-api/internal/enums/transaction_types"
 	"wallet-api/internal/models"
 
 	_ "github.com/lib/pq"
@@ -13,7 +14,7 @@ import (
 
 type WalletRepository interface {
 	Deposit(userID string, amount float64, idempotencyKey string) error
-	Withdrawal(userID string, amount float64, idempotencyKey string) error
+	Withdraw(userID string, amount float64, idempotencyKey string) error
 	GetTransactions(userID string) ([]models.Transaction, error)
 	GetAmount(userID string) (float64, error)
 }
@@ -53,7 +54,7 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 		return application_errors.InsufficientWalletBalance
 	}
 
-	_, err = r.db.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, 'deposit')", userID, amount)
+	_, err = r.db.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, $3)", userID, amount, transaction_types.Deposit)
 	if err != nil {
 		return err
 	}
@@ -61,8 +62,8 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 	return nil
 }
 
-// Withdrawal subtracts the specified amount from the user's wallet.
-func (r *PostgreSQLRepository) Withdrawal(userID string, amount float64, idempotencyKey string) error {
+// Withdraw  subtracts the specified amount from the user's wallet.
+func (r *PostgreSQLRepository) Withdraw(userID string, amount float64, idempotencyKey string) error {
 	err := r.checkIdempotency(userID, idempotencyKey)
 	if err == nil {
 		res, err := r.db.Exec("UPDATE wallets SET balance = balance - $2 WHERE user_id = $1 AND balance >= $2", userID, amount)
@@ -78,7 +79,7 @@ func (r *PostgreSQLRepository) Withdrawal(userID string, amount float64, idempot
 			return errors.New("insufficient funds")
 		}
 
-		_, err = r.db.Exec("INSERT INTO transactions (id, user_id, amount, type) VALUES (NULL,$1, $2, 'withdraw')", userID, amount)
+		_, err = r.db.Exec("INSERT INTO transactions (id, user_id, amount, type) VALUES (NULL,$1, $2, $3)", userID, amount, transaction_types.Withdraw)
 		if err != nil {
 			return err
 		}

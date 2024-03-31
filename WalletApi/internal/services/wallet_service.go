@@ -7,7 +7,7 @@ import (
 
 type WalletService interface {
 	Deposit(userID string, amount float64, idempotencyKey string) error
-	Withdrawal(userID string, amount float64, idempotencyKey string) error
+	Withdraw(userID string, amount float64, idempotencyKey string) error
 	GetTransactions(userID string) ([]models.Transaction, error)
 	GetAmount(userID string) (float64, error)
 }
@@ -24,8 +24,8 @@ func (w *WalletAppService) Deposit(userID string, amount float64, idempotencyKey
 	return w.Repository.Deposit(userID, amount, idempotencyKey)
 }
 
-func (w *WalletAppService) Withdrawal(userID string, amount float64, idempotencyKey string) error {
-	return w.Repository.Withdrawal(userID, amount, idempotencyKey)
+func (w *WalletAppService) Withdraw(userID string, amount float64, idempotencyKey string) error {
+	return w.Repository.Withdraw(userID, amount, idempotencyKey)
 }
 
 func (w *WalletAppService) GetTransactions(userID string) ([]models.Transaction, error) {
