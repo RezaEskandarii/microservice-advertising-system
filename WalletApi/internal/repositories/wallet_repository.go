@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sync"
 	"time"
-	"wallet-api/internal/application_errors"
+	"wallet-api/internal/app_errors"
 	"wallet-api/internal/enums/transaction_types"
 	"wallet-api/internal/models"
 
@@ -38,7 +38,7 @@ func NewPostgreSQLRepository(db *sql.DB) *PostgreSQLRepository {
 func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotencyKey string) error {
 
 	err := r.checkIdempotency(userID, idempotencyKey)
-	if err == application_errors.DuplicatedRequestError {
+	if err == app_errors.DuplicatedRequestError {
 		return nil
 	}
 
@@ -52,7 +52,7 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 		return err
 	}
 	if n == 0 {
-		return application_errors.InsufficientWalletBalance
+		return app_errors.InsufficientWalletBalance
 	}
 
 	_, err = r.db.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, $3)", userID, amount, transaction_types.Deposit)
@@ -153,7 +153,7 @@ func (r *PostgreSQLRepository) checkIdempotency(userID string, idempotencyKey st
 		return err
 	}
 	if exists {
-		return application_errors.DuplicatedRequestError
+		return app_errors.DuplicatedRequestError
 	}
 
 	_, err = r.db.Exec("INSERT INTO  idempotent_history(user_id,idempotent_key) VALUES ($1,$2)", userID, idempotencyKey)
