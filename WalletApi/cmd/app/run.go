@@ -3,7 +3,10 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/robfig/cron"
+	"log"
 	"net/http"
+	"time"
 	"wallet-api/api/grpc"
 	api "wallet-api/api/http"
 	"wallet-api/internal/database"
@@ -33,6 +36,9 @@ func Run(ctx context.Context) error {
 	handler := api.NewWalletHandler(walletService)
 	handler.InitRoutes()
 
+	// Remove expired idempotency history
+	removeExpiredIdempotencyHistory(walletService)
+
 	// Register and start the transaction gRPC server
 	gs := grpc.TransactionServer{}
 	go gs.Register(walletService)
@@ -47,4 +53,20 @@ func Run(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+// removeExpiredIdempotencyHistory call RemoveExpire method every hour
+func removeExpiredIdempotencyHistory(service services.WalletService) {
+	c := cron.New()
+	err := c.AddFunc("@hourly", func() {
+		if err := service.RemoveExpire(time.Now().Add(-1 * time.Hour)); err != nil {
+			log.Println(err.Error())
+		}
+	})
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	c.Start()
 }
