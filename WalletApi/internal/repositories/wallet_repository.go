@@ -17,6 +17,7 @@ type WalletRepository interface {
 	Withdraw(userID string, amount float64, idempotencyKey string) error
 	GetTransactions(userID string) ([]models.Transaction, error)
 	GetAmount(userID string) (float64, error)
+	RemoveExpire(createdAt time.Time) error
 }
 
 // PostgreSQLRepository is an implementation of the WalletRepository interface using PostgreSQL.
@@ -117,6 +118,12 @@ func (r *PostgreSQLRepository) GetAmount(userID string) (float64, error) {
 		return 0, err
 	}
 	return amount, nil
+}
+
+// RemoveExpire remove expired idempotent_history
+func (r *PostgreSQLRepository) RemoveExpire(createdAt time.Time) error {
+	query := "DELETE FROM idempotent_history WHERE DATE(created_at) <= $1"
+	return r.db.QueryRow(query, createdAt.Format("2006-01-02")).Err()
 }
 
 // checkIdempotency checks if the idempotency key has been used before.

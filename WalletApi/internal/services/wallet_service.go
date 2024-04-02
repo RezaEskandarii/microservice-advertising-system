@@ -1,6 +1,7 @@
 package services
 
 import (
+	"time"
 	"wallet-api/internal/models"
 	"wallet-api/internal/repositories"
 )
@@ -10,6 +11,7 @@ type WalletService interface {
 	Withdraw(userID string, amount float64, idempotencyKey string) error
 	GetTransactions(userID string) ([]models.Transaction, error)
 	GetAmount(userID string) (float64, error)
+	RemoveExpire(createdAt time.Time) error
 }
 
 type WalletAppService struct {
@@ -34,4 +36,8 @@ func (w *WalletAppService) GetTransactions(userID string) ([]models.Transaction,
 
 func (w *WalletAppService) GetAmount(userID string) (float64, error) {
 	return w.Repository.GetAmount(userID)
+}
+
+func (w *WalletAppService) RemoveExpire(createdAt time.Time) error {
+	return w.Repository.RemoveExpire(createdAt)
 }
