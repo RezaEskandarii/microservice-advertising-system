@@ -125,16 +125,16 @@ func (r *PostgreSQLRepository) RemoveExpire(createdAt time.Time) error {
 	// Extract the date part from the given date
 	formattedDate := createdAt.Format("2006-01-02")
 
-	// Check count of rows
-	var count int
+	// check if has any row
+	var hasRow bool
 	db := r.db
-	err := db.QueryRow("SELECT COUNT(*) FROM idempotent_history WHERE DATE(created_at) <= $1", formattedDate).Scan(&count)
+	err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM idempotent_history WHERE DATE(created_at) <= $1)", formattedDate).Scan(&hasRow)
 	if err != nil {
 		return err
 	}
 
 	// If count is greater than 0, execute the delete query
-	if count > 0 {
+	if hasRow {
 		query := "DELETE FROM idempotent_history WHERE DATE(created_at) <= $1"
 		err = db.QueryRow(query, formattedDate).Err()
 		if err != nil {
