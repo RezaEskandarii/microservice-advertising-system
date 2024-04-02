@@ -58,7 +58,7 @@ func Run(ctx context.Context) error {
 // removeExpiredIdempotencyHistory call RemoveExpire method every hour
 func removeExpiredIdempotencyHistory(service services.WalletService) {
 	c := cron.New()
-	err := c.AddFunc("@hourly", func() {
+	err := c.AddFunc("@every 5s", func() {
 		if err := service.RemoveExpire(time.Now().Add(-1 * time.Hour)); err != nil {
 			log.Println(err.Error())
 		}

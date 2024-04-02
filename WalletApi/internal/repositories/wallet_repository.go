@@ -122,8 +122,27 @@ func (r *PostgreSQLRepository) GetAmount(userID string) (float64, error) {
 
 // RemoveExpire remove expired idempotent_history
 func (r *PostgreSQLRepository) RemoveExpire(createdAt time.Time) error {
-	query := "DELETE FROM idempotent_history WHERE DATE(created_at) <= $1"
-	return r.db.QueryRow(query, createdAt.Format("2006-01-02")).Err()
+	// Extract the date part from the given date
+	formattedDate := createdAt.Format("2006-01-02")
+
+	// Check count of rows
+	var count int
+	db := r.db
+	err := db.QueryRow("SELECT COUNT(*) FROM idempotent_history WHERE DATE(created_at) <= $1", formattedDate).Scan(&count)
+	if err != nil {
+		return err
+	}
+
+	// If count is greater than 0, execute the delete query
+	if count > 0 {
+		query := "DELETE FROM idempotent_history WHERE DATE(created_at) <= $1"
+		err = db.QueryRow(query, formattedDate).Err()
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // checkIdempotency checks if the idempotency key has been used before.
