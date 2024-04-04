@@ -1,0 +1,37 @@
+@using FrontEnd.Constants
+@inject Blazored.SessionStorage.ISessionStorageService _SessionStorageService;
+
+
+@if (!string.IsNullOrWhiteSpace(SessionStorageMessage))
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="alert alert-info">@SessionStorageMessage</div>
+        </div>
+    </div>
+}
+
+@code {
+    private string? SessionStorageMessage { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            SessionStorageMessage = await _SessionStorageService.GetItemAsync<string>(SessionKeys.Message);
+            StateHasChanged();
+            await _SessionStorageService.RemoveItemAsync(SessionKeys.Message);
+        }
+    }
+
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            await _SessionStorageService.RemoveItemAsync(SessionKeys.Message);
+            SessionStorageMessage = string.Empty;
+        }
+    }
+
+}

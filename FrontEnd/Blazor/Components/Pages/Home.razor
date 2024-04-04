@@ -1,0 +1,80 @@
+﻿@page "/"
+@using FrontEnd.Constants
+@using FrontEnd.Models
+@inject IHttpClientFactory _HttpClientFactory;
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2">
+            <Categories/>
+        </div>
+
+        <div class="col-md-10">
+
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Search..."/>
+                </div>
+                <div class="search-button">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+
+            <br>
+
+            @if (_advertisements is {responseObject.TotalCount: > 0})
+            {
+                <div class="row">
+                    @foreach (var ad in _advertisements.responseObject.Items)
+                    {
+                        <div class="col col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@ad.Title</h5>
+                                    <p class="card-text">@ad.Description</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Price:</strong> @ad.Price
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Expires At:</strong> @ad.ExpiresAt
+                                        </li>
+
+                                        @foreach (var prop in ad.Properties)
+                                        {
+                                            <li class="list-group-item">
+                                                <strong>@prop.Key:</strong> @prop.Value
+                                            </li>
+                                        }
+                                    </ul>
+                                    <div class="card-footer">
+                                        <small class="text-muted">@ad.CreatedAt</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+@code
+{
+    ApiResponse<PaginatedResponseObject<Advertisement>> _advertisements;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = _HttpClientFactory.CreateClient(ApiConfigs.AdvertisementClient);
+
+        _advertisements = await httpClient.GetFromJsonAsync<ApiResponse<PaginatedResponseObject<Advertisement>>>(ApiConfigs.AdvertisementsSearchAddress);
+    }
+}
