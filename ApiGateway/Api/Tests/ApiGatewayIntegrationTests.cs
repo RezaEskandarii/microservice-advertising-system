@@ -47,7 +47,8 @@ public class ApiGatewayTests : IClassFixture<DockerFixture>
         var response = await _client.GetAsync("/api/v1/categories");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
-    
+
+
 
     private SignUpRequest GetSignUpObj()
     {
