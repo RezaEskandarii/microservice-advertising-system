@@ -1,4 +1,5 @@
 using Ductus.FluentDocker.Builders;
+using Ductus.FluentDocker.Common;
 using Ductus.FluentDocker.Services;
 using Xunit;
 
@@ -26,7 +27,7 @@ public class DockerFixture : IAsyncLifetime
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Log(e);
             throw;
         }
 
@@ -42,10 +43,20 @@ public class DockerFixture : IAsyncLifetime
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Log(e);
             throw;
         }
 
         await Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// log exception stacktrace and message
+    /// </summary>
+    /// <param name="e"></param>
+    private void Log(Exception e)
+    {
+        Logger.Log(e.Message);
+        Logger.Log(e.StackTrace);
     }
 }
