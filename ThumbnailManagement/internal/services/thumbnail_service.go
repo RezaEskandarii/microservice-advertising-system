@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	. "thumbnail-management/internal/models"
 	. "thumbnail-management/internal/repositories"
 )
@@ -21,12 +22,12 @@ func NewThumbnailService(thumbnailRepository ThumbnailRepository, storageManager
 	}
 }
 
-func (s *ThumbnailService) DeleteThumbnail(id int) error {
+func (s *ThumbnailService) DeleteThumbnail(ctx context.Context, id int) error {
 	th, _ := s.thumbnailRepository.FindByID(id)
 	err := s.thumbnailRepository.DeleteThumbnail(id)
 
 	if err == nil {
-		s.storageManager.RemoveFile(BucketName, th.ImageName)
+		s.storageManager.RemoveFile(ctx, BucketName, th.ImageName)
 	}
 	return err
 }
@@ -35,11 +36,11 @@ func (s *ThumbnailService) GetThumbnailByID(id int) (*Thumbnail, error) {
 	return s.thumbnailRepository.FindByID(id)
 }
 
-func (s *ThumbnailService) CreateThumbnail(thumbnail *Thumbnail) (*Thumbnail, error) {
+func (s *ThumbnailService) CreateThumbnail(ctx context.Context, thumbnail *Thumbnail) (*Thumbnail, error) {
 	thumbnail.ImageBucket = BucketName
 	result, err := s.thumbnailRepository.Create(thumbnail)
 	if err == nil && thumbnail.ImageBytes != nil {
-		s.storageManager.UploadFile(BucketName, thumbnail.ImageName, thumbnail.ImageBytes)
+		s.storageManager.UploadFile(ctx, BucketName, thumbnail.ImageName, thumbnail.ImageBytes)
 	}
 	return result, err
 }
