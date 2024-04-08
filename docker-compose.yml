@@ -83,7 +83,7 @@ services:
 
   identity-management.api:
     build:
-      context: ./IdentityManagement
+      context: ./IdentityManagementApi
       dockerfile: ./Dockerfile
     depends_on:
       - postgres
@@ -103,7 +103,7 @@ services:
   
   advertisement-management.api:
     build:
-      context: ./AdvertisementManagement
+      context: ./AdvertisementManagementApi
       dockerfile: ./Dockerfile
     depends_on:
       - postgres
@@ -124,7 +124,7 @@ services:
   
   email-sender.api:
     build:
-      context: ./EmailSender
+      context: ./EmailSenderApi
       dockerfile: ./Dockerfile
     depends_on:
       - vault
@@ -140,7 +140,7 @@ services:
   
   thumbnail-management.api:
     build:
-      context: ./ThumbnailManagement
+      context: ./ThumbnailManagementApi
       dockerfile: ./Dockerfile
     depends_on:
       - minio
@@ -153,7 +153,7 @@ services:
       object_storage_secret_key: minioadmin
       vault_token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
       vault_address: "http://vault:8200"
-      port_number: 5002
+      thumbnail_grpc_api_port_number: 5002
       host_name: thumbnail-management.api
       thumbnail_management_base_db: "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
       thumbnail_management_full_db: "user=postgres password=123456 host=postgres port=5432 dbname=advertisement_thumbnails sslmode=disable"
@@ -162,7 +162,7 @@ services:
   
   category-management.api:
     build:
-      context: ./CategoryManagement
+      context: ./CategoriesApi
       dockerfile: ./Dockerfile
     depends_on:
       - postgres
@@ -178,7 +178,7 @@ services:
 
   location-management.api:
     build:
-      context: ./LocationManagement
+      context: ./LocationsApi
       dockerfile: ./Dockerfile
     depends_on:
       - postgres

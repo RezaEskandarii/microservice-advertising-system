@@ -37,7 +37,7 @@ builder. // Add authentication services
         {
             ValidateIssuer = false,
             ValidateAudience = false,
-            ValidateLifetime = false,
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = false,
             ValidIssuer = "http://127.0.0.1:5004",
             /// ValidAudience = Configuration["Jwt:Audience"],
