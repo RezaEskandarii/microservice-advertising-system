@@ -1,19 +1,19 @@
 using System.Text;
 using System.Text.Json;
 
-namespace Api.Tests;
+namespace Api.Tests.IntegrationTests;
 
 public class TestClient : HttpClient
 {
     private readonly string ApiAddress = "http://127.0.0.1:5009";
-    private static string JWTToken;
+    private static string? JWTToken;
 
     public TestClient()
     {
         BaseAddress = new Uri(ApiAddress);
     }
 
-    public async Task<HttpResponseMessage> GetAsync(string requestUri)
+    public new async Task<HttpResponseMessage> GetAsync(string requestUri)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
         AddJwtHeader(request);
@@ -53,11 +53,7 @@ public class TestClient : HttpClient
         return await SendAsync(request);
     }
 
-    private static T? Deserialize(string content)
-    {
-        return JsonSerializer.Deserialize(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-    }
-
+    
     public static void SetJwtToken(string token)
     {
         JWTToken = token;

@@ -97,7 +97,7 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/v1/Advertisement/Remove/{id}",
+      "UpstreamPathTemplate": "/api/v1/Advertisement/{id}",
       "UpstreamHttpMethod": [
         "DELETE"
       ],
