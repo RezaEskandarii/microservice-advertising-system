@@ -1,0 +1,135 @@
+using AdvertisingSystem.Contract.Interfaces;
+using AdvertisingSystem.Domain;
+using AdvertisingSystem.Domain.Entities;
+using AdvertisingSystem.Infrastructure.ExtensionMethods;
+using AdvertisingSystem.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
+
+namespace AdvertisingSystem.Infrastructure.Persistence.Repositories;
+
+public class AdvertisementRepository : IAdvertisementRepository
+{
+    private readonly ApplicationDbContext _context;
+
+    public AdvertisementRepository(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Advertisement> GetByIdAsync(long id)
+    {
+        return await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Advertisement> GetByIdAsync(long id, string userId)
+    {
+        var result = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        if (result == null)
+            throw new Exception($"advertisement not found with id {id}");
+
+        return result;
+    }
+
+    public async Task<Advertisement> AddAsync(Advertisement advertisement)
+    {
+        var result = await _context.Advertisements.AddAsync(advertisement);
+        await _context.SaveChangesAsync();
+        return result.Entity;
+    }
+
+    public async Task<Advertisement> UpdateAsync(long id, Advertisement advertisement)
+    {
+        var entity = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id);
+        entity.UpdateTitle(advertisement.Title);
+        entity.UpdateDescription(advertisement.Description);
+        entity.UpdateTags(advertisement.Tags);
+        var result = _context.Advertisements.Update(entity);
+        await _context.SaveChangesAsync();
+
+        return result.Entity;
+    }
+
+    public async Task<Advertisement> UpdateAsync(Advertisement advertisement)
+    {
+        var result = _context.Advertisements.Update(advertisement);
+        await _context.SaveChangesAsync();
+
+        return result.Entity;
+    }
+
+    public async Task<bool> DeleteAsync(long id)
+    {
+        var entity = await _context.Advertisements.FindAsync(id);
+        if (entity != null) _context.Advertisements.Remove(entity);
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(long id, string userId)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+            throw new ArgumentException("user id is null");
+
+        var entity = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        if (entity == null)
+            throw new ArgumentException($"advertisement with id {id} is null");
+
+        _context.Advertisements.Remove(entity);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task AddThumbnailAsync(long advertisementId, string thumbnailFileName)
+    {
+        var advertisement = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id == advertisementId);
+        if (advertisement == null) return;
+
+        if (advertisement.Thumbnails == null)
+        {
+            advertisement.UpdateThumbnails(new[] { thumbnailFileName });
+        }
+        else
+        {
+            var thumbnails = new List<string>(advertisement.Thumbnails) { thumbnailFileName };
+            advertisement.UpdateThumbnails(thumbnails.ToArray());
+        }
+
+        _context.Advertisements.Update(advertisement);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<PaginatedList<Advertisement>> SearchAsync(int pageNumber, int pageSize,
+        string? requestFilter, Dictionary<string, string>? properties)
+    {
+        var query = _context.Advertisements.AsNoTracking();
+        query = GetFilteredQuery(query, requestFilter, properties);
+
+        return await query.PaginateAsync(pageNumber);
+    }
+
+    private IQueryable<Advertisement> GetFilteredQuery(IQueryable<Advertisement> query, string? requestFilter, Dictionary<string, string>? properties)
+    {
+        if (!string.IsNullOrWhiteSpace(requestFilter))
+        {
+            query = query.Where(x
+                => x.Tags != null &&
+                   (x.Tags.Contains(requestFilter)
+                    || x.Title.Contains(requestFilter)
+                    || x.Description.Contains(requestFilter)));
+        }
+
+        if (properties != null)
+        {
+            query = query.Where(x =>
+                x.Properties != null &&
+                x.Properties.Any(property =>
+                    property.Name != null &&
+                    property.Value != null &&
+                    properties.ContainsKey(property.Name) &&
+                    properties[property.Name] == property.Value
+                ));
+        }
+
+        return query;
+    }
+}
