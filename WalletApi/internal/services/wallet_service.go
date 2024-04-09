@@ -7,10 +7,24 @@ import (
 )
 
 type WalletService interface {
+	// Deposit adds the specified amount to the user's wallet balance.
+	// The idempotencyKey parameter is used to ensure that the same deposit
+	// operation is not executed multiple times.
 	Deposit(userID string, amount float64, idempotencyKey string) error
+
+	// Withdraw subtracts the specified amount from the user's wallet balance.
+	// The idempotencyKey parameter is used to ensure that the same withdrawal
+	// operation is not executed multiple times.
 	Withdraw(userID string, amount float64, idempotencyKey string) error
+
+	// GetTransactions retrieves all the transactions associated with the
+	// specified user's wallet.
 	GetTransactions(userID string) ([]models.Transaction, error)
+
+	// GetAmount retrieves the current balance of the specified user's wallet.
 	GetAmount(userID string) (float64, error)
+
+	// RemoveExpire removes any expired idempotency history from the user's wallet.
 	RemoveExpire(createdAt time.Time) error
 }
 
