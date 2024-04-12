@@ -28,7 +28,7 @@ services:
     networks:
       - internal
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: 58ec2667-a9f4-455b-b89b-914fe565b7ea
+      VAULT_DEV_ROOT_TOKEN_ID: "${VAULT_DEV_ROOT_TOKEN_ID}"
   
   consul:
     image: hashicorp/consul:latest
@@ -96,10 +96,10 @@ services:
       Kestrel__Endpoints__Http__Url: "http://0.0.0.0:5004"
       Logging__LogLevel__Default: "Information"
       Logging__LogLevel__Microsoft.AspNetCore: "Warning"
-      Vault__Address: "http://vault:8200"
-      Vault__Token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
+      Vault__Address: "${VAULT_ADDRESS}"
+      Vault__Token: "${VAULT_DEV_ROOT_TOKEN_ID}"
       AllowedHosts: "*"
-      JWTSecretKey: "TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM="
+      JWTSecretKey: "${JWT_SECRET_KEY}"
   
   advertisement-management.api:
     build:
@@ -118,8 +118,8 @@ services:
       Logging__LogLevel__Microsoft.AspNetCore: "Warning"
       AllowedHosts: "*"
       Kestrel__Endpoints__Http__Url: "http://0.0.0.0:5006"
-      Vault__Address: "http://vault:8200"
-      Vault__Token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
+      Vault__Address: "${VAULT_ADDRESS}"
+      Vault__Token: "${VAULT_DEV_ROOT_TOKEN_ID}"
       thumbnail-service: "thumbnail-management.api"
   
   email-sender.api:
@@ -131,8 +131,8 @@ services:
       - consul
       - rabbitmq
     environment:
-      vault_token: 58ec2667-a9f4-455b-b89b-914fe565b7ea
-      vault_address: http://vault:8200
+      vault_token: "${VAULT_DEV_ROOT_TOKEN_ID}"
+      vault_address: "${VAULT_ADDRESS}"
       app_port: 5007
       rabbitmq_addr: amqp://guest:guest@rabbitmq:5672/
     networks:
@@ -151,8 +151,8 @@ services:
       object_storage_address: "minio:9000"
       object_storage_access_key: minioadmin
       object_storage_secret_key: minioadmin
-      vault_token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
-      vault_address: "http://vault:8200"
+      vault_token: "${VAULT_DEV_ROOT_TOKEN_ID}"
+      vault_address: "${VAULT_ADDRESS}"
       thumbnail_grpc_api_port_number: 5002
       host_name: thumbnail-management.api
       thumbnail_management_base_db: "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
@@ -171,8 +171,8 @@ services:
     environment:
       categories_full_db_connection: "user=postgres password=123456 host=postgres port=5432 dbname=category_management sslmode=disable"
       categories_base_db_connection: "user=postgres password=123456 host=postgres port=5432 sslmode=disable"
-      vault_token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
-      vault_address: "http://vault:8200"
+      vault_token: "${VAULT_DEV_ROOT_TOKEN_ID}"
+      vault_address: "${VAULT_ADDRESS}"
     networks:
       - internal
 
@@ -207,13 +207,13 @@ services:
       - internal
     restart: always
     environment:
-      JWTSecretKey: "TJ7RzYjU3JrWYsLgqC0gG0CJcT+4W5qz5JtKmFzvKBM="
+      JWTSecretKey: "${JWT_SECRET_KEY}"
       Logging__LogLevel__Default: Information
       Logging__LogLevel__Microsoft.AspNetCore: Warning
       AllowedHosts: "*"
       Kestrel__Endpoints__http__Url: "http://0.0.0.0:5009"
-      Vault__Address: "http://vault:8200"
-      Vault__Token: "58ec2667-a9f4-455b-b89b-914fe565b7ea"
+      Vault__Address: "${VAULT_ADDRESS}"
+      Vault__Token: "${VAULT_DEV_ROOT_TOKEN_ID}"
 
 networks:
   internal:
