@@ -3,7 +3,7 @@ using Ductus.FluentDocker.Common;
 using Ductus.FluentDocker.Services;
 using Xunit;
 
-namespace Api.Tests;
+namespace Api.Tests.IntegrationTests;
 
 public class DockerFixture : IAsyncLifetime
 {
@@ -15,11 +15,12 @@ public class DockerFixture : IAsyncLifetime
     {
         try
         {
+            
             // Set up Docker Compose
             _containerService = new Builder()
                 .UseContainer()
                 .UseCompose()
-                .FromFile("docker-compose.yml")
+                .FromFile("E:\\projects\\test\\microservice-advertising-system\\docker-compose.yml")
                 .RemoveOrphans()
                 .WaitForPort("api-gateway.app.api", "5009")
                 .Build()

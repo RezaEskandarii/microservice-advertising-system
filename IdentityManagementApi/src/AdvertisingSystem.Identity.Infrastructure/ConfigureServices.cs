@@ -62,6 +62,10 @@ public static class ConfigureServices
        
     }
 
+    /// <summary>
+    /// migrate pending migrations
+    /// </summary>
+    /// <param name="serviceCollection"></param>
     private static async Task MigrateAsync(IServiceCollection serviceCollection)
     {
         var provider = serviceCollection.BuildServiceProvider();
