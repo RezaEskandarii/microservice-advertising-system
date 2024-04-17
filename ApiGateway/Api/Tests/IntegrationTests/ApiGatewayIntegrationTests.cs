@@ -1,4 +1,6 @@
 using System.Net;
+using System.Text.Json;
+using Api.Tests.IntegrationTests.Models;
 using Api.Tests.Models;
 using Bogus;
 using Xunit;
@@ -38,6 +40,14 @@ public class ApiGatewayTests : IClassFixture<DockerFixture>
             password = signupObj.Password
         });
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var signInResp = JsonSerializer.Deserialize<SignInResp>(content);
+        
+        Assert.NotEmpty(signInResp.AuthToken);
+        Assert.NotEmpty(signInResp.RefreshToken);
+
+        _client.SetJwtToken(signInResp.AuthToken);
     }
 
     [Fact]

@@ -53,8 +53,8 @@ public class TestClient : HttpClient
         return await SendAsync(request);
     }
 
-    
-    public static void SetJwtToken(string token)
+
+    public void SetJwtToken(string token)
     {
         JWTToken = token;
     }
