@@ -11,9 +11,10 @@ const (
 	DBName = "wallet_api"
 )
 
+// Init initializes the wallet database and required tables.
 func Init(ctx context.Context) error {
 
-	// Create the wallet database if not exists
+	// Create the wallet database if it doesn't exist
 	err := createDBIfNotExists(ctx)
 	if err != nil {
 		log.Fatal(err)
@@ -21,21 +22,24 @@ func Init(ctx context.Context) error {
 	}
 	log.Println("wallet database created or already exists")
 
+	// Get the wallet database
 	db, err := GetWalletApiDB(ctx)
 	if err != nil {
 		return err
 	}
-
 	defer db.Close()
 
+	// Create wallets table
 	if err = createWalletsTable(err, db); err != nil {
 		return err
 	}
 
+	// Create transactions table
 	if err = createTransactionsTable(err, db); err != nil {
 		return err
 	}
 
+	// Create idempotency table
 	if err = createIdempotencyTable(err, db); err != nil {
 		return err
 	}
@@ -43,6 +47,7 @@ func Init(ctx context.Context) error {
 	return nil
 }
 
+// createIdempotencyTable creates the idempotent_history table if not exists.
 func createIdempotencyTable(err error, db *sql.DB) error {
 	_, err = db.Exec(`
 	CREATE TABLE IF NOT EXISTS idempotent_history (
@@ -55,10 +60,11 @@ func createIdempotencyTable(err error, db *sql.DB) error {
 		log.Fatal(err)
 		return err
 	}
-	log.Println("transactions table created or already exists")
+	log.Println("idempotent_history table created or already exists")
 	return err
 }
 
+// createTransactionsTable creates the transactions table if not exists.
 func createTransactionsTable(err error, db *sql.DB) error {
 	_, err = db.Exec(`
 	CREATE TABLE IF NOT EXISTS transactions (
@@ -71,9 +77,11 @@ func createTransactionsTable(err error, db *sql.DB) error {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println("transactions table created or already exists")
 	return err
 }
 
+// createWalletsTable creates the wallets table if not exists.
 func createWalletsTable(err error, db *sql.DB) error {
 	_, err = db.Exec(`
 	CREATE TABLE IF NOT EXISTS wallets (
@@ -90,6 +98,7 @@ func createWalletsTable(err error, db *sql.DB) error {
 	return err
 }
 
+// createDBIfNotExists checks if the database exists, if not, it creates one.
 func createDBIfNotExists(ctx context.Context) error {
 	var exists bool
 	db, err := GetPostgresDB(ctx)
