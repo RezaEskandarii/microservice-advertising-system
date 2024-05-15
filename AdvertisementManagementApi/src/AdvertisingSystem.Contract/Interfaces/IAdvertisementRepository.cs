@@ -1,4 +1,3 @@
-using AdvertisingSystem.Domain;
 using AdvertisingSystem.Domain.Entities;
 
 namespace AdvertisingSystem.Contract.Interfaces;
@@ -13,5 +12,5 @@ public interface IAdvertisementRepository
     Task<bool> DeleteAsync(long id);
     Task<bool> DeleteAsync(long id, string userId);
     Task AddThumbnailAsync(long advertisementId, string thumbnailFileName);
-    Task<PaginatedList<Advertisement>> SearchAsync(int pageNumber, int pageSize, string? requestFilter, Dictionary<string, string>? requestProperties);
+    // Task<PaginatedList<Advertisement>> SearchAsync(int pageNumber, int pageSize, string? requestFilter, Dictionary<string, string>? requestProperties);
 }

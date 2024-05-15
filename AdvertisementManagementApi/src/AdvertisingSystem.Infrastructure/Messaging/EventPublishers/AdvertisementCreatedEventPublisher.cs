@@ -2,17 +2,18 @@ using System.Text;
 using System.Text.Json;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.DomainEvents;
+using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 
 namespace AdvertisingSystem.Infrastructure.Messaging.EventPublishers;
 
 public class AdvertisementCreatedEventPublisher : IEventPublisher
 {
-    private readonly ISecretManager _secretManager;
+    private readonly IConfiguration _configuration;
 
-    public AdvertisementCreatedEventPublisher(ISecretManager secretManager)
+    public AdvertisementCreatedEventPublisher(IConfiguration configuration)
     {
-        _secretManager = secretManager;
+        _configuration = configuration;
     }
 
     public async Task PublishAsync(IDomainEvent @event, string routingKey, string exchange, string queue)
@@ -20,13 +21,11 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
         try
         {
             var message = JsonSerializer.Serialize(@event.Data);
-            // RabbitMQ connection string
-            var connString = await _secretManager.ReadSecretAsync("RabbitMqSecret");
 
             // Create connection factory
             var factory = new ConnectionFactory()
             {
-                Uri = new Uri(connString)
+                Uri = new Uri(_configuration["ConnectionStrings:RabbitMq"])
             };
 
             // Create connection
@@ -49,12 +48,12 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
 
             // Publish the message to the exchange
             channel.BasicPublish(exchange, routingKey, properties, body);
+            await Task.CompletedTask;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
-        
     }
 }

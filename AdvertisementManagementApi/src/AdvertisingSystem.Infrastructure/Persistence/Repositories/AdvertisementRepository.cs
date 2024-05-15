@@ -1,7 +1,5 @@
 using AdvertisingSystem.Contract.Interfaces;
-using AdvertisingSystem.Domain;
 using AdvertisingSystem.Domain.Entities;
-using AdvertisingSystem.Infrastructure.ExtensionMethods;
 using AdvertisingSystem.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -98,38 +96,5 @@ public class AdvertisementRepository : IAdvertisementRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<PaginatedList<Advertisement>> SearchAsync(int pageNumber, int pageSize,
-        string? requestFilter, Dictionary<string, string>? properties)
-    {
-        var query = _context.Advertisements.AsNoTracking();
-        query = GetFilteredQuery(query, requestFilter, properties);
-
-        return await query.PaginateAsync(pageNumber);
-    }
-
-    private IQueryable<Advertisement> GetFilteredQuery(IQueryable<Advertisement> query, string? requestFilter, Dictionary<string, string>? properties)
-    {
-        if (!string.IsNullOrWhiteSpace(requestFilter))
-        {
-            query = query.Where(x
-                => x.Tags != null &&
-                   (x.Tags.Contains(requestFilter)
-                    || x.Title.Contains(requestFilter)
-                    || x.Description.Contains(requestFilter)));
-        }
-
-        if (properties != null)
-        {
-            query = query.Where(x =>
-                x.Properties != null &&
-                x.Properties.Any(property =>
-                    property.Name != null &&
-                    property.Value != null &&
-                    properties.ContainsKey(property.Name) &&
-                    properties[property.Name] == property.Value
-                ));
-        }
-
-        return query;
-    }
+  
 }
