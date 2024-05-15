@@ -1,6 +1,6 @@
 FROM golang:latest
 
-WORKDIR /EmailSenderApp
+WORKDIR /WalletApiApp
 
 COPY go.mod go.sum ./
 

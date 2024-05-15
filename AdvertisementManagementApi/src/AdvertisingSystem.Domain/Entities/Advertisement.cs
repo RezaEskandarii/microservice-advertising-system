@@ -10,7 +10,7 @@ public class Advertisement : AggregateRoot
 
     public static Advertisement CreateNew(string title, string userId, string description, Price price,
         CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt, Address? address, int categoryId,
-        string[]? tags, List<Property>? properties, int? locaqtionId)
+        string[]? tags, List<Property>? properties, int? locationId)
     {
         return new Advertisement()
         {
@@ -25,7 +25,7 @@ public class Advertisement : AggregateRoot
             CategoryId = categoryId,
             Tags = tags,
             Properties = properties,
-            LocationId = locaqtionId
+            LocationId = locationId
         };
     }
 
