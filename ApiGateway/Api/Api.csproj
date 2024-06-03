@@ -17,6 +17,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
 <!--    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="6.0.0" />-->
     <PackageReference Include="Ocelot" Version="18.0.0" />
+    <PackageReference Include="prometheus-net" Version="8.2.1" />
+    <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
+    <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="8.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="VaultSharp" Version="1.13.0.1" />
     <PackageReference Include="WireMock.Net" Version="1.5.51" />

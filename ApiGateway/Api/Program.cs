@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,7 @@ builder. // Add authentication services
 
 var app = builder.Build();
 
+app.UseMetricServer();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -68,5 +70,7 @@ app.UseCors(c =>
         .AllowAnyMethod()
         .AllowAnyOrigin();
 });
+
+app.UseHttpMetrics();
 await app.UseOcelot();
 app.Run();

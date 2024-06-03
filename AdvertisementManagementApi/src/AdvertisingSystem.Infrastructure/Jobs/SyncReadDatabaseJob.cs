@@ -12,41 +12,49 @@ public class SyncReadDatabaseJob : IJob
 {
     private readonly IConfiguration _configuration;
     private readonly ApplicationDbContext _dbContext;
+    private readonly IElasticClient _elasticClient;
 
-    public SyncReadDatabaseJob(IConfiguration configuration, ApplicationDbContext dbContext)
+    public SyncReadDatabaseJob(IConfiguration configuration, ApplicationDbContext dbContext, IElasticClient elasticClient)
     {
         _configuration = configuration;
         _dbContext = dbContext;
+        _elasticClient = elasticClient;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-        var elasticClient = new ElasticClient(new Uri(_configuration["Elasticsearch:Url"]));
-
-        var pageSize = 200;
-
-        var unsyncedAdvertisements = GetUnSyncedAdvertisements(_dbContext);
-
-        if (!unsyncedAdvertisements.Any()) return;
-
-        for (var pageNumber = 0; pageNumber * pageSize < await unsyncedAdvertisements.CountAsync(); pageNumber++)
+        try
         {
-            var advertisementsToProcess = unsyncedAdvertisements
-                .Skip(pageNumber * pageSize)
-                .Take(pageSize)
-                .ToList();
+            var pageSize = 200;
 
-            var insertResult = await InsertToElasticsearch(elasticClient, advertisementsToProcess);
-            if (insertResult)
+            var unsyncedAdvertisements = GetUnSyncedAdvertisements(_dbContext);
+
+            if (!unsyncedAdvertisements.Any()) return;
+
+            for (var pageNumber = 0; pageNumber * pageSize < await unsyncedAdvertisements.CountAsync(); pageNumber++)
             {
-                await MarkAsSynced(_dbContext, advertisementsToProcess);
+                var advertisementsToProcess = unsyncedAdvertisements
+                    .Skip(pageNumber * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                var insertResult = await InsertToElasticsearch(advertisementsToProcess);
+                if (insertResult)
+                {
+                    await MarkAsSynced(_dbContext, advertisementsToProcess);
+                }
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 
     #region Private
 
-    private async Task<bool> InsertToElasticsearch(ElasticClient elasticClient, ICollection<Advertisement> data)
+    private async Task<bool> InsertToElasticsearch(ICollection<Advertisement> data)
     {
         var indexName = "advertisements";
         var bulkDescriptor = new BulkDescriptor();
@@ -58,7 +66,9 @@ public class SyncReadDatabaseJob : IJob
                 .Document(entity));
         }
 
-        var response = await elasticClient.BulkAsync(bulkDescriptor);
+        var rsp = await _elasticClient.IndexManyAsync(data, indexName);
+
+        var response = await _elasticClient.BulkAsync(bulkDescriptor);
 
         return response.IsValid;
     }

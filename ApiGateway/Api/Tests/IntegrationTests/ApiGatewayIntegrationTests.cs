@@ -43,7 +43,7 @@ public class ApiGatewayTests : IClassFixture<DockerFixture>
 
         var content = await response.Content.ReadAsStringAsync();
         var signInResp = JsonSerializer.Deserialize<SignInResp>(content);
-        
+
         Assert.NotEmpty(signInResp.AuthToken);
         Assert.NotEmpty(signInResp.RefreshToken);
 
@@ -88,51 +88,73 @@ public class ApiGatewayTests : IClassFixture<DockerFixture>
         var response = await _client.PostAsync("/api/v1/Advertisement", requestBody);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
-    //
-    // [Fact]
-    // public async Task Get_SearchAdvertisement_ReturnsOkResponse()
-    // {
-    //     var response = await _client.GetAsync("/api/v1/Advertisement/Search");
-    //     Assert.Equal("Search Advertisement Success", response);
-    // }
-    //
-    // [Fact]
-    // public async Task Get_GetAdvertisementById_ReturnsOkResponse()
-    // {
-    //     var response = await _client.GetAsync("/api/v1/Advertisement/123");
-    //     Assert.Equal("Get Advertisement By Id Success", response);
-    // }
-    //
-    // [Fact]
-    // public async Task Delete_RemoveAdvertisement_ReturnsOkResponse()
-    // {
-    //     var response = await _client.DeleteAsync("/api/v1/Advertisement/Remove/123");
-    //     Assert.Equal("Remove Advertisement Success", response);
-    // }
-    //
-    // [Fact]
-    // public async Task Put_UpdateAdvertisement_ReturnsOkResponse()
-    // {
-    //     var response = await _client.PutAsync("/api/v1/Advertisement/Update/123", new
-    //     {
-    //         /* Your Advertisement data */
-    //     });
-    //     Assert.Equal("Update Advertisement Success", response);
-    // }
-    //
-    // [Fact]
-    // public async Task Get_AdvertisementHealthCheck_ReturnsOkResponse()
-    // {
-    //     var response = await _client.GetAsync("/api/v1/Advertisement/healthcheck");
-    //     Assert.Equal("Advertisement Health Check Success", response);
-    // }
-    //
-    // [Fact]
-    // public async Task Get_GetLocations_ReturnsOkResponse()
-    // {
-    //     var response = await _client.GetAsync("/api/v1/locations");
-    //     Assert.Equal("Get Locations Success", response);
-    // }
+
+    [Fact]
+    public async Task Get_SearchAdvertisement_ReturnsOkResponse()
+    {
+        var response = await _client.GetAsync("/api/v1/Advertisement/Search");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Get_GetAdvertisementById_ReturnsOkResponse()
+    {
+        var response = await _client.GetAsync("/api/v1/Advertisement/1");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Delete_RemoveAdvertisement_ReturnsOkResponse()
+    {
+        var response = await _client.DeleteAsync("/api/v1/Advertisement/Remove/123");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Put_UpdateAdvertisement_ReturnsOkResponse()
+    {
+        var requestBody = new MultipartFormDataContent
+        {
+            { new StringContent("testUpdate"), "Title" },
+            { new StringContent("testUpdate"), "Description" },
+            { new StringContent("2023-12-29"), "ExpiresAt" },
+            { new StringContent("[\"test1\",\"test2\"]"), "Tags" },
+            { new StringContent("2"), "categoryId" },
+            { new StringContent("Update__Make"), "properties[0].name" },
+            { new StringContent("Update__Toyota"), "properties[0].value" },
+            { new StringContent("Update__Model"), "properties[1].name" },
+            { new StringContent("Update__Camry"), "properties[1].value" },
+            { new StringContent("Update__Year"), "properties[2].name" },
+            { new StringContent("Update__2022"), "properties[2].value" },
+            { new StringContent("Update__Mileage"), "properties[3].name" },
+            { new StringContent("Update__50000"), "properties[3].value" },
+            { new StringContent("Update__Condition"), "properties[4].name" },
+            { new StringContent("Update__Used"), "properties[4].value" },
+            { new StringContent("Update__Fuel Type"), "properties[5].name" },
+            { new StringContent("Update__Gasoline"), "properties[5].value" },
+            { new StringContent("Update__Transmission"), "properties[6].name" },
+            { new StringContent("Update__Automatic"), "properties[6].value" },
+            { new StringContent("Update__Price"), "properties[7].name" },
+            { new StringContent("Update__25000.99"), "properties[7].value" }
+        };
+        
+        var response = await _client.PutAsync("/api/v1/Advertisement/Update/1", requestBody);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Get_AdvertisementHealthCheck_ReturnsOkResponse()
+    {
+        var response = await _client.GetAsync("/api/v1/Advertisement/healthcheck");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Get_GetLocations_ReturnsOkResponse()
+    {
+        var response = await _client.GetAsync("/api/v1/locations");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
 
     private SignUpRequest GetSignUpObj()
     {

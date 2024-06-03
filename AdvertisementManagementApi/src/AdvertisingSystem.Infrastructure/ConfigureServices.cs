@@ -8,6 +8,7 @@ using AdvertisingSystem.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nest;
 
 namespace AdvertisingSystem.Infrastructure;
 
@@ -21,6 +22,11 @@ public static class ConfigureServices
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
         });
+
+        var uriString = configuration["ElasticSearch:Url"] ?? throw new ArgumentException("elastic search connection string is null");
+        var elasticClient = new ElasticClient(new Uri(uriString));
+
+        services.AddSingleton<IElasticClient>(elasticClient);
 
         services.AddScoped<ISecretManager, SecretManager>();
         services.AddScoped<IEventPublisher, AdvertisementCreatedEventPublisher>();
