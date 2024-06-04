@@ -1,13 +1,16 @@
 @if (ErrorsList is {Count: > 0})
 {
     <div class="row">
-        @foreach (var error in ErrorsList)
+        @if (IsParameterSet)
         {
-            <div class="@ColClass" id="errors-row">
-                <div class="alert alert-danger">
-                    @error
+            @foreach (var error in ErrorsList)
+            {
+                <div class="@ColClass" id="errors-row">
+                    <div class="alert alert-danger">
+                        @error
+                    </div>
                 </div>
-            </div>
+            }
         }
     </div>
 }
@@ -19,5 +22,13 @@
 
     [Parameter]
     public string ColClass { get; set; } = "col-md-12";
+
+    public bool IsParameterSet = false;
+
+    protected override Task OnParametersSetAsync()
+    {
+        IsParameterSet = true;
+        return base.OnParametersSetAsync();
+    }
 
 }

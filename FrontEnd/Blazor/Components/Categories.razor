@@ -2,44 +2,34 @@
 @using FrontEnd.Constants
 @inject IHttpClientFactory _HttpClientFactory;
 
-<div class="accordion">
-    @foreach (var category in _categories)
+
+
+<div class="accordion accordion-flush" id="accordionFlushExample">
+
+    @foreach (var cat in _categories)
     {
-        <div class="card">
-            <div class="card-header pointer-cursor" @onclick="() => ToggleAccordion(category.id)">
-                @category.name
-            </div>
-            @if (category.expanded)
-            {
-                <div class="card-body">
-                    @foreach (var subcategory in category.subcategories)
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-heading-@cat.id">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-@cat.id" aria-expanded="false" aria-controls="flush-collapse-@cat.id">
+                    @cat.name
+                </button>
+            </h2>
+            <div id="flush-collapse-@cat.id" class="accordion-collapse collapse" aria-labelledby="flush-heading-@cat.id" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    @foreach (var sub in cat.subcategories)
                     {
-                        <div class="accordion">
-                            <div class="card">
-                                <div class="card-header pointer-cursor" @onclick="() => ToggleAccordion(subcategory.id)">
-                                    <a href=""> @subcategory.name</a>
-                                </div>
-                                @if (subcategory.expanded)
-                                {
-                                    <div class="card-body">
-                                        <ul>
-                                            @foreach (var property in subcategory.properties)
-                                            {
-                                                <li>
-                                                    <a>@property.name</a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                }
-                            </div>
-                        </div>
+                        <p>
+                            <a>@sub.name</a>
+                        </p>
                     }
                 </div>
-            }
+            </div>
         </div>
     }
+ 
 </div>
+
+ 
 
 @code
 {
@@ -49,29 +39,5 @@
     {
         var httpClient = _HttpClientFactory.CreateClient(ApiConfigs.AdvertisementClient);
         _categories = await httpClient.GetFromJsonAsync<List<Category>>(ApiConfigs.CategoriesApiAddress);
-    }
-
-    private void ToggleAccordion(int id)
-    {
-        foreach (var category in _categories)
-        {
-            category.expanded = category.id == id && !category.expanded;
-        }
-
-        StateHasChanged();
-    }
-
-    private void ToggleSubcategory(int categoryId, int subcategoryId)
-    {
-        var category = _categories.FirstOrDefault(c => c.id == categoryId);
-        if (category != null)
-        {
-            foreach (var subcategory in category.subcategories)
-            {
-                subcategory.expanded = subcategory.id == subcategoryId && !subcategory.expanded;
-            }
-        }
-
-        StateHasChanged();
     }
 }

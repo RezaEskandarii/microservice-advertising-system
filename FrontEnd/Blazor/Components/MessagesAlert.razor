@@ -27,11 +27,9 @@
 
     protected override async void OnAfterRender(bool firstRender)
     {
-        if (!firstRender)
-        {
-            await _SessionStorageService.RemoveItemAsync(SessionKeys.Message);
-            SessionStorageMessage = string.Empty;
-        }
+        if (firstRender) return;
+        await _SessionStorageService.RemoveItemAsync(SessionKeys.Message);
+        SessionStorageMessage = string.Empty;
     }
 
 }
