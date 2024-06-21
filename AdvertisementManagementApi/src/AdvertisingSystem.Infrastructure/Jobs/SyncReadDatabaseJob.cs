@@ -2,6 +2,7 @@ using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Nest;
 using Quartz;
 
@@ -13,12 +14,14 @@ public class SyncReadDatabaseJob : IJob
     private readonly IConfiguration _configuration;
     private readonly ApplicationDbContext _dbContext;
     private readonly IElasticClient _elasticClient;
+    private readonly ILogger<SyncReadDatabaseJob> _logger;
 
-    public SyncReadDatabaseJob(IConfiguration configuration, ApplicationDbContext dbContext, IElasticClient elasticClient)
+    public SyncReadDatabaseJob(IConfiguration configuration, ApplicationDbContext dbContext, IElasticClient elasticClient, ILogger<SyncReadDatabaseJob> logger)
     {
         _configuration = configuration;
         _dbContext = dbContext;
         _elasticClient = elasticClient;
+        _logger = logger;
     }
 
     /// <summary>
@@ -54,10 +57,7 @@ public class SyncReadDatabaseJob : IJob
         }
         catch (Exception e)
         {
-            // Log the exception details.
-            Console.WriteLine(e);
-
-            // Re-throw the exception to allow further handling.
+            _logger.LogError(e.Message);
             throw;
         }
     }
@@ -101,7 +101,6 @@ public class SyncReadDatabaseJob : IJob
             entity.UpdateIsSyncedInReadDb(true);
         }
 
-        // Save changes to the database, committing the update.
         await dbContext.SaveChangesAsync();
     }
 
