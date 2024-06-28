@@ -1,6 +1,7 @@
 package services
 
 import (
+	"google.golang.org/genproto/googleapis/type/decimal"
 	"time"
 	"wallet-api/internal/models"
 	"wallet-api/internal/repositories"
@@ -26,8 +27,12 @@ type WalletService interface {
 
 	// RemoveExpire removes any expired idempotency history from the user's wallet.
 	RemoveExpire(createdAt time.Time) error
-}
 
+	// GetTransactionsReport generates a report of transactions for a specified year.
+	// It returns a map where the key is the year of transaction
+	// and the value is the sum amount of transactions for that year, represented as decimal.Decimal.
+	GetTransactionsReport(yearNumber int) (map[int]decimal.Decimal, error)
+}
 type WalletAppService struct {
 	Repository repositories.WalletRepository
 }
@@ -54,4 +59,8 @@ func (w *WalletAppService) GetAmount(userID string) (float64, error) {
 
 func (w *WalletAppService) RemoveExpire(createdAt time.Time) error {
 	return w.Repository.RemoveExpire(createdAt)
+}
+
+func (w *WalletAppService) GetTransactionsReport(yearNumber int) (map[int]decimal.Decimal, error) {
+	return w.Repository.GetTransactionsReport(yearNumber)
 }

@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"google.golang.org/genproto/googleapis/type/decimal"
 	"sync"
 	"time"
 	"wallet-api/internal/app_errors"
@@ -18,6 +19,7 @@ type WalletRepository interface {
 	GetTransactions(userID string) ([]models.Transaction, error)
 	GetAmount(userID string) (float64, error)
 	RemoveExpire(createdAt time.Time) error
+	GetTransactionsReport(yearNumber int) (map[int]decimal.Decimal, error)
 }
 
 // PostgreSQLRepository is an implementation of the WalletRepository interface using PostgreSQL.
@@ -143,6 +145,36 @@ func (r *PostgreSQLRepository) RemoveExpire(createdAt time.Time) error {
 	}
 
 	return nil
+}
+
+func (r *PostgreSQLRepository) GetTransactionsReport(yearNumber int) (map[int]decimal.Decimal, error) {
+	var firstDayOfYar = time.Date(yearNumber, time.January, 1, 0, 0, 0, 0, time.Local)
+	var lastDayOfYar = time.Date(yearNumber+1, time.January, 1, 0, 0, 0, -1, time.Local)
+
+	var query = `
+		SELECT EXTRACT(YEAR FROM "created_at") AS created_date,
+			SUM("amount") FROM transactions
+		WHERE "created_at" >= $1 AND "created_at" <= $2
+			 GROUP BY  EXTRACT(YEAR FROM "created_at")
+`
+	rows, err := r.db.Query(query, firstDayOfYar, lastDayOfYar)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var result = make(map[int]decimal.Decimal)
+	for rows.Next() {
+		var year int
+		var sumAmount decimal.Decimal
+
+		err := rows.Scan(&year, &sumAmount)
+		if err != nil {
+			return nil, err
+		}
+		result[year] = sumAmount
+	}
+	return result, err
 }
 
 // checkIdempotency checks if the idempotency key has been used before.
