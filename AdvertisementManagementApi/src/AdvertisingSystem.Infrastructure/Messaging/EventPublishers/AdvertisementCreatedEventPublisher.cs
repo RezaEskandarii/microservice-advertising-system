@@ -3,6 +3,7 @@ using System.Text.Json;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.DomainEvents;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
 namespace AdvertisingSystem.Infrastructure.Messaging.EventPublishers;
@@ -10,10 +11,12 @@ namespace AdvertisingSystem.Infrastructure.Messaging.EventPublishers;
 public class AdvertisementCreatedEventPublisher : IEventPublisher
 {
     private readonly IConfiguration _configuration;
+    private readonly ILogger<AdvertisementCreatedEventPublisher> _logger;
 
-    public AdvertisementCreatedEventPublisher(IConfiguration configuration)
+    public AdvertisementCreatedEventPublisher(IConfiguration configuration, ILogger<AdvertisementCreatedEventPublisher> logger)
     {
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task PublishAsync(IDomainEvent @event, string routingKey, string exchange, string queue)
@@ -25,7 +28,7 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
             // Create connection factory
             var factory = new ConnectionFactory()
             {
-                Uri = new Uri(_configuration["ConnectionStrings:RabbitMq"])
+                Uri = new Uri(_configuration["ConnectionStrings:RabbitMq"] ?? string.Empty)
             };
 
             // Create connection
@@ -52,8 +55,14 @@ public class AdvertisementCreatedEventPublisher : IEventPublisher
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LogException(e);
             throw;
+        }
+
+        void LogException(Exception e)
+        {
+            _logger.LogError(e.Message);
+            _logger.LogError(e.StackTrace);
         }
     }
 }

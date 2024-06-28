@@ -16,7 +16,12 @@ public class SyncReadDatabaseJob : IJob
     private readonly IElasticClient _elasticClient;
     private readonly ILogger<SyncReadDatabaseJob> _logger;
 
-    public SyncReadDatabaseJob(IConfiguration configuration, ApplicationDbContext dbContext, IElasticClient elasticClient, ILogger<SyncReadDatabaseJob> logger)
+    public SyncReadDatabaseJob(
+        IConfiguration configuration,
+        ApplicationDbContext dbContext,
+        IElasticClient elasticClient,
+        ILogger<SyncReadDatabaseJob> logger
+    )
     {
         _configuration = configuration;
         _dbContext = dbContext;
