@@ -8,9 +8,20 @@ public class Advertisement : AggregateRoot
     {
     }
 
-    public static Advertisement CreateNew(string title, string userId, string description, Price price,
-        CreateDate createdAt, UpdateDate updatedAt, ExpiryDate expiresAt, Address? address, int categoryId,
-        string[]? tags, List<Property>? properties, int? locationId)
+    public static Advertisement CreateNew(
+        string title,
+        string userId,
+        string description,
+        Price price,
+        CreateDate createdAt,
+        UpdateDate updatedAt,
+        ExpiryDate expiresAt,
+        Address? address,
+        int categoryId,
+        string[]? tags,
+        List<Property>? properties,
+        int? locationId
+    )
     {
         return new Advertisement()
         {
