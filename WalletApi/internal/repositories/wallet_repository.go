@@ -54,7 +54,7 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 		return err
 	}
 	if n == 0 {
-		return app_errors.InsufficientWalletBalance
+		return app_errors.InsufficientWalletBalanceError
 	}
 
 	_, err = r.db.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, $3)", userID, amount, transaction_types.Deposit)
