@@ -1,7 +1,11 @@
 namespace AdvertisingSystem.Domain.Entities;
 
-public class OutBoxMessage : IEntity<long>
+public class OutBoxMessage
 {
-    public long Id { get; set; }
-    public string Payload { get; set; }
+    public Guid Id { get; set; }
+    public DateTime OccurredOn { get; set; }
+    public string Type { get; set; }
+    public string Data { get; set; }
+    public bool Processed { get; set; }
+    public DateTime? ProcessedOn { get; set; }
 }

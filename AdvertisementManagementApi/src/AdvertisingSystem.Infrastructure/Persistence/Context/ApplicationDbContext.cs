@@ -38,4 +38,5 @@ public class ApplicationDbContext : DbContext
 
 
     public DbSet<Advertisement> Advertisements { get; set; }
+    public DbSet<OutBoxMessage> OutBoxMessages { get; set; }
 }

@@ -19,8 +19,10 @@ public static class ConfigureServices
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
-                builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
+            options.UseNpgsql(
+                configuration.GetConnectionString("DefaultConnection"),
+                builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+            );
         });
 
         var uriString = configuration["ElasticSearch:Url"] ?? throw new ArgumentException("elastic search connection string is null");
@@ -32,6 +34,7 @@ public static class ConfigureServices
         services.AddScoped<IEventPublisher, AdvertisementCreatedEventPublisher>();
         services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
         services.AddScoped<IServiceDiscovery, ServiceDiscovery>();
+        services.AddScoped<IOutBoxMessageRepository, OutBoxMessageRepository>();
         services.AddScoped(typeof(IElasticsearchRepository<Advertisement>), typeof(AdvertisementElasticsearchRepository));
 
         MigrateAsync(services).Wait();
