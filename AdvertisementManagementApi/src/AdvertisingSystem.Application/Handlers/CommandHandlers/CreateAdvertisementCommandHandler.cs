@@ -1,8 +1,6 @@
-using System.Text.Json;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.ViewModels;
 using AdvertisingSystem.Contract.Interfaces;
-using AdvertisingSystem.Domain.DomainEvents;
 using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Domain.ValueObjects;
 using AutoMapper;
@@ -21,8 +19,11 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
 
-    public CreateAdvertisementCommandHandler(IAdvertisementRepository advertisementRepository,
-        IEventPublisher eventPublisher, IMapper mapper, IConfiguration configuration)
+    public CreateAdvertisementCommandHandler(
+        IAdvertisementRepository advertisementRepository,
+        IEventPublisher eventPublisher,
+        IMapper mapper,
+        IConfiguration configuration)
     {
         _advertisementRepository = advertisementRepository;
         _eventPublisher = eventPublisher;
@@ -42,11 +43,6 @@ public class CreateAdvertisementCommandHandler : IRequestHandler<CreateAdvertise
 
         var result = await _advertisementRepository.AddAsync(advertisement);
         UploadImagesAsync(command, result.Id);
-
-        var obj = new { Title = result.Title, UserEmail = "" };
-        var @event = new AdvertisementCreatedEvent(Guid.NewGuid(), JsonSerializer.Serialize(obj));
-
-        _eventPublisher.PublishAsync(@event, "ad_events.OnAdvertisementAdded", "ad_events", "email_queue");
 
         return _mapper.Map<GetAdvertisementViewModel>(result);
     }

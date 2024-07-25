@@ -1,4 +1,7 @@
+using System.Data;
+using System.Text.Json;
 using AdvertisingSystem.Contract.Interfaces;
+using AdvertisingSystem.Domain.Constants;
 using AdvertisingSystem.Domain.Entities;
 using AdvertisingSystem.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +11,12 @@ namespace AdvertisingSystem.Infrastructure.Persistence.Repositories;
 public class AdvertisementRepository : IAdvertisementRepository
 {
     private readonly ApplicationDbContext _context;
+    private readonly IOutBoxMessageRepository _outBoxMessageRepository;
 
-    public AdvertisementRepository(ApplicationDbContext context)
+    public AdvertisementRepository(ApplicationDbContext context, IOutBoxMessageRepository outBoxMessageRepository)
     {
         _context = context;
+        _outBoxMessageRepository = outBoxMessageRepository;
     }
 
     public async Task<Advertisement> GetByIdAsync(long id)
@@ -30,9 +35,21 @@ public class AdvertisementRepository : IAdvertisementRepository
 
     public async Task<Advertisement> AddAsync(Advertisement advertisement)
     {
-        var result = await _context.Advertisements.AddAsync(advertisement);
-        await _context.SaveChangesAsync();
-        return result.Entity;
+        await using var tnx = await _context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        try
+        {
+            var result = await _context.Advertisements.AddAsync(advertisement);
+            _outBoxMessageRepository.AddOutboxMessage(EventTypes.AdvertisementCreated, JsonSerializer.Serialize(result));
+            await _context.SaveChangesAsync();
+
+            await tnx.CommitAsync();
+            return result.Entity;
+        }
+        catch (Exception e)
+        {
+            await tnx.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task<Advertisement> UpdateAsync(long id, Advertisement advertisement)
@@ -95,6 +112,4 @@ public class AdvertisementRepository : IAdvertisementRepository
         _context.Advertisements.Update(advertisement);
         await _context.SaveChangesAsync();
     }
-
-  
 }
