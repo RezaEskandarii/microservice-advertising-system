@@ -84,6 +84,34 @@ namespace AdvertisingSystem.Infrastructure.Migrations
 
                     b.ToTable("Advertisements", (string)null);
                 });
+
+            modelBuilder.Entity("AdvertisingSystem.Domain.Entities.OutBoxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OccurredOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("Processed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ProcessedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutBoxMessages");
+                });
 #pragma warning restore 612, 618
         }
     }

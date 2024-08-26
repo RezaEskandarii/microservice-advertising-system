@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 	"wallet-api/internal/app_errors"
-	"wallet-api/internal/enums/transaction_types"
+	"wallet-api/internal/constants/transaction_types"
 	"wallet-api/internal/models"
 
 	_ "github.com/lib/pq"
