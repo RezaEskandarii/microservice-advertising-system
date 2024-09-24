@@ -6,11 +6,12 @@ import (
 )
 
 func LoadEnv(key string) string {
-	err := godotenv.Load()
-	if err != nil {
-		return ""
-	}
+	godotenv.Load()
 	return os.Getenv(key)
+}
+
+func Set(key string, value string) error {
+	return os.Setenv(key, value)
 }
 
 func Load(key string) string {
