@@ -38,10 +38,10 @@ public class AdvertisementController : BaseController
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 
-    [HttpGet("Search")]
-    public async Task<ActionResult> SearchAsync([FromQuery] SearchAdvertisementQuery searchQuery)
+    [HttpGet("")]
+    public async Task<ActionResult> SearchAsync()
     {
-        var result = await _mediator.Send(searchQuery);
+        var result = await _mediator.Send(new GetAdvertisementsListQuery());
         return Ok(new ApiResponse(HttpStatusCode.OK, result));
     }
 

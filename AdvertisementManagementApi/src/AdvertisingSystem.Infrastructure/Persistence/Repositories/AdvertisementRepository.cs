@@ -1,8 +1,10 @@
 using System.Data;
 using System.Text.Json;
 using AdvertisingSystem.Contract.Interfaces;
+using AdvertisingSystem.Domain;
 using AdvertisingSystem.Domain.Constants;
 using AdvertisingSystem.Domain.Entities;
+using AdvertisingSystem.Infrastructure.ExtensionMethods;
 using AdvertisingSystem.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -111,5 +113,15 @@ public class AdvertisementRepository : IAdvertisementRepository
 
         _context.Advertisements.Update(advertisement);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<PaginatedList<Advertisement>> GetListAsync(int pageNumber, int pageSize)
+    {
+        var advertisements = await _context
+            .Advertisements
+            .AsNoTracking()
+            .PaginateAsync(pageNumber, pageSize);
+
+        return advertisements;
     }
 }
