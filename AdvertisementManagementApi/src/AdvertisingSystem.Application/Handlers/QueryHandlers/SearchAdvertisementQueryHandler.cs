@@ -9,7 +9,7 @@ namespace AdvertisingSystem.Application.Handlers.QueryHandlers;
 
 public class SearchAdvertisementQueryHandler : IRequestHandler<SearchAdvertisementQuery, PaginatedList<GetAdvertisementViewModel>>
 {
-    private readonly IAdvertisementRepository _advertisementRepository;
+    private readonly IElasticsearchRepository<GetAdvertisementViewModel> _advertisementRepository;
     private readonly IMapper _mapper;
 
     public SearchAdvertisementQueryHandler(IMapper mapper, IAdvertisementRepository advertisementRepository)

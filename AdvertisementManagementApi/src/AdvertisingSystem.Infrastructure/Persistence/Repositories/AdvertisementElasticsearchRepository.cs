@@ -2,6 +2,7 @@ using System.Text;
 using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Nest;
 
 namespace AdvertisingSystem.Infrastructure.Persistence.Repositories;
@@ -9,13 +10,16 @@ namespace AdvertisingSystem.Infrastructure.Persistence.Repositories;
 public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Advertisement>
 {
     private readonly IElasticClient _elasticClient;
+    private readonly ILogger<AdvertisementElasticsearchRepository> _logger;
 
-    public AdvertisementElasticsearchRepository(IConfiguration configuration)
+    public AdvertisementElasticsearchRepository(IConfiguration configuration, ILogger<AdvertisementElasticsearchRepository> logger)
     {
-        var settings = new ConnectionSettings(new Uri(configuration["Elasticsearch:Url"]))
-            .DefaultIndex("advertisements");
+        _logger = logger;
+        var settings = new ConnectionSettings(new Uri(configuration["Elasticsearch:Url"] ??
+                                                      throw new InvalidOperationException("Elasticsearch:Url is null"))).DefaultIndex("advertisements");
 
-        var debugMode = bool.Parse(configuration["Elasticsearch:DebugMode"]);
+        var debugMode = bool.Parse(configuration["Elasticsearch:DebugMode"] ??
+                                   throw new InvalidOperationException("can not read Elasticsearch:DebugMode ad cast to boolean"));
 
         if (debugMode)
         {
@@ -41,12 +45,10 @@ public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Adv
 
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                // If searchText is null or empty, match all documents
                 querySelector = q => q.MatchAll();
             }
             else
             {
-                // Use wildcard query for "like" functionality
                 querySelector = q => q
                     .Bool(b => b
                         .Should(sh => sh
@@ -58,7 +60,7 @@ public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Adv
                         )
                     );
             }
- 
+
             var searchResponse = await _elasticClient.SearchAsync<Advertisement>(s => s
                 .Query(q => querySelector(q))
                 .From((page - 1) * pageSize)
@@ -67,7 +69,6 @@ public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Adv
 
             if (!searchResponse.IsValid)
             {
-                // Log Elasticsearch error
                 Console.WriteLine($"Elasticsearch Error: {searchResponse.DebugInformation}");
                 throw new Exception("Error occurred while querying Elasticsearch.");
             }
@@ -76,8 +77,7 @@ public class AdvertisementElasticsearchRepository : IElasticsearchRepository<Adv
         }
         catch (Exception ex)
         {
-            // Log and handle the exception
-            Console.WriteLine($"Exception occurred: {ex.Message}");
+            _logger.LogError(ex.Message);
             throw;
         }
     }
