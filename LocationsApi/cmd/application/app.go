@@ -47,13 +47,16 @@ func Run(portNumber string) error {
 	// Register the location service with the location handler
 	locationHandler.RegisterRoutes(locationService)
 
-	// Start the HTTP server and listen for incoming requests
-	// Wrapping ListenAndServe with Fatal allows for a clean exit on errors
 	log.Printf("application started at: %s", portNumber)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", portNumber), nil))
 
-	err = http.ListenAndServe(fmt.Sprintf(":%s", portNumber), nil)
-	log.Fatal(err, nil)
+	if err = startServer(portNumber); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 
 	return err
+}
+
+func startServer(port string) error {
+	address := fmt.Sprintf(":%s", port)
+	return http.ListenAndServe(address, nil)
 }
