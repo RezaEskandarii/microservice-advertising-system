@@ -56,6 +56,7 @@ func Run(portNumber string) error {
 	return err
 }
 
+// startServer
 func startServer(port string) error {
 	address := fmt.Sprintf(":%s", port)
 	return http.ListenAndServe(address, nil)
