@@ -123,21 +123,6 @@ func (q *QueueManager) Listen() {
 // It processes the message to extract relevant information about the advertisement,
 // and if the event corresponds to "OnAdvertisementAdded", it sends an email to
 // the user who added the advertisement to notify them about its successful registration.
-//
-// Parameters:
-//   - msg: The message received from the queue, typically containing information about
-//     the advertisement event.
-//
-// Behavior:
-//  1. Processes the message to extract advertisement details from its body.
-//  2. Checks if the event corresponds to "OnAdvertisementAdded".
-//  3. If the event matches, constructs an email message with details of the registered ad
-//     and sends it to the user who added the advertisement.
-//
-// Note: This method assumes that the advertisement information can be extracted from
-//
-//	the message body and that the email sender is configured appropriately.
-//	Errors encountered during email sending are logged but not handled within this method.
 func (q *QueueManager) sendEmail(msg amqp.Delivery) {
 	// Process the message
 	body := string(msg.Body)
