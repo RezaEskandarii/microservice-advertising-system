@@ -1,0 +1,268 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - internal
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - internal
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "${PROMETHEUS_PORT}:${PROMETHEUS_PORT}"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - internal
+
+  grafana:
+    image: grafana/grafana:master
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "${GRAFANA_PORT}:${GRAFANA_PORT}"
+    volumes:
+      - ../grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - internal
+
+  vault:
+    image: hashicorp/vault:latest
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID}
+    networks:
+      - internal
+
+  consul:
+    image: hashicorp/consul:latest
+    command: "agent -dev"
+    environment:
+      CONSUL_HTTP_ADDR: ${CONSUL_HTTP_ADDR}
+      CONSUL_HTTP_PORT: ${CONSUL_HTTP_PORT}
+    ports:
+      - "${CONSUL_HTTP_PORT}:${CONSUL_HTTP_PORT}"
+    networks:
+      - internal
+
+  minio:
+    image: minio/minio
+    ports:
+      - "${MINIO_PORT}:${MINIO_PORT}"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data
+    networks:
+      - internal
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    container_name: elasticsearch
+    environment:
+      node.name: elasticsearch
+      discovery.type: single-node
+    ports:
+      - "${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}"
+      - "${ELASTICSEARCH_TRANSPORT_PORT}:${ELASTICSEARCH_TRANSPORT_PORT}"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - internal
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    restart: always
+    environment:
+      ELASTICSEARCH_HOSTS: ELASTICSEARCH_SERVER_ADDR
+    ports:
+      - "${KIBANA_PORT}:${KIBANA_PORT}"
+    depends_on:
+      - elasticsearch
+    networks:
+      - internal
+
+  redis:
+    image: redis:latest
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - internal
+
+  identity-management.api:
+    build:
+      context: ../src/BackEnd/dotnet-services/IdentityManagementApi
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres
+      - vault
+      - consul
+    networks:
+      - internal
+    environment:
+      ConnectionStrings__DefaultConnection: ${IDENTITY_CONNECTION_STRING}
+      Kestrel__Endpoints__Http__Url: ${IDENTITY_KESTREL_URL}
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+      Vault__Address: ${VAULT_ADDRESS}
+      Vault__Token: ${VAULT_DEV_ROOT_TOKEN_ID}
+      AllowedHosts: "*"
+      JWTSecretKey: ${JWT_SECRET_KEY}
+
+  advertisement-management.api:
+    build:
+      context: ../src/BackEnd/dotnet-services/AdvertisementManagementApi
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres
+      - vault
+      - consul
+    networks:
+      - internal
+    environment:
+      ConnectionStrings__DefaultConnection: ${ADVERTISEMENT_CONNECTION_STRING}
+      ConnectionStrings__RabbitMq: ${ADVERTISEMENT_RABBITMQ_URL}
+      Elasticsearch__Url: ${ELASTICSEARCH_SERVER_ADDR}
+      Elasticsearch__DebugMode: false
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+      AllowedHosts: "*"
+      Kestrel__Endpoints__Http__Url: ${ADVERTISEMENT_KESTREL_URL}
+      Vault__Address: ${VAULT_ADDRESS}
+      Vault__Token: ${VAULT_DEV_ROOT_TOKEN_ID}
+
+  email-sender.api:
+    build:
+      context: ./EmailSenderApi
+      dockerfile: ./Dockerfile
+    depends_on:
+      - vault
+      - consul
+      - rabbitmq
+    ports:
+      - "${EMAIL_SENDER_PORT}:${EMAIL_SENDER_PORT}"
+    environment:
+      vault_token: ${VAULT_DEV_ROOT_TOKEN_ID}
+      vault_address: ${VAULT_ADDRESS}
+      app_port: ${EMAIL_SENDER_PORT}
+      rabbitmq_addr: ${EMAIL_SENDER_RABBITMQ_URL}
+    networks:
+      - internal
+
+  thumbnail-management.api:
+    build:
+      context: ../src/BackEnd/go-services/ThumbnailManagementApi
+      dockerfile: ./Dockerfile
+    depends_on:
+      - minio
+      - postgres
+      - vault
+      - consul
+    networks:
+      - internal
+    environment:
+      object_storage_address: ${THUMBNAIL_MINIO_ADDRESS}
+      object_storage_access_key: ${THUMBNAIL_MINIO_ACCESS_KEY}
+      object_storage_secret_key: ${THUMBNAIL_MINIO_SECRET_KEY}
+      vault_token: ${THUMBNAIL_VAULT_TOKEN}
+      vault_address: ${THUMBNAIL_VAULT_ADDRESS}
+      thumbnail_grpc_api_port_number: ${THUMBNAIL_GRPC_PORT}
+      host_name: thumbnail-management.api
+      thumbnail_management_base_db: ${THUMBNAIL_POSTGRES_BASE}
+      thumbnail_management_full_db: ${THUMBNAIL_POSTGRES_FULL}
+
+  category-management.api:
+    build:
+      context: ../src/BackEnd/go-services/CategoriesApi
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres
+      - vault
+      - consul
+    networks:
+      - internal
+    environment:
+      categories_full_db_connection: ${CATEGORY_POSTGRES_FULL}
+      categories_base_db_connection: ${CATEGORY_POSTGRES_BASE}
+      vault_token: ${VAULT_DEV_ROOT_TOKEN_ID}
+      vault_address: ${VAULT_ADDRESS}
+
+  location-management.api:
+    build:
+      context: ../src/BackEnd/go-services/LocationsApi
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres
+      - vault
+    networks:
+      - internal
+    environment:
+      location_management_base_sdn: ${LOCATION_POSTGRES_BASE}
+      location_management_full_sdn: ${LOCATION_POSTGRES_FULL}
+      location_app_port: ${LOCATION_APP_PORT}
+
+  wallet.api:
+    build:
+      context: ../src/BackEnd/go-services/WalletApi
+      dockerfile: ./.Dockerfile
+    depends_on:
+      - postgres
+    networks:
+      - internal
+    environment:
+      postgres_connection_string: ${WALLET_POSTGRES_CONNECTION}
+      wallet_api_connection_string: ${WALLET_API_CONNECTION}
+      jwt_secret: ${JWT_SECRET_KEY}
+      wallet_api_port: ${WALLET_API_PORT}
+      wallet_grpc_port: ${WALLET_GRPC_PORT}
+
+  api-gateway.app.api:
+    build:
+      context: ../src/BackEnd/dotnet-services/AdvertisementManagementApi
+      dockerfile: ./Dockerfile
+    ports:
+      - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
+    depends_on:
+      - vault
+      - postgres
+      - identity-management.api
+      - category-management.api
+      - location-management.api
+      - advertisement-management.api
+    networks:
+      - internal
+    restart: always
+    environment:
+      JWTSecretKey: ${JWT_SECRET_KEY}
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+      AllowedHosts: "*"
+      Kestrel__Endpoints_http_Url: ${API_GATEWAY_ADDR}
+      Vault__Address: ${VAULT_ADDRESS}
+      Vault__Token: ${VAULT_DEV_ROOT_TOKEN_ID}
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  esdata:
+    driver: local

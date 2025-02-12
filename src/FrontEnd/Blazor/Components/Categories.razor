@@ -1,0 +1,43 @@
+@using FrontEnd.Models
+@using FrontEnd.Constants
+@inject IHttpClientFactory _HttpClientFactory;
+
+
+
+<div class="accordion accordion-flush" id="accordionFlushExample">
+
+    @foreach (var cat in _categories)
+    {
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-heading-@cat.id">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-@cat.id" aria-expanded="false" aria-controls="flush-collapse-@cat.id">
+                    @cat.name
+                </button>
+            </h2>
+            <div id="flush-collapse-@cat.id" class="accordion-collapse collapse" aria-labelledby="flush-heading-@cat.id" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    @foreach (var sub in cat.subcategories)
+                    {
+                        <p>
+                            <a>@sub.name</a>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+ 
+</div>
+
+ 
+
+@code
+{
+    private List<Category>? _categories = new List<Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = _HttpClientFactory.CreateClient(ApiConfigs.AdvertisementClient);
+        _categories = await httpClient.GetFromJsonAsync<List<Category>>(ApiConfigs.CategoriesApiAddress);
+    }
+}
