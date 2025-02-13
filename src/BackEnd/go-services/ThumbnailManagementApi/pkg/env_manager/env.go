@@ -1,0 +1,18 @@
+package env_manager
+
+import (
+	"github.com/joho/godotenv"
+	"os"
+)
+
+func LoadEnv(key string) string {
+	err := godotenv.Load()
+	if err != nil {
+		return ""
+	}
+	return os.Getenv(key)
+}
+
+func Load(key string) string {
+	return os.Getenv(key)
+}
