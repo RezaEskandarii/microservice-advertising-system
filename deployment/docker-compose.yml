@@ -151,7 +151,7 @@ services:
 
   email-sender.api:
     build:
-      context: ./EmailSenderApi
+      context: ../src/BackEnd/go-services/EmailSenderApi
       dockerfile: ./Dockerfile
     depends_on:
       - vault
