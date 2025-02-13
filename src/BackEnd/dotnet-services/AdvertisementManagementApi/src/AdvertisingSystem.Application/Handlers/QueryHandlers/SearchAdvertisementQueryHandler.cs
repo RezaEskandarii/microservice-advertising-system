@@ -12,16 +12,27 @@ public class SearchAdvertisementQueryHandler : IRequestHandler<SearchAdvertiseme
     private readonly IElasticsearchRepository<GetAdvertisementViewModel> _advertisementRepository;
     private readonly IMapper _mapper;
 
-    public SearchAdvertisementQueryHandler(IMapper mapper, IAdvertisementRepository advertisementRepository)
+    public SearchAdvertisementQueryHandler(
+        IMapper mapper,
+        IElasticsearchRepository<GetAdvertisementViewModel> advertisementRepository
+    )
     {
         _mapper = mapper;
         _advertisementRepository = advertisementRepository;
     }
 
-    public async Task<PaginatedList<GetAdvertisementViewModel>> Handle(SearchAdvertisementQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<GetAdvertisementViewModel>> Handle(
+        SearchAdvertisementQuery request,
+        CancellationToken cancellationToken
+    )
     {
-        // var advertisements = await _advertisementRepository.SearchAsync(request.PageNumber,request.PageSize,request.Filter,request.Properties);
-        // return _mapper.Map<PaginatedList<GetAdvertisementViewModel>>(advertisements);
-        return null;
+        var advertisements = await _advertisementRepository
+            .SearchAsync(
+                request.Filter,
+                request.PageNumber,
+                request.PageSize
+            );
+
+        return _mapper.Map<PaginatedList<GetAdvertisementViewModel>>(advertisements);
     }
 }
