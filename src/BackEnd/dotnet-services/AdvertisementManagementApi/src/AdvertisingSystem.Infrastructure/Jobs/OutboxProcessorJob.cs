@@ -3,6 +3,7 @@ using AdvertisingSystem.Contract.Interfaces;
 using AdvertisingSystem.Domain.Constants;
 using AdvertisingSystem.Domain.DomainEvents;
 using AdvertisingSystem.Domain.Entities;
+using Microsoft.Extensions.Logging;
 using Quartz;
 
 namespace AdvertisingSystem.Infrastructure.Jobs;
@@ -11,11 +12,17 @@ public class OutboxProcessorJob : IJob
 {
     private readonly IOutBoxMessageRepository _outBoxMessageRepository;
     private IEventPublisher _eventPublisher;
+    private readonly ILogger<OutboxProcessorJob> _logger;
 
-    public OutboxProcessorJob(IOutBoxMessageRepository outBoxMessageRepository, IEventPublisher eventPublisher)
+    public OutboxProcessorJob(
+        IOutBoxMessageRepository outBoxMessageRepository,
+        IEventPublisher eventPublisher,
+        ILogger<OutboxProcessorJob> logger
+    )
     {
         _outBoxMessageRepository = outBoxMessageRepository;
         _eventPublisher = eventPublisher;
+        _logger = logger;
     }
 
 
@@ -42,7 +49,19 @@ public class OutboxProcessorJob : IJob
         }
         catch (Exception e)
         {
-            throw;
+            LogExceptions(e);
+        }
+    }
+
+    private void LogExceptions(Exception exception)
+    {
+        _logger.LogDebug(exception.Message);
+        _logger.LogDebug(exception.StackTrace);
+
+        if (exception.InnerException is not null)
+        {
+            _logger.LogDebug(exception.InnerException.Message);
+            _logger.LogDebug(exception.InnerException.StackTrace);
         }
     }
 }
