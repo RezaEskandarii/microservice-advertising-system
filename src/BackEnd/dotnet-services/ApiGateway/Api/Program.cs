@@ -15,7 +15,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ISecretManager, SecretManager>();
 
 #if DEBUG
 builder.Configuration.AddJsonFile("ocelot.dev.json", optional: false, reloadOnChange: true);
