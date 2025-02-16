@@ -18,11 +18,16 @@ func NewWalletHandler(service services.WalletService) *WalletHandler {
 // InitRoutes initialize http routes
 func (h *WalletHandler) InitRoutes() {
 	http.HandleFunc("/api/v1/deposit", h.deposit)
+	http.HandleFunc("/api/v1/withdraw", h.withdraw)
 	http.HandleFunc("/api/v1/transactions", h.getTransactions)
 	http.HandleFunc("/api/v1/balance", h.getBalance)
 }
 
 type depositRequest struct {
+	Amount float64
+}
+
+type withdrawRequest struct {
 	Amount float64
 }
 
@@ -45,6 +50,42 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 	idempotencyKey := r.Header.Get("X-Idempotency-Key")
 
 	if err := h.Service.Deposit(userID, req.Amount, idempotencyKey); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+	amount, _ := h.Service.GetAmount(userID)
+
+	if err := json.NewEncoder(w).Encode(map[string]float64{"balance": amount}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
+	setJsonContentType(w)
+	if strings.ToUpper(r.Method) != "POST" {
+		http.Error(w, "MethodNotAllowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userID, err := GetUserId(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusForbidden)
+		return
+	}
+
+	var req withdrawRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	idempotencyKey := r.Header.Get("X-Idempotency-Key")
+
+	if err := h.Service.Withdraw(userID, req.Amount, idempotencyKey); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
