@@ -67,13 +67,29 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 
 // Withdraw  subtracts the specified amount from the user's wallet.
 func (r *PostgreSQLRepository) Withdraw(userID string, amount float64, idempotencyKey string) error {
+	// Check idempotency before proceeding
 	err := r.checkIdempotency(userID, idempotencyKey)
 	if err == nil {
-		res, err := r.db.Exec("UPDATE wallets SET balance = balance - $2 WHERE user_id = $1 AND balance >= $2", userID, amount)
+		// Start a new transaction
+		tx, err := r.db.Begin()
 		if err != nil {
 			return err
 		}
 
+		// Ensure rollback in case of any error
+		defer func() {
+			if err != nil {
+				tx.Rollback()
+			}
+		}()
+
+		// Update wallet balance
+		res, err := tx.Exec("UPDATE wallets SET balance = balance - $2 WHERE user_id = $1 AND balance >= $2", userID, amount)
+		if err != nil {
+			return err
+		}
+
+		// Check if the update was successful
 		n, err := res.RowsAffected()
 		if err != nil {
 			return err
@@ -82,7 +98,14 @@ func (r *PostgreSQLRepository) Withdraw(userID string, amount float64, idempoten
 			return errors.New("insufficient funds")
 		}
 
-		_, err = r.db.Exec("INSERT INTO transactions (id, user_id, amount, type) VALUES (NULL,$1, $2, $3)", userID, amount, transaction_types.Withdraw)
+		// Insert the transaction record
+		_, err = tx.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, $3)", userID, amount, transaction_types.Withdraw)
+		if err != nil {
+			return err
+		}
+
+		// Commit the transaction
+		err = tx.Commit()
 		if err != nil {
 			return err
 		}
