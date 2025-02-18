@@ -38,13 +38,26 @@ func NewPostgreSQLRepository(db *sql.DB) *PostgreSQLRepository {
 
 // Deposit adds the specified amount to the user's wallet.
 func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotencyKey string) error {
-
 	err := r.checkIdempotency(userID, idempotencyKey)
 	if err == app_errors.DuplicatedRequestError {
 		return nil
 	}
 
-	res, err := r.db.Exec("INSERT INTO wallets (user_id,balance,created_at) VALUES ($1,$2,$3) ON CONFLICT (user_id) DO UPDATE SET balance = (select balance from wallets where user_id = $1) + $2", userID, amount, time.Now())
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	res, err := tx.Exec(`  INSERT INTO wallets (user_id, balance, created_at)  
+  		VALUES ($1, $2, $3)  ON CONFLICT (user_id) 
+        DO UPDATE SET balance = wallets.balance + EXCLUDED.balance`,
+		userID, amount, time.Now())
 	if err != nil {
 		return err
 	}
@@ -57,7 +70,14 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 		return app_errors.InsufficientWalletBalanceError
 	}
 
-	_, err = r.db.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, $3)", userID, amount, transaction_types.Deposit)
+	_, err = tx.Exec(`
+        INSERT INTO transactions (user_id, amount, type) 
+        VALUES ($1, $2, $3)`, userID, amount, transaction_types.Deposit)
+	if err != nil {
+		return err
+	}
+
+	err = tx.Commit()
 	if err != nil {
 		return err
 	}
