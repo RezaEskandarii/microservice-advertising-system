@@ -1,22 +1,26 @@
-FROM golang:1.21.0
+FROM golang:1.21.0 AS builder
 
-# Set the working directory inside the container
-WORKDIR /LocationServiceApp
+WORKDIR /WalletApiApp
 
-# Copy the Go module files to the working directory
 COPY go.mod go.sum ./
 
-# Download and install the Go dependencies
 RUN go mod download
 
-# Copy the source code to the working directory
 COPY . .
 
-COPY locations.json ./
+RUN go build -o main ./cmd/main.go
 
-RUN go build ./cmd/main.go 
+FROM alpine:latest
 
-EXPOSE 5010
+WORKDIR /root/
 
-# Set the entry point of the container
+COPY --from=builder /WalletApiApp/main .
+
+COPY locations.json .
+
+RUN apk add --no-cache libc6-compat
+
+EXPOSE 5005
+EXPOSE 6000
+
 CMD ["./main"]

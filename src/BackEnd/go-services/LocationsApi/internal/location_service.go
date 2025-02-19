@@ -188,7 +188,7 @@ func (s *LocationServiceImpl) insertCityFromCountry(country models.Country, db *
 // readLocationsJson opens and reads the "locations.json" file. If an error occurs while opening the file,
 // it logs the error and returns nil along with the error. It ensures the file is closed before returning.
 func readLocationsJson() (*os.File, error) {
-	file, err := os.Open("locations.json")
+	file, err := os.Open("./locations.json")
 	if err != nil {
 		log.Println("Error opening file:", err)
 		return nil, err
