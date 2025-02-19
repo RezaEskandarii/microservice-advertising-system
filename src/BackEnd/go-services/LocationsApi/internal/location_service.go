@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq"
-	"io/ioutil"
+	"io"
 	"location-management/internal/models"
 	"location-management/pkg/env_manager"
 	"log"
@@ -129,9 +129,15 @@ func createLocationsTable(db *sql.DB) error {
 
 // Seed populates the database with initial data from a JSON file.
 func (s *LocationServiceImpl) Seed() error {
-	file, err := readLocationsJson()
+	file, err := os.Open("locations.json")
+	if err != nil {
+		log.Println("Error opening file:", err)
+		return err
+	}
 
-	data, err := ioutil.ReadAll(file)
+	defer file.Close()
+
+	data, err := io.ReadAll(file)
 	if err != nil {
 		log.Println("Error reading file:", err)
 		return err
@@ -183,19 +189,6 @@ func (s *LocationServiceImpl) insertCityFromCountry(country models.Country, db *
 			fmt.Printf("City ID for %s: %d\n", city.Name, cityID)
 		}
 	}
-}
-
-// readLocationsJson opens and reads the "locations.json" file. If an error occurs while opening the file,
-// it logs the error and returns nil along with the error. It ensures the file is closed before returning.
-func readLocationsJson() (*os.File, error) {
-	file, err := os.Open("./locations.json")
-	if err != nil {
-		log.Println("Error opening file:", err)
-		return nil, err
-	}
-	defer file.Close()
-
-	return file, nil
 }
 
 func getCountryID(db *sql.DB, countryName string) (int, error) {

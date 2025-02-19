@@ -29,17 +29,19 @@ func Run(portNumber string) error {
 	locationService := internal.NewLocationService(db)
 
 	// Create the location_management database if it doesn't exist
-	if err := locationService.CreateDB(); err != nil {
+	if err = locationService.CreateDB(); err != nil {
 		return err // Return the error if database creation fails
 	}
 
 	// Create the countries and locations tables in the database
-	if err := locationService.CreateTables(); err != nil {
+	if err = locationService.CreateTables(); err != nil {
 		return err // Return the error if table creation fails
 	}
 
 	// Seed the database with initial data from locations.json
-	locationService.Seed()
+	if err = locationService.Seed(); err != nil {
+		return err
+	}
 
 	// Create a LocationHandler instance to handle location-related requests
 	locationHandler := handlers.LocationHandler{}
