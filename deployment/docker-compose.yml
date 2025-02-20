@@ -127,6 +127,7 @@ services:
       - advertisement_app_network
     environment:
       ConnectionStrings__DefaultConnection: ${IDENTITY_CONNECTION_STRING}
+      Elasticsearch__Url: ${ELASTICSEARCH_SERVER_ADDR}
       Kestrel__Endpoints__Http__Url: ${IDENTITY_KESTREL_URL}
       Logging__LogLevel__Default: Information
       Logging__LogLevel__Microsoft.AspNetCore: Warning
