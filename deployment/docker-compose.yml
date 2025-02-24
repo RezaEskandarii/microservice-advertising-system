@@ -198,7 +198,7 @@ services:
       vault_address: ${THUMBNAIL_VAULT_ADDRESS}
       thumbnail_grpc_api_port_number: ${THUMBNAIL_GRPC_PORT}
       host_name: thumbnail-management.api
-      thumbnail_management_base_db: ${POSTGRES_BASE_CONNECTION}
+      thumbnail_management_base_db: ${POSTGRES_BASE_CONNECTION_STRING}
       thumbnail_management_full_db: ${THUMBNAIL_POSTGRES_FULL}
 
   category-management.api:
@@ -214,7 +214,7 @@ services:
     networks:
       - advertisement_app_network
     environment:
-      postgres_base_connection: ${POSTGRES_BASE_CONNECTION}
+      postgres_base_connection: ${POSTGRES_BASE_CONNECTION_STRING}
       categories_db_connection: ${CATEGORY_DB_CONNECTION}
       redis_server_address: ${REDIS_SERVER_ADDRESS}
       vault_token: ${VAULT_DEV_ROOT_TOKEN_ID}
@@ -233,7 +233,7 @@ services:
     networks:
       - advertisement_app_network
     environment:
-      location_management_base_sdn: ${POSTGRES_BASE_CONNECTION}
+      location_management_base_sdn: ${POSTGRES_BASE_CONNECTION_STRING}
       location_management_full_sdn: ${LOCATION_POSTGRES_CONNECTION}
       location_app_port: ${LOCATION_APP_PORT}
       redis_server_address: ${REDIS_SERVER_ADDRESS}
