@@ -198,7 +198,7 @@ services:
       vault_address: ${THUMBNAIL_VAULT_ADDRESS}
       thumbnail_grpc_api_port_number: ${THUMBNAIL_GRPC_PORT}
       host_name: thumbnail-management.api
-      thumbnail_management_base_db: ${THUMBNAIL_POSTGRES_BASE}
+      thumbnail_management_base_db: ${POSTGRES_BASE_CONNECTION}
       thumbnail_management_full_db: ${THUMBNAIL_POSTGRES_FULL}
 
   category-management.api:
@@ -208,15 +208,18 @@ services:
       dockerfile: ./Dockerfile
     depends_on:
       - postgres
+      - redis
       - vault
       - consul
     networks:
       - advertisement_app_network
     environment:
-      categories_full_db_connection: ${CATEGORY_POSTGRES_FULL}
-      categories_base_db_connection: ${CATEGORY_POSTGRES_BASE}
+      postgres_base_connection: ${POSTGRES_BASE_CONNECTION}
+      categories_db_connection: ${CATEGORY_DB_CONNECTION}
+      redis_server_address: ${REDIS_SERVER_ADDRESS}
       vault_token: ${VAULT_DEV_ROOT_TOKEN_ID}
       vault_address: ${VAULT_ADDRESS}
+      port_number: ${CATEGORY_APP_PORT}
 
   location-management.api:
     container_name: location-management.api
@@ -230,8 +233,8 @@ services:
     networks:
       - advertisement_app_network
     environment:
-      location_management_base_sdn: ${LOCATION_POSTGRES_BASE}
-      location_management_full_sdn: ${LOCATION_POSTGRES_FULL}
+      location_management_base_sdn: ${POSTGRES_BASE_CONNECTION}
+      location_management_full_sdn: ${LOCATION_POSTGRES_CONNECTION}
       location_app_port: ${LOCATION_APP_PORT}
       redis_server_address: ${REDIS_SERVER_ADDRESS}
 
