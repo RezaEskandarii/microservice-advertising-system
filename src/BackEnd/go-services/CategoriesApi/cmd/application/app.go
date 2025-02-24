@@ -8,6 +8,7 @@ import (
 	"category-management/pkg/env_manager"
 	"database/sql"
 	"fmt"
+	"github.com/redis/go-redis/v9"
 	"log"
 	"net/http"
 )
@@ -19,7 +20,7 @@ func New() *App {
 	return &App{}
 }
 
-func (a App) Run(portNumber int) {
+func (a App) Run(portNumber string) {
 
 	sdn := env_manager.Load("categories_full_db_connection")
 	createDBSdn := env_manager.Load("categories_base_db_connection")
@@ -36,7 +37,12 @@ func (a App) Run(portNumber int) {
 	a.createCategoriesTable(db)
 
 	categoryRepo := repositories.NewCategoryPostgresRepository(db)
-	categoryService := services.NewCategoryService(categoryRepo)
+
+	redisClient := redis.NewClient(&redis.Options{
+		Addr: env_manager.GetFromOsENV("redis_server_address"),
+	})
+
+	categoryService := services.NewCategoryService(categoryRepo, redisClient)
 
 	categoryService.Seed()
 
@@ -44,8 +50,8 @@ func (a App) Run(portNumber int) {
 	categoryHandler.RegisterRoutes(categoryService)
 
 	// Start the HTTP server
-	log.Printf("application started at: %d", portNumber)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", portNumber), nil))
+	log.Printf("application started at: %s", portNumber)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", portNumber), nil))
 
 }
 

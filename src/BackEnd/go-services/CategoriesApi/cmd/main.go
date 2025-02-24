@@ -2,19 +2,19 @@ package main
 
 import (
 	"category-management/cmd/application"
-	"log"
+	"category-management/pkg/env_manager"
 	_ "github.com/lib/pq"
+	"log"
 )
 
-
 func main() {
-	
+
 	defer func() {
-			if err := recover(); err != nil {
-				log.Printf("Recovered from panic: %v", err)
-			}
-		}()
+		if err := recover(); err != nil {
+			log.Printf("Recovered from panic: %v", err)
+		}
+	}()
 
 	app := application.New()
-	app.Run(5005)
+	app.Run(env_manager.Load("port_number"))
 }
