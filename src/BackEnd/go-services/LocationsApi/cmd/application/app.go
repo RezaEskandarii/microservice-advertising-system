@@ -3,6 +3,7 @@ package application
 import (
 	"database/sql"
 	"fmt"
+	"github.com/redis/go-redis/v9"
 	"location-management/api/handlers"
 	"location-management/internal"
 	"location-management/pkg/env_manager"
@@ -25,8 +26,12 @@ func Run(portNumber string) error {
 	}
 	defer db.Close() // Close the database connection when the function exits
 
+	redisClient := redis.NewClient(&redis.Options{
+		Addr: env_manager.GetFromDotENV("redis_server_address"),
+	})
+
 	// Create a new LocationService instance to manage location data
-	locationService := internal.NewLocationService(db)
+	locationService := internal.NewLocationService(db, redisClient)
 
 	// Create the location_management database if it doesn't exist
 	if err = locationService.CreateDB(); err != nil {

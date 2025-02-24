@@ -226,12 +226,14 @@ services:
     depends_on:
       - postgres
       - vault
+      - redis
     networks:
       - advertisement_app_network
     environment:
       location_management_base_sdn: ${LOCATION_POSTGRES_BASE}
       location_management_full_sdn: ${LOCATION_POSTGRES_FULL}
       location_app_port: ${LOCATION_APP_PORT}
+      redis_server_address: ${REDIS_SERVER_ADDRESS}
 
   wallet.api:
     container_name: wallet.api

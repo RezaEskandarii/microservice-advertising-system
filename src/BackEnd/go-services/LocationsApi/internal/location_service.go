@@ -1,11 +1,15 @@
 package internal
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq"
+	"github.com/redis/go-redis/v9"
 	"io"
+	"time"
+
 	"location-management/internal/models"
 	"location-management/pkg/env_manager"
 	"log"
@@ -24,6 +28,7 @@ type LocationService interface {
 type LocationServiceImpl struct {
 	db *sql.DB
 	LocationService
+	redis *redis.Client
 }
 
 const (
@@ -31,8 +36,8 @@ const (
 )
 
 // NewLocationService creates a new instance of LocationServiceImpl.
-func NewLocationService(db *sql.DB) *LocationServiceImpl {
-	return &LocationServiceImpl{db: db}
+func NewLocationService(db *sql.DB, redisClient *redis.Client) *LocationServiceImpl {
+	return &LocationServiceImpl{db: db, redis: redisClient}
 }
 
 // CreateDB creates the database if it does not exist.
@@ -230,16 +235,24 @@ func insertCity(db *sql.DB, cityName string, countryID int, latitude float64, lo
 
 // GetAll retrieves all cities from the database and organizes them by country.
 func (s *LocationServiceImpl) GetAll() (map[string][]models.GetCity, error) {
+	ctx := context.Background()
+	cacheKey := "locations:all"
+
+	cachedData, err := s.redis.Get(ctx, cacheKey).Result()
+	if err == nil {
+		var data map[string][]models.GetCity
+		if err := json.Unmarshal([]byte(cachedData), &data); err == nil {
+			return data, nil
+		}
+	}
 
 	db := s.db
 	data := make(map[string][]models.GetCity)
 
 	rows, err := db.Query(`SELECT c."name" as CountryName, l."id" as LocationId, l."name" as CityName, l."pos" as pos FROM "countries" c join "locations" l on c."id" = l."country_id"`)
-
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -255,8 +268,13 @@ func (s *LocationServiceImpl) GetAll() (map[string][]models.GetCity, error) {
 		data[country.CountryName] = append(data[country.CountryName], city)
 	}
 
-	if err := rows.Err(); err != nil && rows.Err() != sql.ErrNoRows {
+	if err := rows.Err(); err != nil && err != sql.ErrNoRows {
 		log.Fatal(err)
+	}
+
+	jsonData, err := json.Marshal(data)
+	if err == nil {
+		s.redis.Set(ctx, cacheKey, jsonData, 24*time.Hour)
 	}
 
 	return data, nil
