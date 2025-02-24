@@ -1,19 +1,31 @@
 ﻿using System.Net;
-using System.Text;
 using System.Text.Json;
 using AdvertisingSystem.Identity.Api.ViewModels;
 using AdvertisingSystem.Identity.Shared.Exceptions;
 
 namespace AdvertisingSystem.Identity.Api.Middlewares;
 
+public record struct LogEntry
+{
+    public string User { get; set; }
+    public string IpAddress { get; set; }
+    public DateTime RequestTime { get; set; }
+    public string Route { get; set; }
+    public string QueryParams { get; set; }
+    public string ExceptionMessage { get; set; }
+    public string StackTrace { get; set; }
+}
+
 public class ErrorHandlingMiddleware
 {
     private readonly RequestDelegate _next;
-    private const char NextLine = '\n';
+    private readonly ILogger<ErrorHandlingMiddleware> _logger;
 
-    public ErrorHandlingMiddleware(RequestDelegate next)
+
+    public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -28,63 +40,67 @@ public class ErrorHandlingMiddleware
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
+
+    public async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        var statusCode = HttpStatusCode.InternalServerError;
-        const string defaultErrorMessage = "Please try again";
-
-        var errorMessages = new List<string>();
-
-        if (ex is BusinessException exception)
-        {
-            statusCode = HttpStatusCode.BadRequest;
-            errorMessages = exception.Errors.Any() ? exception.Errors.ToList() : new List<string> { exception.Message };
-        }
-        else
-        {
-            errorMessages.Add(defaultErrorMessage);
-        }
+        var (statusCode, errorMessages) = GetErrorDetails(ex);
 
         LogExceptions(ex, context);
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
+        var response = new ApiResponse(statusCode)
+        {
+            ErrorMessages = errorMessages
+        };
+
         var serializeOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        var respObj = JsonSerializer.Serialize(new ApiResponse(statusCode)
-        {
-            ErrorMessages = errorMessages
-        }, serializeOptions);
+        var responseBody = JsonSerializer.Serialize(response, serializeOptions);
 
-        await context.Response.WriteAsync(respObj);
-
+        await context.Response.WriteAsync(responseBody);
     }
 
-    private static void LogExceptions(Exception exception, HttpContext context)
+    private (HttpStatusCode, List<string>) GetErrorDetails(Exception ex)
     {
-        var logStr = new StringBuilder();
-        var requestIp = context.Connection.RemoteIpAddress;
-        var currentDateTime = DateTime.Now;
+        const string defaultErrorMessage = "Please try again";
+        var errorMessages = new List<string>();
+        var statusCode = HttpStatusCode.InternalServerError;
 
-        logStr.Append(NextLine);
-        logStr.Append($"######### User: {GetCurrentUser(context)} # IP:{requestIp} ##############");
-        logStr.Append(NextLine);
-        logStr.Append($"######### DateTime: {currentDateTime} ## LocalDateTim: {currentDateTime} ###");
-        logStr.Append(NextLine);
-        logStr.Append($"##### Route: {context.Request.Path} #########");
-        logStr.Append(NextLine);
-        logStr.Append($"################ QueryParams: {GetQueryParams(context)} #######");
-        logStr.Append(NextLine);
-        logStr.Append($"### ExceptionMessage: {exception.Message}###");
-        logStr.Append(NextLine);
-        logStr.Append(exception.StackTrace);
-        logStr.Append(NextLine);
-        logStr.Append("######## END #############");
-        logStr.Append(NextLine);
+        if (ex is BusinessException businessException)
+        {
+            statusCode = HttpStatusCode.BadRequest;
+            errorMessages = businessException.Errors.Any()
+                ? businessException.Errors.ToList()
+                : new List<string> { businessException.Message };
+        }
+        else
+        {
+            errorMessages.Add(defaultErrorMessage);
+        }
+
+        return (statusCode, errorMessages);
+    }
+
+
+    private void LogExceptions(Exception exception, HttpContext context)
+    {
+        var logEntry = new LogEntry
+        {
+            User = GetCurrentUser(context),
+            IpAddress = context.Connection.RemoteIpAddress?.ToString(),
+            RequestTime = DateTime.Now,
+            Route = context.Request.Path,
+            QueryParams = GetQueryParams(context),
+            ExceptionMessage = exception.Message,
+            StackTrace = exception.StackTrace
+        };
+
+        _logger.LogError("Exception occurred: {@LogEntry}", logEntry);
     }
 
     private static string? GetCurrentUser(HttpContext context)

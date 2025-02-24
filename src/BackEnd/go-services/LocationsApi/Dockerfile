@@ -1,6 +1,6 @@
 FROM golang:1.21.0 AS builder
 
-WORKDIR /WalletApiApp
+WORKDIR /LocationApi
 
 COPY go.mod go.sum ./
 
@@ -14,13 +14,12 @@ FROM alpine:latest
 
 WORKDIR /root/
 
-COPY --from=builder /WalletApiApp/main .
+COPY --from=builder /LocationApi/main .
 
 COPY locations.json .
 
 RUN apk add --no-cache libc6-compat
 
-EXPOSE 5005
-EXPOSE 6000
+EXPOSE 5010
 
 CMD ["./main"]
