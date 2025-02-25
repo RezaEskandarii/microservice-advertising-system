@@ -31,10 +31,16 @@ func (h *LocationHandler) findAllHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	dataLength := len(locations)
 	writeJSONResponse(w, http.StatusOK, ApiResponse{
 		Status:  http.StatusOK,
 		Message: "Locations retrieved successfully",
 		Data:    locations,
+		Pagination: &Pagination{
+			Page:       1,
+			PerPage:    dataLength,
+			PagesTotal: dataLength,
+		},
 	})
 }
 
