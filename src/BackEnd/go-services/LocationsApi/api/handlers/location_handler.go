@@ -19,7 +19,7 @@ func (h *LocationHandler) RegisterRoutes(service internal.LocationService) {
 func (h *LocationHandler) findAllHandler(w http.ResponseWriter, r *http.Request) {
 	locations, err := h.LocationService.GetAll()
 	if err != nil {
-		writeJSONResponse(w, http.StatusInternalServerError, ApiResponse{
+		writeJSONResponse(w, http.StatusInternalServerError, &ApiResponse{
 			Status:  http.StatusInternalServerError,
 			Message: "Failed to retrieve locations",
 			Error: &Error{
@@ -32,7 +32,7 @@ func (h *LocationHandler) findAllHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	dataLength := len(locations)
-	writeJSONResponse(w, http.StatusOK, ApiResponse{
+	writeJSONResponse(w, http.StatusOK, &ApiResponse{
 		Status:  http.StatusOK,
 		Message: "Locations retrieved successfully",
 		Data:    locations,
@@ -44,7 +44,7 @@ func (h *LocationHandler) findAllHandler(w http.ResponseWriter, r *http.Request)
 	})
 }
 
-func writeJSONResponse(w http.ResponseWriter, status int, data ApiResponse) {
+func writeJSONResponse(w http.ResponseWriter, status int, data *ApiResponse) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(data)
