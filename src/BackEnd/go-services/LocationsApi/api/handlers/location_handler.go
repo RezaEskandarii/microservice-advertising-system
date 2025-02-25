@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	. "location-management/api"
 	"location-management/internal"
 	"net/http"
 )
@@ -18,18 +19,27 @@ func (h *LocationHandler) RegisterRoutes(service internal.LocationService) {
 func (h *LocationHandler) findAllHandler(w http.ResponseWriter, r *http.Request) {
 	locations, err := h.LocationService.GetAll()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeJSONResponse(w, http.StatusInternalServerError, ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Failed to retrieve locations",
+			Error: &Error{
+				Type:   "DatabaseError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		})
 		return
 	}
 
-	// Convert locations to JSON and write response
-	response, err := json.Marshal(&locations)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	writeJSONResponse(w, http.StatusOK, ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Locations retrieved successfully",
+		Data:    locations,
+	})
+}
 
+func writeJSONResponse(w http.ResponseWriter, status int, data ApiResponse) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(response)
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(data)
 }

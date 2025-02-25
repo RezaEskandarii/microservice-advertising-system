@@ -15,8 +15,8 @@ import (
 // seeding initial data, registering routes for handling location-related requests,
 // and starting the HTTP server.
 func Run(portNumber string) error {
-	// Get the full connection string from the environment variable
-	sdn := env_manager.GetFromDotENV("location_management_full_sdn")
+	// Get the db connection string from the environment variable
+	sdn := env_manager.GetFromDotENV("location_management_db_connection")
 
 	// Connect to the PostgreSQL database
 	db, err := sql.Open("postgres", sdn)

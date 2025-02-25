@@ -43,7 +43,7 @@ func NewLocationService(db *sql.DB, redisClient *redis.Client) *LocationServiceI
 // CreateDB creates the database if it does not exist.
 func (s *LocationServiceImpl) CreateDB() error {
 
-	sdn := env_manager.GetFromDotENV("location_management_base_sdn")
+	sdn := env_manager.GetFromDotENV("postgres_base_connection")
 
 	// Connect to db
 	db, err := sql.Open("postgres", sdn)
@@ -72,7 +72,7 @@ func (s *LocationServiceImpl) CreateDB() error {
 
 // CreateTables creates necessary tables in the database.
 func (s *LocationServiceImpl) CreateTables() error {
-	sdn := env_manager.GetFromDotENV("location_management_full_sdn")
+	sdn := env_manager.GetFromDotENV("postgres_base_connection")
 
 	db, err := sql.Open("postgres", sdn)
 	if err != nil {
