@@ -16,7 +16,7 @@ import (
 type WalletRepository interface {
 	Deposit(userID string, amount float64, idempotencyKey string) error
 	Withdraw(userID string, amount float64, idempotencyKey string) error
-	GetTransactions(userID string, page, perPage int) (models.Pagination[models.Transaction], error)
+	GetTransactions(userID string, page, perPage int) (models.PaginatedData[models.Transaction], error)
 	GetAmount(userID string) (float64, error)
 	RemoveExpire(createdAt time.Time) error
 	GetTransactionsReport(yearNumber int) (map[int]decimal.Decimal, error)
@@ -135,14 +135,14 @@ func (r *PostgreSQLRepository) Withdraw(userID string, amount float64, idempoten
 }
 
 // GetTransactions retrieves the transaction history for a user.
-func (r *PostgreSQLRepository) GetTransactions(userID string, page, perPage int) (models.Pagination[models.Transaction], error) {
+func (r *PostgreSQLRepository) GetTransactions(userID string, page, perPage int) (models.PaginatedData[models.Transaction], error) {
 
 	offset := (page - 1) * perPage
 
 	var totalItems int
 	err := r.db.QueryRow("SELECT COUNT(*) FROM transactions WHERE user_id = $1", userID).Scan(&totalItems)
 	if err != nil {
-		return models.Pagination[models.Transaction]{}, err
+		return models.PaginatedData[models.Transaction]{}, err
 	}
 
 	rows, err := r.db.Query(`
@@ -152,7 +152,7 @@ func (r *PostgreSQLRepository) GetTransactions(userID string, page, perPage int)
 		ORDER BY created_at DESC 
 		LIMIT $2 OFFSET $3`, userID, perPage, offset)
 	if err != nil {
-		return models.Pagination[models.Transaction]{}, err
+		return models.PaginatedData[models.Transaction]{}, err
 	}
 	defer rows.Close()
 
@@ -161,7 +161,7 @@ func (r *PostgreSQLRepository) GetTransactions(userID string, page, perPage int)
 		var txn models.Transaction
 		err := rows.Scan(&txn.ID, &txn.UserID, &txn.Amount, &txn.Type)
 		if err != nil {
-			return models.Pagination[models.Transaction]{}, err
+			return models.PaginatedData[models.Transaction]{}, err
 		}
 		transactions = append(transactions, txn)
 	}

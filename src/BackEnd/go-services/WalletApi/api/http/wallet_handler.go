@@ -3,7 +3,6 @@ package http
 import (
 	"encoding/json"
 	"net/http"
-	"wallet-api/internal/models"
 	"wallet-api/internal/services"
 )
 
@@ -35,10 +34,10 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 	setJsonContentType(w)
 
 	if r.Method != http.MethodPost {
-		writeJSONResponse(w, http.StatusMethodNotAllowed, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusMethodNotAllowed, &ApiResponse{
 			Status:  http.StatusMethodNotAllowed,
 			Message: "Method Not Allowed",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "MethodNotAllowed",
 				Title:  "Invalid HTTP Method",
 				Status: http.StatusMethodNotAllowed,
@@ -50,10 +49,10 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := GetUserId(r)
 	if err != nil {
-		writeJSONResponse(w, http.StatusForbidden, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusForbidden, &ApiResponse{
 			Status:  http.StatusForbidden,
 			Message: "Unauthorized access",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "AuthenticationError",
 				Title:  "Unauthorized",
 				Status: http.StatusForbidden,
@@ -64,10 +63,10 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 
 	var req depositRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeJSONResponse(w, http.StatusBadRequest, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusBadRequest, &ApiResponse{
 			Status:  http.StatusBadRequest,
 			Message: "Invalid request body",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "BadRequest",
 				Title:  "Malformed JSON",
 				Status: http.StatusBadRequest,
@@ -80,10 +79,10 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 	idempotencyKey := r.Header.Get("X-Idempotency-Key")
 
 	if err := h.Service.Deposit(userID, req.Amount, idempotencyKey); err != nil {
-		writeJSONResponse(w, http.StatusInternalServerError, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusInternalServerError, &ApiResponse{
 			Status:  http.StatusInternalServerError,
 			Message: "Deposit failed",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "ServerError",
 				Title:  "Internal Server Error",
 				Status: http.StatusInternalServerError,
@@ -94,7 +93,7 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 
 	amount, _ := h.Service.GetAmount(userID)
 
-	writeJSONResponse(w, http.StatusOK, &models.ApiResponse{
+	writeJSONResponse(w, http.StatusOK, &ApiResponse{
 		Status:  http.StatusOK,
 		Message: "Deposit successful",
 		Data:    map[string]float64{"balance": amount},
@@ -105,10 +104,10 @@ func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 	setJsonContentType(w)
 
 	if r.Method != http.MethodPost {
-		writeJSONResponse(w, http.StatusMethodNotAllowed, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusMethodNotAllowed, &ApiResponse{
 			Status:  http.StatusMethodNotAllowed,
 			Message: "Method Not Allowed",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "MethodNotAllowed",
 				Title:  "Invalid HTTP Method",
 				Status: http.StatusMethodNotAllowed,
@@ -120,10 +119,10 @@ func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := GetUserId(r)
 	if err != nil {
-		writeJSONResponse(w, http.StatusForbidden, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusForbidden, &ApiResponse{
 			Status:  http.StatusForbidden,
 			Message: "Unauthorized access",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "AuthenticationError",
 				Title:  "Unauthorized",
 				Status: http.StatusForbidden,
@@ -135,10 +134,10 @@ func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 
 	var req withdrawRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeJSONResponse(w, http.StatusBadRequest, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusBadRequest, &ApiResponse{
 			Status:  http.StatusBadRequest,
 			Message: "Invalid request body",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "BadRequest",
 				Title:  "Malformed JSON",
 				Status: http.StatusBadRequest,
@@ -151,10 +150,10 @@ func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 	idempotencyKey := r.Header.Get("X-Idempotency-Key")
 
 	if err := h.Service.Withdraw(userID, req.Amount, idempotencyKey); err != nil {
-		writeJSONResponse(w, http.StatusInternalServerError, &models.ApiResponse{
+		writeJSONResponse(w, http.StatusInternalServerError, &ApiResponse{
 			Status:  http.StatusInternalServerError,
 			Message: "Withdrawal failed",
-			Error: &models.Error{
+			Error: &Error{
 				Type:   "ServerError",
 				Title:  "Internal Server Error",
 				Status: http.StatusInternalServerError,
@@ -165,7 +164,7 @@ func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 
 	amount, _ := h.Service.GetAmount(userID)
 
-	writeJSONResponse(w, http.StatusOK, &models.ApiResponse{
+	writeJSONResponse(w, http.StatusOK, &ApiResponse{
 		Status:  http.StatusOK,
 		Message: "Withdrawal successful",
 		Data:    map[string]float64{"balance": amount},
@@ -173,43 +172,87 @@ func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *WalletHandler) getTransactions(w http.ResponseWriter, r *http.Request) {
+	setJsonContentType(w)
+
 	userID, err := GetUserId(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusForbidden)
+		writeJSONResponse(w, http.StatusForbidden, &ApiResponse{
+			Status:  http.StatusForbidden,
+			Message: "Unauthorized access",
+			Error: &Error{
+				Type:   "AuthenticationError",
+				Title:  "Unauthorized",
+				Status: http.StatusForbidden,
+				Detail: err.Error(),
+			},
+		})
+		return
 	}
 
-	transactions, err := h.Service.GetTransactions(userID)
+	page, perPage := parsePaginationParams(r)
+	transactions, err := h.Service.GetTransactions(userID, page, perPage)
+
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeJSONResponse(w, http.StatusInternalServerError, &ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "get transactions failed",
+			Error: &Error{
+				Type:   "ServerError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		})
 		return
 	}
 
-	response := models.ApiResponse{Data: transactions}
-	setJsonContentType(w)
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	writeJSONResponse(w, http.StatusOK, &ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Transactions retrieved successfully",
+		Data:    transactions.Data,
+		Pagination: &Pagination{
+			Page:       transactions.Page,
+			PerPage:    transactions.PerPage,
+			PagesTotal: transactions.PagesTotal,
+			TotalItems: transactions.TotalItems,
+		},
+	})
 }
 
 func (h *WalletHandler) getBalance(w http.ResponseWriter, r *http.Request) {
 	setJsonContentType(w)
+
 	userID, err := GetUserId(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusForbidden)
+		writeJSONResponse(w, http.StatusForbidden, &ApiResponse{
+			Status:  http.StatusForbidden,
+			Message: "Unauthorized access",
+			Error: &Error{
+				Type:   "AuthenticationError",
+				Title:  "Unauthorized",
+				Status: http.StatusForbidden,
+				Detail: err.Error(),
+			},
+		})
+		return
 	}
 
 	amount, err := h.Service.GetAmount(userID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeJSONResponse(w, http.StatusInternalServerError, &ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Failed to retrieve balance",
+			Error: &Error{
+				Type:   "ServerError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		})
 		return
 	}
 
-	data := models.ApiResponse{
-		Data: map[string]float64{"balance": amount},
-	}
-	if err := json.NewEncoder(w).Encode(data); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	writeJSONResponse(w, http.StatusOK, &ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Balance retrieved successfully",
+		Data:    map[string]float64{"balance": amount},
+	})
 }

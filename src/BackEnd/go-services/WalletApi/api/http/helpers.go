@@ -6,15 +6,29 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"net/http"
+	"strconv"
 	"strings"
-	"wallet-api/internal/models"
 	"wallet-api/pkg/env_manager"
 )
 
-func writeJSONResponse(w http.ResponseWriter, status int, response *models.ApiResponse[any]) {
+func writeJSONResponse(w http.ResponseWriter, status int, response *ApiResponse) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(response)
+}
+
+func parsePaginationParams(r *http.Request) (int, int) {
+	page, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	perPage, err := strconv.Atoi(r.URL.Query().Get("per_page"))
+	if err != nil || perPage < 1 {
+		perPage = 10
+	}
+
+	return page, perPage
 }
 
 var secretKey = []byte(env_manager.LoadEnv("jwt_secret"))
