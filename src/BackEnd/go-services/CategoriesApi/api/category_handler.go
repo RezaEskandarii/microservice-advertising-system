@@ -4,7 +4,6 @@ import (
 	"category-management/internal/models"
 	. "category-management/internal/services"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -26,109 +25,228 @@ func (h *CategoryAPIHandler) RegisterRoutes(service *CategoryService) {
 }
 
 func (h *CategoryAPIHandler) CreateCategoryHandler(w http.ResponseWriter, r *http.Request) {
-	if strings.ToUpper(r.Method) == "POST" {
-		// Parse the request body
-		var category models.Category
-		err := json.NewDecoder(r.Body).Decode(&category)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintf(w, "Error parsing request body: %v", err)
-			return
-		}
-
-		// Create the category
-		cat, err := h.service.Create(&category)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprintf(w, "Error creating category: %v", err)
-			return
-		}
-
-		// Return success response
-		w.WriteHeader(http.StatusCreated)
-		fmt.Fprint(w, cat)
+	if strings.ToUpper(r.Method) != "POST" {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
 	}
+
+	var category models.Category
+	err := json.NewDecoder(r.Body).Decode(&category)
+	if err != nil {
+		response := ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Invalid request body",
+			Error: &Error{
+				Type:   "InvalidRequest",
+				Title:  "Bad Request",
+				Status: http.StatusBadRequest,
+			},
+		}
+		writeJSONResponse(w, http.StatusBadRequest, response)
+		return
+	}
+
+	createdCategory, err := h.service.Create(&category)
+	if err != nil {
+		response := ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Error creating category",
+			Error: &Error{
+				Type:   "DatabaseError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		}
+		writeJSONResponse(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	response := ApiResponse{
+		Status:  http.StatusCreated,
+		Message: "Category created successfully",
+		Data:    createdCategory,
+	}
+
+	writeJSONResponse(w, http.StatusCreated, response)
 }
 
 func (h *CategoryAPIHandler) UpdateCategoryHandler(w http.ResponseWriter, r *http.Request) {
-	if strings.ToUpper(r.Method) == "PUT" {
-		// Parse the request body
-		var category models.Category
-		err := json.NewDecoder(r.Body).Decode(&category)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintf(w, "Error parsing request body: %v", err)
-			return
-		}
-
-		id := extractCategoryID(r)
-
-		// Create the category
-		cat, err := h.service.Update(id, &category)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprintf(w, "Error creating category: %v", err)
-			return
-		}
-
-		// Return success response
-		w.WriteHeader(http.StatusCreated)
-		fmt.Fprint(w, cat)
+	if strings.ToUpper(r.Method) != "PUT" {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
 	}
+
+	var category models.Category
+	err := json.NewDecoder(r.Body).Decode(&category)
+	if err != nil {
+		response := ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Invalid request body",
+			Error: &Error{
+				Type:   "InvalidRequest",
+				Title:  "Bad Request",
+				Status: http.StatusBadRequest,
+			},
+		}
+		writeJSONResponse(w, http.StatusBadRequest, response)
+		return
+	}
+
+	id, err := extractCategoryID(r)
+	if err != nil {
+		writeJSONResponse(w, http.StatusBadRequest, ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Invalid category ID",
+			Error: &Error{
+				Type:   "InvalidRequest",
+				Title:  "Bad Request",
+				Status: http.StatusBadRequest,
+			},
+		})
+		return
+	}
+
+	updatedCategory, err := h.service.Update(id, &category)
+	if err != nil {
+		response := ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Error updating category",
+			Error: &Error{
+				Type:   "DatabaseError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		}
+		writeJSONResponse(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	response := ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Category updated successfully",
+		Data:    updatedCategory,
+	}
+
+	writeJSONResponse(w, http.StatusOK, response)
 }
 
 func (h *CategoryAPIHandler) deleteCategoryHandler(w http.ResponseWriter, r *http.Request) {
-	id := extractCategoryID(r)
-	err := h.service.DeleteCategory(id)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	if strings.ToUpper(r.Method) != "DELETE" {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	id, err := extractCategoryID(r)
+	if err != nil {
+		writeJSONResponse(w, http.StatusBadRequest, ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Invalid category ID",
+			Error: &Error{
+				Type:   "InvalidRequest",
+				Title:  "Bad Request",
+				Status: http.StatusBadRequest,
+			},
+		})
+		return
+	}
+
+	err = h.service.DeleteCategory(id)
+	if err != nil {
+		writeJSONResponse(w, http.StatusInternalServerError, ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Error deleting category",
+			Error: &Error{
+				Type:   "DatabaseError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		})
+		return
+	}
+
+	writeJSONResponse(w, http.StatusOK, ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Category deleted successfully",
+	})
+
 }
 
 func (h *CategoryAPIHandler) findByIDHandler(w http.ResponseWriter, r *http.Request) {
-	id := extractCategoryID(r)
+	id, err := extractCategoryID(r)
+	if err != nil {
+		writeJSONResponse(w, http.StatusBadRequest, ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Invalid category ID",
+			Error: &Error{
+				Type:   "InvalidRequest",
+				Title:  "Bad Request",
+				Status: http.StatusBadRequest,
+			},
+		})
+		return
+	}
+
 	category, err := h.service.FindByID(id)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		response := ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Error retrieving category",
+			Error: &Error{
+				Type:   "DatabaseError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		}
+		writeJSONResponse(w, http.StatusInternalServerError, response)
 		return
 	}
 
-	// Convert category to JSON and write response
-	response, err := json.Marshal(category)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	response := ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Category found",
+		Data:    category,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(response)
+	writeJSONResponse(w, http.StatusOK, response)
+
 }
 
 func (h *CategoryAPIHandler) findAllHandler(w http.ResponseWriter, r *http.Request) {
 	categories, err := h.service.FindAll()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeJSONResponse(w, http.StatusInternalServerError, ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Error fetching categories",
+			Error: &Error{
+				Type:   "DatabaseError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		})
 		return
 	}
 
-	// Convert categories to JSON and write response
-	response, err := json.Marshal(categories)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	writeJSONResponse(w, http.StatusOK, ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Categories retrieved successfully",
+		Data:    categories,
+		Pagination: &Pagination{
+			Page:       1,
+			PerPage:    len(categories),
+			PagesTotal: 1,
+		},
+	})
+}
 
+func writeJSONResponse(w http.ResponseWriter, status int, data ApiResponse) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(response)
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(data)
 }
 
 // Helper function to extract category ID from request
-func extractCategoryID(r *http.Request) int {
+func extractCategoryID(r *http.Request) (int, error) {
 	// Extract the URL path
 	path := r.URL.Path
 
@@ -141,8 +259,8 @@ func extractCategoryID(r *http.Request) int {
 	// Convert to int
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		return -1
+		return -1, err
 	}
 
-	return id
+	return id, nil
 }

@@ -22,29 +22,33 @@ func New() *App {
 
 func (a App) Run(portNumber string) {
 
-	sdn := env_manager.Load("categories_full_db_connection")
-	createDBSdn := env_manager.Load("categories_base_db_connection")
+	if err := a.createDatabase(config.DbName); err != nil {
+		log.Fatal(err)
+	}
 
-	a.createDatabase(config.DbName, fmt.Sprintf("%s", createDBSdn))
-
+	dbURL := env_manager.Load("categories_db_connection")
 	// Connect to PostgreSQL
-	db, err := sql.Open("postgres", fmt.Sprintf("%s", sdn))
+	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	a.createCategoriesTable(db)
+	if err := a.createCategoriesTable(db); err != nil {
+		log.Fatal(err)
+	}
 
 	categoryRepo := repositories.NewCategoryPostgresRepository(db)
 
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: env_manager.GetFromOsENV("redis_server_address"),
+		Addr: env_manager.Load("redis_server_address"),
 	})
 
 	categoryService := services.NewCategoryService(categoryRepo, redisClient)
 
-	categoryService.Seed()
+	if err = categoryService.Seed(); err != nil {
+		log.Fatal(err)
+	}
 
 	categoryHandler := api.CategoryAPIHandler{}
 	categoryHandler.RegisterRoutes(categoryService)
@@ -55,10 +59,11 @@ func (a App) Run(portNumber string) {
 
 }
 
-func (a App) createDatabase(dbName string, sdn string) error {
+func (a App) createDatabase(dbName string) error {
 
+	dbURL := env_manager.Load("postgres_base_connection")
 	// Connect to db
-	db, err := sql.Open("postgres", sdn)
+	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		log.Fatal(err)
 	}
