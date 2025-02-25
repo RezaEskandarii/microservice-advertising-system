@@ -3,7 +3,7 @@ package http
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
+	"wallet-api/internal/models"
 	"wallet-api/internal/services"
 )
 
@@ -33,71 +33,143 @@ type withdrawRequest struct {
 
 func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 	setJsonContentType(w)
-	if strings.ToUpper(r.Method) != "POST" {
-		http.Error(w, "MethodNotAllowed", http.StatusMethodNotAllowed)
+
+	if r.Method != http.MethodPost {
+		writeJSONResponse(w, http.StatusMethodNotAllowed, &models.ApiResponse{
+			Status:  http.StatusMethodNotAllowed,
+			Message: "Method Not Allowed",
+			Error: &models.Error{
+				Type:   "MethodNotAllowed",
+				Title:  "Invalid HTTP Method",
+				Status: http.StatusMethodNotAllowed,
+				Detail: "Only POST requests are allowed",
+			},
+		})
 		return
 	}
+
 	userID, err := GetUserId(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusForbidden)
+		writeJSONResponse(w, http.StatusForbidden, &models.ApiResponse{
+			Status:  http.StatusForbidden,
+			Message: "Unauthorized access",
+			Error: &models.Error{
+				Type:   "AuthenticationError",
+				Title:  "Unauthorized",
+				Status: http.StatusForbidden,
+			},
+		})
+		return
 	}
+
 	var req depositRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		writeJSONResponse(w, http.StatusBadRequest, &models.ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Invalid request body",
+			Error: &models.Error{
+				Type:   "BadRequest",
+				Title:  "Malformed JSON",
+				Status: http.StatusBadRequest,
+				Detail: err.Error(),
+			},
+		})
 		return
 	}
 
 	idempotencyKey := r.Header.Get("X-Idempotency-Key")
 
 	if err := h.Service.Deposit(userID, req.Amount, idempotencyKey); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeJSONResponse(w, http.StatusInternalServerError, &models.ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Deposit failed",
+			Error: &models.Error{
+				Type:   "ServerError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		})
 		return
 	}
-
-	w.WriteHeader(http.StatusOK)
 
 	amount, _ := h.Service.GetAmount(userID)
 
-	if err := json.NewEncoder(w).Encode(map[string]float64{"balance": amount}); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	writeJSONResponse(w, http.StatusOK, &models.ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Deposit successful",
+		Data:    map[string]float64{"balance": amount},
+	})
 }
 
 func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 	setJsonContentType(w)
-	if strings.ToUpper(r.Method) != "POST" {
-		http.Error(w, "MethodNotAllowed", http.StatusMethodNotAllowed)
+
+	if r.Method != http.MethodPost {
+		writeJSONResponse(w, http.StatusMethodNotAllowed, &models.ApiResponse{
+			Status:  http.StatusMethodNotAllowed,
+			Message: "Method Not Allowed",
+			Error: &models.Error{
+				Type:   "MethodNotAllowed",
+				Title:  "Invalid HTTP Method",
+				Status: http.StatusMethodNotAllowed,
+				Detail: "Only POST requests are allowed",
+			},
+		})
 		return
 	}
 
 	userID, err := GetUserId(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusForbidden)
+		writeJSONResponse(w, http.StatusForbidden, &models.ApiResponse{
+			Status:  http.StatusForbidden,
+			Message: "Unauthorized access",
+			Error: &models.Error{
+				Type:   "AuthenticationError",
+				Title:  "Unauthorized",
+				Status: http.StatusForbidden,
+				Detail: err.Error(),
+			},
+		})
 		return
 	}
 
 	var req withdrawRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		writeJSONResponse(w, http.StatusBadRequest, &models.ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Invalid request body",
+			Error: &models.Error{
+				Type:   "BadRequest",
+				Title:  "Malformed JSON",
+				Status: http.StatusBadRequest,
+				Detail: err.Error(),
+			},
+		})
 		return
 	}
 
 	idempotencyKey := r.Header.Get("X-Idempotency-Key")
 
 	if err := h.Service.Withdraw(userID, req.Amount, idempotencyKey); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeJSONResponse(w, http.StatusInternalServerError, &models.ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Withdrawal failed",
+			Error: &models.Error{
+				Type:   "ServerError",
+				Title:  "Internal Server Error",
+				Status: http.StatusInternalServerError,
+			},
+		})
 		return
 	}
-
-	w.WriteHeader(http.StatusOK)
 
 	amount, _ := h.Service.GetAmount(userID)
 
-	if err := json.NewEncoder(w).Encode(map[string]float64{"balance": amount}); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	writeJSONResponse(w, http.StatusOK, &models.ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Withdrawal successful",
+		Data:    map[string]float64{"balance": amount},
+	})
 }
 
 func (h *WalletHandler) getTransactions(w http.ResponseWriter, r *http.Request) {
@@ -112,7 +184,7 @@ func (h *WalletHandler) getTransactions(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	response := ApiResponse{Data: transactions}
+	response := models.ApiResponse{Data: transactions}
 	setJsonContentType(w)
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -133,7 +205,7 @@ func (h *WalletHandler) getBalance(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := ApiResponse{
+	data := models.ApiResponse{
 		Data: map[string]float64{"balance": amount},
 	}
 	if err := json.NewEncoder(w).Encode(data); err != nil {

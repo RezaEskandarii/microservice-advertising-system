@@ -16,7 +16,7 @@ import (
 type WalletRepository interface {
 	Deposit(userID string, amount float64, idempotencyKey string) error
 	Withdraw(userID string, amount float64, idempotencyKey string) error
-	GetTransactions(userID string) ([]models.Transaction, error)
+	GetTransactions(userID string, page, perPage int) (models.Pagination[models.Transaction], error)
 	GetAmount(userID string) (float64, error)
 	RemoveExpire(createdAt time.Time) error
 	GetTransactionsReport(yearNumber int) (map[int]decimal.Decimal, error)
@@ -135,10 +135,24 @@ func (r *PostgreSQLRepository) Withdraw(userID string, amount float64, idempoten
 }
 
 // GetTransactions retrieves the transaction history for a user.
-func (r *PostgreSQLRepository) GetTransactions(userID string) ([]models.Transaction, error) {
-	rows, err := r.db.Query("SELECT id, user_id, amount, type FROM transactions WHERE user_id = $1 ORDER BY created_at DESC", userID)
+func (r *PostgreSQLRepository) GetTransactions(userID string, page, perPage int) (models.Pagination[models.Transaction], error) {
+
+	offset := (page - 1) * perPage
+
+	var totalItems int
+	err := r.db.QueryRow("SELECT COUNT(*) FROM transactions WHERE user_id = $1", userID).Scan(&totalItems)
 	if err != nil {
-		return nil, err
+		return models.Pagination[models.Transaction]{}, err
+	}
+
+	rows, err := r.db.Query(`
+		SELECT id, user_id, amount, type 
+		FROM transactions 
+		WHERE user_id = $1 
+		ORDER BY created_at DESC 
+		LIMIT $2 OFFSET $3`, userID, perPage, offset)
+	if err != nil {
+		return models.Pagination[models.Transaction]{}, err
 	}
 	defer rows.Close()
 
@@ -147,12 +161,12 @@ func (r *PostgreSQLRepository) GetTransactions(userID string) ([]models.Transact
 		var txn models.Transaction
 		err := rows.Scan(&txn.ID, &txn.UserID, &txn.Amount, &txn.Type)
 		if err != nil {
-			return nil, err
+			return models.Pagination[models.Transaction]{}, err
 		}
 		transactions = append(transactions, txn)
 	}
 
-	return transactions, nil
+	return models.PaginateData(transactions, totalItems, page, perPage), nil
 }
 
 // GetAmount retrieves the current amount in a user's wallet.

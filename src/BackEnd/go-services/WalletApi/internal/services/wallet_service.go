@@ -21,7 +21,7 @@ type WalletService interface {
 
 	// GetTransactions retrieves all the transactions associated with the
 	// specified user's wallet.
-	GetTransactions(userID string) ([]models.Transaction, error)
+	GetTransactions(userID string, page, perPage int) (models.Pagination[models.Transaction], error)
 
 	// GetAmount retrieves the current balance of the specified user's wallet.
 	GetAmount(userID string) (float64, error)
@@ -76,11 +76,20 @@ func (w *WalletAppService) Withdraw(userID string, amount float64, idempotencyKe
 	return w.Repository.Withdraw(userID, amount, idempotencyKey)
 }
 
-func (w *WalletAppService) GetTransactions(userID string) ([]models.Transaction, error) {
+func (w *WalletAppService) GetTransactions(userID string, page, perPage int) (models.Pagination[models.Transaction], error) {
 	if userID == "" {
-		return nil, fmt.Errorf("user ID cannot be empty")
+		return models.Pagination[models.Transaction]{},
+			fmt.Errorf("user ID cannot be empty")
 	}
-	return w.Repository.GetTransactions(userID)
+
+	if page < 1 {
+		page = 1
+	}
+	if perPage < 1 {
+		perPage = 10
+	}
+
+	return w.Repository.GetTransactions(userID, page, perPage)
 }
 
 func (w *WalletAppService) GetAmount(userID string) (float64, error) {

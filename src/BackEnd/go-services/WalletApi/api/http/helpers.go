@@ -7,8 +7,15 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"net/http"
 	"strings"
+	"wallet-api/internal/models"
 	"wallet-api/pkg/env_manager"
 )
+
+func writeJSONResponse(w http.ResponseWriter, status int, response *models.ApiResponse[any]) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(response)
+}
 
 var secretKey = []byte(env_manager.LoadEnv("jwt_secret"))
 
