@@ -16,10 +16,10 @@ import (
 // and starting the HTTP server.
 func Run(portNumber string) error {
 	// Get the db connection string from the environment variable
-	sdn := env_manager.GetFromDotENV("location_management_db_connection")
+	dbURL := env_manager.GetFromDotENV("location_management_db_connection")
 
 	// Connect to the PostgreSQL database
-	db, err := sql.Open("postgres", sdn)
+	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		log.Fatal(err)
 		return err // Return the error to indicate connection failure
