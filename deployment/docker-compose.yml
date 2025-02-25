@@ -233,8 +233,8 @@ services:
     networks:
       - advertisement_app_network
     environment:
-      location_management_base_sdn: ${POSTGRES_BASE_CONNECTION_STRING}
-      location_management_full_sdn: ${LOCATION_POSTGRES_CONNECTION}
+      postgres_base_connection: ${POSTGRES_BASE_CONNECTION_STRING}
+      location_management_db_connection: ${LOCATION_POSTGRES_CONNECTION}
       location_app_port: ${LOCATION_APP_PORT}
       redis_server_address: ${REDIS_SERVER_ADDRESS}
 
