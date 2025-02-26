@@ -1,15 +1,16 @@
 using System.Diagnostics;
-using Serilog;
 
 namespace AdvertisingSystem.Api.Middlewares;
 
 public class RequestLoggingMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<RequestLoggingMiddleware> _logger;
 
-    public RequestLoggingMiddleware(RequestDelegate next)
+    public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -36,6 +37,6 @@ public class RequestLoggingMiddleware
             ResponseTimeMs = stopwatch.ElapsedMilliseconds
         };
 
-        Log.Information("Request Info: {@LogEntry}", logEntry);
+        _logger.LogInformation("Request Info: {@LogEntry}", logEntry);
     }
 }

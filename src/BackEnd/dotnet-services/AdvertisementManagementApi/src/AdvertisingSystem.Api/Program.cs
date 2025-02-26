@@ -43,6 +43,7 @@ builder.Services.AddHealthChecks().AddNpgSql(connStr ?? "");
 var app = builder.Build();
 
 app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<ExceptionLoggerMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
