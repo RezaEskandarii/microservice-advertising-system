@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 	"wallet-api/api/grpc"
 	api "wallet-api/api/http"
 	"wallet-api/internal/database"
@@ -37,7 +36,7 @@ func Run(ctx context.Context) error {
 
 	// Remove expired idempotency history
 	go func() {
-		if err := walletService.RemoveExpiredIdempotencies(time.Now()); err != nil {
+		if err := walletService.RemoveExpiredIdempotencies(); err != nil {
 			log.Fatal(err.Error())
 		}
 	}()

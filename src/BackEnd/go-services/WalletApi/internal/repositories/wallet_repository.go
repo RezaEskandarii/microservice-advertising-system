@@ -15,7 +15,7 @@ import (
 
 type WalletRepository interface {
 	Deposit(userID string, amount float64, idempotencyKey string) error
-	Withdraw(userID string, amount float64, idempotencyKey string) error
+	Withdrawal(userID string, amount float64, idempotencyKey string) error
 	GetTransactions(userID string, page, perPage int) (models.PaginatedData[models.Transaction], error)
 	GetAmount(userID string) (float64, error)
 	RemoveExpire(createdAt time.Time) error
@@ -38,9 +38,12 @@ func NewPostgreSQLRepository(db *sql.DB) *PostgreSQLRepository {
 
 // Deposit adds the specified amount to the user's wallet.
 func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotencyKey string) error {
-	err := r.checkIdempotency(userID, idempotencyKey)
-	if err == app_errors.DuplicatedRequestError {
-		return nil
+	// Check idempotency before proceeding
+	if err := r.checkIdempotency(userID, idempotencyKey); err != nil {
+		if errors.Is(err, app_errors.DuplicatedRequestError) {
+			return nil
+		}
+		return err
 	}
 
 	tx, err := r.db.Begin()
@@ -54,81 +57,105 @@ func (r *PostgreSQLRepository) Deposit(userID string, amount float64, idempotenc
 		}
 	}()
 
-	res, err := tx.Exec(`  INSERT INTO wallets (user_id, balance, created_at)  
-  		VALUES ($1, $2, $3)  ON CONFLICT (user_id) 
-        DO UPDATE SET balance = wallets.balance + EXCLUDED.balance`,
-		userID, amount, time.Now())
-	if err != nil {
+	// Insert idempotency record to prevent duplicate transactions
+	if err = insertIdempotency(userID, idempotencyKey, tx); err != nil {
 		return err
 	}
 
-	n, err := res.RowsAffected()
+	// Lock the row for update to prevent race conditions
+	var balance float64
+	err = tx.QueryRow(`
+		SELECT balance FROM wallets 
+		WHERE user_id = $1 FOR UPDATE`, userID).Scan(&balance)
 	if err != nil {
-		return err
-	}
-	if n == 0 {
-		return app_errors.InsufficientWalletBalanceError
+		// If no wallet exists, insert a new one
+		if err == sql.ErrNoRows {
+			_, err = tx.Exec(`
+				INSERT INTO wallets (user_id, balance, created_at)  
+				VALUES ($1, $2, $3)`, userID, amount, time.Now())
+			if err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	} else {
+		// If wallet exists, update balance safely
+		_, err = tx.Exec(`
+			UPDATE wallets SET balance = balance + $1 WHERE user_id = $2`, amount, userID)
+		if err != nil {
+			return err
+		}
 	}
 
+	// Insert transaction record
 	_, err = tx.Exec(`
-        INSERT INTO transactions (user_id, amount, type) 
-        VALUES ($1, $2, $3)`, userID, amount, transaction_types.Deposit)
+		INSERT INTO transactions (user_id, amount, type) 
+		VALUES ($1, $2, $3)`, userID, amount, transaction_types.Deposit)
 	if err != nil {
 		return err
 	}
 
-	err = tx.Commit()
-	if err != nil {
+	// Commit the transaction
+	if err = tx.Commit(); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-// Withdraw  subtracts the specified amount from the user's wallet.
-func (r *PostgreSQLRepository) Withdraw(userID string, amount float64, idempotencyKey string) error {
+// Withdrawal  subtracts the specified amount from the user's wallet.
+func (r *PostgreSQLRepository) Withdrawal(userID string, amount float64, idempotencyKey string) error {
 	// Check idempotency before proceeding
-	err := r.checkIdempotency(userID, idempotencyKey)
-	if err == nil {
-		// Start a new transaction
-		tx, err := r.db.Begin()
-		if err != nil {
+	if err := r.checkIdempotency(userID, idempotencyKey); err != nil {
+		if err == app_errors.DuplicatedRequestError {
+			return nil
+		} else {
 			return err
 		}
+	}
 
-		// Ensure rollback in case of any error
-		defer func() {
-			if err != nil {
-				tx.Rollback()
-			}
-		}()
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
 
-		// Update wallet balance
-		res, err := tx.Exec("UPDATE wallets SET balance = balance - $2 WHERE user_id = $1 AND balance >= $2", userID, amount)
+	defer func() {
 		if err != nil {
-			return err
+			tx.Rollback()
 		}
+	}()
 
-		// Check if the update was successful
-		n, err := res.RowsAffected()
-		if err != nil {
-			return err
-		}
-		if n == 0 {
-			return errors.New("insufficient funds")
-		}
+	if err = insertIdempotency(userID, idempotencyKey, tx); err != nil {
+		return err
+	}
 
-		// Insert the transaction record
-		_, err = tx.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, $3)", userID, amount, transaction_types.Withdraw)
-		if err != nil {
-			return err
-		}
+	// Lock the wallet row
+	var currentBalance float64
+	err = tx.QueryRow("SELECT balance FROM wallets WHERE user_id = $1 FOR UPDATE", userID).Scan(&currentBalance)
+	if err != nil {
+		return err
+	}
 
-		// Commit the transaction
-		err = tx.Commit()
-		if err != nil {
-			return err
-		}
+	if currentBalance < amount {
+		return errors.New("insufficient funds")
+	}
+
+	// Update wallet balance
+	_, err = tx.Exec("UPDATE wallets SET balance = balance - $2 WHERE user_id = $1", userID, amount)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec("INSERT INTO transactions (user_id, amount, type) VALUES ($1, $2, $3)", userID, amount, transaction_types.Withdrawal)
+	if err != nil {
+		return err
+	}
+
+	// Commit the transaction
+	err = tx.Commit()
+	if err != nil {
+		return err
 	}
 
 	return err
@@ -244,11 +271,14 @@ func (r *PostgreSQLRepository) checkIdempotency(userID string, idempotencyKey st
 	if exists {
 		return app_errors.DuplicatedRequestError
 	}
+	return nil
+}
 
-	_, err = r.db.Exec("INSERT INTO  idempotent_history(user_id,idempotent_key) VALUES ($1,$2)", userID, idempotencyKey)
+func insertIdempotency(userID string, idempotencyKey string, db *sql.Tx) error {
+	_, err := db.Exec("INSERT INTO  idempotent_history(user_id,idempotent_key) VALUES ($1,$2)", userID, idempotencyKey)
 	if err != nil {
+		db.Rollback()
 		return err
 	}
-
 	return nil
 }

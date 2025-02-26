@@ -102,6 +102,13 @@ func createWalletsTable(err error, db *sql.DB) error {
 func createDBIfNotExists(ctx context.Context) error {
 	var exists bool
 	db, err := GetPostgresDB(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+
 	err = db.QueryRow("SELECT 1 FROM pg_database WHERE datname = $1", DBName).Scan(&exists)
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatalf("Failed to check if database exists: %v", err)
