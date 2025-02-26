@@ -44,8 +44,8 @@ func (s *TransactionServer) Register(service services.WalletService) {
 
 // ProcessTransaction processes a transaction request
 func (s *TransactionServer) ProcessTransaction(ctx context.Context, in *pb.Transaction) (*pb.TransactionResult, error) {
-	// Call the Withdraw method on the wallet service
-	err := s.service.Withdraw(in.UserId, in.Amount, in.IdempotencyKey)
+	// Call the Withdrawal method on the wallet service
+	err := s.service.Withdrawal(in.UserId, in.Amount, in.IdempotencyKey)
 	if err != nil {
 		return &pb.TransactionResult{Status: false, ErrorMessage: err.Error()}, nil
 	}

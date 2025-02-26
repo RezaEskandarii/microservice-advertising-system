@@ -5,7 +5,7 @@ type TransactionType string
 
 // Define transaction types as constants
 const (
-	Deposit  TransactionType = "deposit"
-	Withdraw TransactionType = "withdraw"
-	Transfer TransactionType = "transfer"
+	Deposit    TransactionType = "deposit"
+	Withdrawal TransactionType = "withdraw"
+	Transfer   TransactionType = "transfer"
 )

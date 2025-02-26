@@ -16,10 +16,10 @@ type WalletService interface {
 	// operation is not executed multiple times.
 	Deposit(userID string, amount float64, idempotencyKey string) error
 
-	// Withdraw subtracts the specified amount from the user's wallet balance.
+	// Withdrawal subtracts the specified amount from the user's wallet balance.
 	// The idempotencyKey parameter is used to ensure that the same withdrawal
 	// operation is not executed multiple times.
-	Withdraw(userID string, amount float64, idempotencyKey string) error
+	Withdrawal(userID string, amount float64, idempotencyKey string) error
 
 	// GetTransactions retrieves all the transactions associated with the
 	// specified user's wallet.
@@ -29,7 +29,7 @@ type WalletService interface {
 	GetAmount(userID string) (float64, error)
 
 	// RemoveExpiredIdempotencies removes any expired idempotency history from the user's wallet.
-	RemoveExpiredIdempotencies(createdAt time.Time) error
+	RemoveExpiredIdempotencies() error
 
 	// GetTransactionsReport generates a report of transactions for a specified year.
 	// It returns a map where the key is the year of transaction
@@ -56,9 +56,9 @@ func (w *WalletAppService) Deposit(userID string, amount float64, idempotencyKey
 	return w.Repository.Deposit(userID, amount, idempotencyKey)
 }
 
-func (w *WalletAppService) Withdraw(userID string, amount float64, idempotencyKey string) error {
+func (w *WalletAppService) Withdrawal(userID string, amount float64, idempotencyKey string) error {
 	if amount <= 0 {
-		return fmt.Errorf("withdraw amount must be greater than zero")
+		return fmt.Errorf("withdrawal amount must be greater than zero")
 	}
 	if userID == "" {
 		return fmt.Errorf("user ID cannot be empty")
@@ -75,7 +75,7 @@ func (w *WalletAppService) Withdraw(userID string, amount float64, idempotencyKe
 		return fmt.Errorf("insufficient funds")
 	}
 
-	return w.Repository.Withdraw(userID, amount, idempotencyKey)
+	return w.Repository.Withdrawal(userID, amount, idempotencyKey)
 }
 
 func (w *WalletAppService) GetTransactions(userID string, page, perPage int) (models.PaginatedData[models.Transaction], error) {
@@ -101,10 +101,7 @@ func (w *WalletAppService) GetAmount(userID string) (float64, error) {
 	return w.Repository.GetAmount(userID)
 }
 
-func (w *WalletAppService) RemoveExpiredIdempotencies(createdAt time.Time) error {
-	if createdAt.IsZero() {
-		return fmt.Errorf("createdAt cannot be zero")
-	}
+func (w *WalletAppService) RemoveExpiredIdempotencies() error {
 	c := cron.New()
 	err := c.AddFunc("@every 1h", func() {
 		if err := w.Repository.RemoveExpire(time.Now().Add(-1 * time.Hour)); err != nil {

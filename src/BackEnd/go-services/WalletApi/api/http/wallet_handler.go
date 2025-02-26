@@ -19,7 +19,7 @@ func NewWalletHandler(service services.WalletService) *WalletHandler {
 // InitRoutes initialize http routes
 func (h *WalletHandler) InitRoutes() {
 	http.HandleFunc("/api/v1/deposit", h.deposit)
-	http.HandleFunc("/api/v1/withdraw", h.withdraw)
+	http.HandleFunc("/api/v1/withdrawal", h.withdrawal)
 	http.HandleFunc("/api/v1/transactions", h.getTransactions)
 	http.HandleFunc("/api/v1/balance", h.getBalance)
 }
@@ -103,7 +103,7 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
+func (h *WalletHandler) withdrawal(w http.ResponseWriter, r *http.Request) {
 	setJsonContentType(w)
 
 	if r.Method != http.MethodPost {
@@ -152,7 +152,7 @@ func (h *WalletHandler) withdraw(w http.ResponseWriter, r *http.Request) {
 
 	idempotencyKey := r.Header.Get("X-Idempotency-Key")
 
-	if err := h.Service.Withdraw(userID, req.Amount, idempotencyKey); err != nil {
+	if err := h.Service.Withdrawal(userID, req.Amount, idempotencyKey); err != nil {
 		writeJSONResponse(w, http.StatusInternalServerError, &ApiResponse{
 			Status:  http.StatusInternalServerError,
 			Message: "Withdrawal failed",
