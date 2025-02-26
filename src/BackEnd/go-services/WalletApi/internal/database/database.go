@@ -19,12 +19,16 @@ func GetWalletApiDB(ctx context.Context) (*sql.DB, error) {
 	return getDB(cn)
 }
 
-func getDB(sdn string) (*sql.DB, error) {
+func getDB(dbURL string) (*sql.DB, error) {
 	// Open a connection to the PostgreSQL database using the connection string.
-	db, err := sql.Open("postgres", sdn)
+	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		return nil, err
 	}
+
+	db.SetMaxOpenConns(50)
+	db.SetMaxIdleConns(25)
+	db.SetConnMaxLifetime(300)
 
 	return db, nil
 }
