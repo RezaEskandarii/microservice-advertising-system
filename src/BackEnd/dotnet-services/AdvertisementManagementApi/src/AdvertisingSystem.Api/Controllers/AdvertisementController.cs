@@ -40,10 +40,10 @@ public class AdvertisementController : BaseController
         return Ok(new ApiResponse<GetAdvertisementViewModel>(result));
     }
 
-    [HttpGet("")]
+    [HttpGet("Search")]
     public async Task<ActionResult> SearchAsync()
     {
-        var result = await _mediator.Send(new GetAdvertisementsListQuery());
+        var result = await _mediator.Send(new SearchAdvertisementQuery());
         var respObj = new ApiResponse<IReadOnlyCollection<GetAdvertisementViewModel>>()
         {
             Status = HttpStatusCode.OK,
