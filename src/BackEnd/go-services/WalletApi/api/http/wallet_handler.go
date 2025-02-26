@@ -2,6 +2,8 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"wallet-api/internal/services"
 )
@@ -32,7 +34,7 @@ type withdrawRequest struct {
 
 func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 	setJsonContentType(w)
-
+	fmt.Println(r.Method + "  " + r.RemoteAddr)
 	if r.Method != http.MethodPost {
 		writeJSONResponse(w, http.StatusMethodNotAllowed, &ApiResponse{
 			Status:  http.StatusMethodNotAllowed,
@@ -79,6 +81,7 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 	idempotencyKey := r.Header.Get("X-Idempotency-Key")
 
 	if err := h.Service.Deposit(userID, req.Amount, idempotencyKey); err != nil {
+		log.Println(err)
 		writeJSONResponse(w, http.StatusInternalServerError, &ApiResponse{
 			Status:  http.StatusInternalServerError,
 			Message: "Deposit failed",

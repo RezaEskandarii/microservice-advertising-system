@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-	"github.com/robfig/cron"
 	"log"
 	"net/http"
 	"time"
@@ -37,7 +36,11 @@ func Run(ctx context.Context) error {
 	handler.InitRoutes()
 
 	// Remove expired idempotency history
-	removeExpiredIdempotencyHistory(walletService)
+	go func() {
+		if err := walletService.RemoveExpiredIdempotencies(time.Now()); err != nil {
+			log.Fatal(err.Error())
+		}
+	}()
 
 	// Register and start the transaction gRPC server
 	gs := grpc.TransactionServer{}
@@ -53,20 +56,4 @@ func Run(ctx context.Context) error {
 	}
 
 	return nil
-}
-
-// removeExpiredIdempotencyHistory call RemoveExpire method every hour
-func removeExpiredIdempotencyHistory(service services.WalletService) {
-	c := cron.New()
-	err := c.AddFunc("@every 5s", func() {
-		if err := service.RemoveExpire(time.Now().Add(-1 * time.Hour)); err != nil {
-			log.Println(err.Error())
-		}
-	})
-
-	if err != nil {
-		log.Println(err.Error())
-	}
-
-	c.Start()
 }

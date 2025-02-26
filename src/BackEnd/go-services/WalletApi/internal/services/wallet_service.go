@@ -2,7 +2,9 @@ package services
 
 import (
 	"fmt"
+	"github.com/robfig/cron"
 	"google.golang.org/genproto/googleapis/type/decimal"
+	"log"
 	"time"
 	"wallet-api/internal/models"
 	"wallet-api/internal/repositories"
@@ -26,8 +28,8 @@ type WalletService interface {
 	// GetAmount retrieves the current balance of the specified user's wallet.
 	GetAmount(userID string) (float64, error)
 
-	// RemoveExpire removes any expired idempotency history from the user's wallet.
-	RemoveExpire(createdAt time.Time) error
+	// RemoveExpiredIdempotencies removes any expired idempotency history from the user's wallet.
+	RemoveExpiredIdempotencies(createdAt time.Time) error
 
 	// GetTransactionsReport generates a report of transactions for a specified year.
 	// It returns a map where the key is the year of transaction
@@ -99,11 +101,19 @@ func (w *WalletAppService) GetAmount(userID string) (float64, error) {
 	return w.Repository.GetAmount(userID)
 }
 
-func (w *WalletAppService) RemoveExpire(createdAt time.Time) error {
+func (w *WalletAppService) RemoveExpiredIdempotencies(createdAt time.Time) error {
 	if createdAt.IsZero() {
 		return fmt.Errorf("createdAt cannot be zero")
 	}
-	return w.Repository.RemoveExpire(createdAt)
+	c := cron.New()
+	err := c.AddFunc("@every 1h", func() {
+		if err := w.Repository.RemoveExpire(time.Now().Add(-1 * time.Hour)); err != nil {
+			log.Println(err.Error())
+		}
+	})
+
+	c.Start()
+	return err
 }
 
 func (w *WalletAppService) GetTransactionsReport(yearNumber int) (map[int]decimal.Decimal, error) {
