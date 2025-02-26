@@ -3,6 +3,7 @@ using AdvertisingSystem.Api.ExtensionMethods;
 using AdvertisingSystem.Api.ViewModels;
 using AdvertisingSystem.Application.UseCases.Commands;
 using AdvertisingSystem.Application.UseCases.Queries;
+using AdvertisingSystem.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,28 +29,41 @@ public class AdvertisementController : BaseController
         command.Thumbnails = await Request.GetThumbnailsAsync();
 
         var result = await _mediator.Send(command);
-        return Ok(new ApiResponse(HttpStatusCode.OK, result));
+
+        return Ok(new ApiResponse<GetAdvertisementViewModel>(result));
     }
 
     [HttpGet("{id:long}")]
     public async Task<ActionResult> FindByIdAsync(long id)
     {
         var result = await _mediator.Send(new GetAdvertisementQuery(id));
-        return Ok(new ApiResponse(HttpStatusCode.OK, result));
+        return Ok(new ApiResponse<GetAdvertisementViewModel>(result));
     }
 
     [HttpGet("")]
     public async Task<ActionResult> SearchAsync()
     {
         var result = await _mediator.Send(new GetAdvertisementsListQuery());
-        return Ok(new ApiResponse(HttpStatusCode.OK, result));
+        var respObj = new ApiResponse<IReadOnlyCollection<GetAdvertisementViewModel>>()
+        {
+            Status = HttpStatusCode.OK,
+            Data = result.Items,
+            Pagination = new Pagination
+            {
+                Page = result.PageNumber,
+                PerPage = result.PageSize,
+                PagesTotal = result.TotalPages,
+                TotalItems = result.TotalCount,
+            }
+        };
+        return Ok(respObj);
     }
 
     [HttpDelete("{id:long}")]
     public async Task<ActionResult> DeleteAsync(long id)
     {
         await _mediator.Send(new DeleteAdvertisementCommand(id, Request.GetUserId()));
-        return Ok(new ApiResponse(HttpStatusCode.OK));
+        return Ok(new ApiResponse<object>(HttpStatusCode.OK));
     }
 
     [HttpPut("{id:long}")]
@@ -60,6 +74,6 @@ public class AdvertisementController : BaseController
         command.Thumbnails = await Request.GetThumbnailsAsync();
 
         var result = await _mediator.Send(command);
-        return Ok(new ApiResponse(HttpStatusCode.OK, result));
+        return Ok(new ApiResponse<GetAdvertisementViewModel>(result));
     }
 }
