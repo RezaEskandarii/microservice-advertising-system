@@ -1,5 +1,6 @@
 ﻿using AdvertisingSystem.Identity.Api.ViewModels;
 using AdvertisingSystem.Identity.Application.UseCases.Commands;
+using AdvertisingSystem.Identity.Application.UseCases.Queries.Dtos;
 using AdvertisingSystem.Identity.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,8 +26,8 @@ public class UserController : ControllerBase
     public async Task<IActionResult> SignUpAsync(CreateUserCommand command)
     {
         command.Role = UserRoles.Customer;
-        var createdUser = await _mediator.Send(command);
-        return Ok(new ApiResponse { ResponseObject = createdUser });
+        var appUser = await _mediator.Send(command);
+        return Ok(new ApiResponse<GetUser>(appUser));
     }
 
     [HttpPost("SignIn")]
@@ -34,7 +35,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> SignInAsync(LoginCommand command)
     {
         var result = await _mediator.Send(command);
-        return Ok(new ApiResponse { ResponseObject = result });
+        return Ok(new ApiResponse<LoginResponse>(result));
     }
 
 
@@ -42,7 +43,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> CreateAsync(CreateUserCommand command)
     {
         var createdUser = await _mediator.Send(command);
-        return Ok(new ApiResponse { ResponseObject = createdUser });
+        return Ok(new ApiResponse<GetUser>(createdUser));
     }
 
     [HttpPut("ChangePassword/{userId:guid}")]
@@ -50,15 +51,15 @@ public class UserController : ControllerBase
     {
         command.userId = userId.ToString();
         await _mediator.Send(command);
-        return Ok(new ApiResponse());
+        return Ok(new ApiResponse<object>(null));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(string id, UpdateUserCommand command)
     {
         command.Id = id;
-        var updatedUser = await _mediator.Send(command);
-        return Ok(new ApiResponse { ResponseObject = updatedUser });
+        var appUser = await _mediator.Send(command);
+        return Ok(new ApiResponse<GetUser>(appUser));
     }
 
 

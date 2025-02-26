@@ -12,10 +12,21 @@ public class ValidationActionFilter : IActionFilter
         if (context.HttpContext.Request.Method.ToUpper() == "GET") return;
         if (context.ModelState.IsValid) return;
 
-        var responseObj = new ApiResponse(HttpStatusCode.BadRequest)
-        {
-            ErrorMessages = GetModelStateErrors(context)
-        };
+        var message = string.Join(", ", GetModelStateErrors(context));
+
+        var responseObj = new ApiResponse<object>(
+            HttpStatusCode.BadRequest,
+            message,
+            null,
+            null,
+            new ApiError()
+            {
+                Detail = message,
+                Instance = context.HttpContext.Request.Path,
+                Status = HttpStatusCode.BadRequest,
+                
+            }
+        );
 
         context.Result = new JsonResult(responseObj)
         {

@@ -50,10 +50,17 @@ public class ErrorHandlingMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
-        var response = new ApiResponse(statusCode)
-        {
-            ErrorMessages = errorMessages
-        };
+        var response = new ApiResponse<object>(
+            statusCode,
+            string.Join(", ", errorMessages),
+            null,
+            null, new ApiError()
+            {
+                Status = statusCode,
+                Instance = context.Request.Path,
+                Title = "application error"
+            }
+        );
 
         var serializeOptions = new JsonSerializerOptions
         {
