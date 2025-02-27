@@ -5,7 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/RezaEskandarii/ad-go-commons/env_manager"
+	"github.com/RezaEskandarii/ad-go-commons/logger"
+	"github.com/RezaEskandarii/ad-go-commons/toolkit"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
 	"net/http"
 	"strconv"
 	"strings"
@@ -14,7 +17,29 @@ import (
 func writeJSONResponse(w http.ResponseWriter, status int, response *ApiResponse) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
+
 	json.NewEncoder(w).Encode(response)
+}
+
+func buildLogRequest(r *http.Request, statusCode int, error string) logger.RequestLog {
+	userID, _ := GetUserId(r)
+	newUUID := uuid.New()
+	return logger.RequestLog{
+		TraceID:            newUUID.String(),
+		Method:             r.Method,
+		Path:               r.URL.Path,
+		QueryString:        r.URL.RawQuery,
+		UserAgent:          r.UserAgent(),
+		IpAddress:          r.RemoteAddr,
+		ResponseStatusCode: statusCode,
+		UserId:             userID,
+		Error:              error,
+	}
+}
+
+func logRequest(r *http.Request, err error, h *WalletHandler) {
+	logRequest := buildLogRequest(r, http.StatusBadRequest, err.Error())
+	h.logger.Error(toolkit.ToJSON(logRequest))
 }
 
 func parsePaginationParams(r *http.Request) (int, int) {

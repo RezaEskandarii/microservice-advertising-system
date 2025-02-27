@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/RezaEskandarii/ad-go-commons/env_manager"
-	"log"
+	log "github.com/RezaEskandarii/ad-go-commons/logger"
 	"net/http"
 	"wallet-api/api/grpc"
 	api "wallet-api/api/http"
@@ -30,14 +30,21 @@ func Run(ctx context.Context) error {
 	walletRepository := repositories.NewPostgreSQLRepository(db)
 	walletService := services.NewWalletService(walletRepository)
 
+	// Load the wallet API port from the environment
+	port := env_manager.Load("wallet_api_port")
+
+	logger := log.NewLogger("wallet-api-app")
+
+	logger.Info("wallet app started on port: %s", port)
+
 	// Create a new wallet handler and initialize the routes
-	handler := api.NewWalletHandler(walletService)
+	handler := api.NewWalletHandler(walletService, logger)
 	handler.InitRoutes()
 
 	// Remove expired idempotency history
 	go func() {
 		if err := walletService.RemoveExpiredIdempotencies(); err != nil {
-			log.Fatal(err.Error())
+			logger.Fatal(err.Error())
 		}
 	}()
 
@@ -45,8 +52,6 @@ func Run(ctx context.Context) error {
 	gs := grpc.TransactionServer{}
 	go gs.Register(walletService)
 
-	// Load the wallet API port from the environment
-	port := env_manager.Load("wallet_api_port")
 	fmt.Printf("######## wallet api started on: %s #######\n", port)
 
 	// Start the HTTP server

@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/logger"
 	"log"
 	"net/http"
 	"wallet-api/internal/services"
@@ -10,10 +11,11 @@ import (
 
 type WalletHandler struct {
 	Service services.WalletService
+	logger  logger.AppLogger
 }
 
-func NewWalletHandler(service services.WalletService) *WalletHandler {
-	return &WalletHandler{Service: service}
+func NewWalletHandler(service services.WalletService, appLogger logger.AppLogger) *WalletHandler {
+	return &WalletHandler{Service: service, logger: appLogger}
 }
 
 // InitRoutes initialize http routes
@@ -75,6 +77,9 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 				Detail: err.Error(),
 			},
 		})
+
+		logRequest(r, err, h)
+
 		return
 	}
 
@@ -91,6 +96,9 @@ func (h *WalletHandler) deposit(w http.ResponseWriter, r *http.Request) {
 				Status: http.StatusInternalServerError,
 			},
 		})
+
+		logRequest(r, err, h)
+
 		return
 	}
 
@@ -162,6 +170,9 @@ func (h *WalletHandler) withdrawal(w http.ResponseWriter, r *http.Request) {
 				Status: http.StatusInternalServerError,
 			},
 		})
+
+		logRequest(r, err, h)
+
 		return
 	}
 
@@ -205,6 +216,9 @@ func (h *WalletHandler) getTransactions(w http.ResponseWriter, r *http.Request) 
 				Status: http.StatusInternalServerError,
 			},
 		})
+
+		logRequest(r, err, h)
+
 		return
 	}
 
@@ -250,6 +264,9 @@ func (h *WalletHandler) getBalance(w http.ResponseWriter, r *http.Request) {
 				Status: http.StatusInternalServerError,
 			},
 		})
+
+		logRequest(r, err, h)
+
 		return
 	}
 
