@@ -123,6 +123,7 @@ services:
       - postgres
       - vault
       - consul
+      - elasticsearch
     networks:
       - advertisement_app_network
     environment:
@@ -168,6 +169,7 @@ services:
       - vault
       - consul
       - rabbitmq
+      - elasticsearch
     ports:
       - "${EMAIL_SENDER_PORT}:${EMAIL_SENDER_PORT}"
     environment:
@@ -279,6 +281,7 @@ services:
       Kestrel__Endpoints_http_Url: ${API_GATEWAY_ADDR}
       Vault__Address: ${VAULT_ADDRESS}
       Vault__Token: ${VAULT_DEV_ROOT_TOKEN_ID}
+      Elasticsearch__Url: ${ELASTICSEARCH_SERVER_ADDR}
 
 networks:
   advertisement_app_network:

@@ -1,11 +1,14 @@
 using System.Text;
 using Api.Interfaces;
+using Api.Middlewares;
 using Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Prometheus;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,30 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var elasticUrl = builder.Configuration["Elasticsearch:Url"];
+
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithThreadId()
+    .Enrich.WithProcessId()
+    .Enrich.WithProcessName()
+    .WriteTo.Console()
+    .WriteTo.Elasticsearch(
+        new ElasticsearchSinkOptions(
+            new Uri(elasticUrl ??
+                    throw new InvalidOperationException("Elasticsearch:Url config is null")))
+        {
+            AutoRegisterTemplate = true,
+            IndexFormat = "api-gateway-app-logs-{0:yyyy.MM.dd}",
+            NumberOfShards = 1,
+            NumberOfReplicas = 1
+        })
+    .CreateLogger();
+
+
+builder.Host.UseSerilog();
 
 #if DEBUG
 builder.Configuration.AddJsonFile("ocelot.dev.json", optional: false, reloadOnChange: true);
@@ -47,6 +74,8 @@ builder. // Add authentication services
     });
 
 var app = builder.Build();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseMetricServer();
 // Configure the HTTP request pipeline.
