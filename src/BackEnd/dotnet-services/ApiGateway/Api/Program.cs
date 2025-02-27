@@ -1,7 +1,5 @@
 using System.Text;
-using Api.Interfaces;
 using Api.Middlewares;
-using Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
@@ -12,7 +10,6 @@ using Serilog.Sinks.Elasticsearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 
@@ -51,13 +48,10 @@ builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange
 
 builder.Services.AddOcelot(builder.Configuration);
 
-//var secretManager = builder.Services.BuildServiceProvider().GetRequiredService<ISecretManager>();
-//var jwtSecretKey = await secretManager.ReadAsync("jwt-secret-key");
 
 var jwtSecretKey = builder.Configuration["JWTSecretKey"];
 
-builder. // Add authentication services
-    Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -67,7 +61,6 @@ builder. // Add authentication services
             ValidateLifetime = true,
             ValidateIssuerSigningKey = false,
             ValidIssuer = "http://127.0.0.1:5004",
-            /// ValidAudience = Configuration["Jwt:Audience"],
             IssuerSigningKey =
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey))
         };
@@ -78,14 +71,13 @@ var app = builder.Build();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseMetricServer();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-///app.UseMiddleware<RequestIdMiddleware>();
 
 app.UseAuthorization();
 
