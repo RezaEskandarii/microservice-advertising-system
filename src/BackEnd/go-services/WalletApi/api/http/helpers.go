@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"github.com/golang-jwt/jwt/v4"
 	"net/http"
 	"strconv"
 	"strings"
-	"wallet-api/pkg/env_manager"
 )
 
 func writeJSONResponse(w http.ResponseWriter, status int, response *ApiResponse) {
@@ -31,7 +31,7 @@ func parsePaginationParams(r *http.Request) (int, int) {
 	return page, perPage
 }
 
-var secretKey = []byte(env_manager.LoadEnv("jwt_secret"))
+var secretKey = []byte(env_manager.Load("jwt_secret"))
 
 // GetUserId extracts the user ID from the JWT token in the Authorization header
 func GetUserId(r *http.Request) (string, error) {

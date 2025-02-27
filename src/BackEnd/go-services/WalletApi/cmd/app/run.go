@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"log"
 	"net/http"
 	"wallet-api/api/grpc"
@@ -10,7 +11,6 @@ import (
 	"wallet-api/internal/database"
 	"wallet-api/internal/repositories"
 	"wallet-api/internal/services"
-	"wallet-api/pkg/env_manager"
 )
 
 func Run(ctx context.Context) error {
@@ -46,7 +46,7 @@ func Run(ctx context.Context) error {
 	go gs.Register(walletService)
 
 	// Load the wallet API port from the environment
-	port := env_manager.LoadEnv("wallet_api_port")
+	port := env_manager.Load("wallet_api_port")
 	fmt.Printf("######## wallet api started on: %s #######\n", port)
 
 	// Start the HTTP server

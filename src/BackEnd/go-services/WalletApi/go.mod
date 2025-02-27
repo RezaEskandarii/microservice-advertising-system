@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	github.com/RezaEskandarii/ad-go-commons v0.0.0-20250227144309-fcf3a742ac40 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

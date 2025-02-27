@@ -3,12 +3,12 @@ package grpc
 import (
 	"context"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	pb "wallet-api/api/grpc/wallet-api/grpc"
 	"wallet-api/internal/services"
-	"wallet-api/pkg/env_manager"
 )
 
 type TransactionServer struct {
@@ -21,7 +21,7 @@ func (s *TransactionServer) Register(service services.WalletService) {
 	s.service = service
 
 	// Load the wallet gRPC port from the environment
-	port := fmt.Sprintf(":%s", env_manager.LoadEnv("wallet_grpc_port"))
+	port := fmt.Sprintf(":%s", env_manager.Load("wallet_grpc_port"))
 
 	// Listen for incoming gRPC connections on the specified port
 	lis, err := net.Listen("tcp", port)

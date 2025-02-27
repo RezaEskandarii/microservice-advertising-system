@@ -3,19 +3,19 @@ package database
 import (
 	"context"
 	"database/sql"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	_ "github.com/lib/pq"
-	"wallet-api/pkg/env_manager"
 )
 
 // GetPostgresDB retrieves a connection to the postgres base database using the provided context.
 func GetPostgresDB(ctx context.Context) (*sql.DB, error) {
-	cn := env_manager.LoadEnv("postgres_connection_string")
+	cn := env_manager.Load("postgres_connection_string")
 	return getDB(cn)
 }
 
 // GetWalletApiDB retrieves a connection to the wallet api database using the provided context.
 func GetWalletApiDB(ctx context.Context) (*sql.DB, error) {
-	cn := env_manager.LoadEnv("wallet_api_connection_string")
+	cn := env_manager.Load("wallet_api_connection_string")
 	return getDB(cn)
 }
 
