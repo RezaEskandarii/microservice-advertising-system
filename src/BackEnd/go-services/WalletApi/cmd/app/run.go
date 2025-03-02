@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/RezaEskandarii/ad-go-commons/env_manager"
-	log "github.com/RezaEskandarii/ad-go-commons/logger"
+	"github.com/RezaEskandarii/ad-go-commons/logger"
+	"log"
 	"net/http"
 	"wallet-api/api/grpc"
 	api "wallet-api/api/http"
@@ -31,20 +32,24 @@ func Run(ctx context.Context) error {
 	walletService := services.NewWalletService(walletRepository)
 
 	// Load the wallet API port from the environment
-	port := env_manager.Load("wallet_api_port")
+	port := env_manager.GetString("wallet_api_port")
 
-	logger := log.NewLogger("wallet-api-app")
+	elasticLogger, err := logger.NewElasticLogger(env_manager.GetString("elasticsearch_url"), "ebi")
 
-	logger.Info("wallet app started on port: %s", port)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	elasticLogger.Info(fmt.Sprintf("wallet app started on port: %s", port), nil)
 
 	// Create a new wallet handler and initialize the routes
-	handler := api.NewWalletHandler(walletService, logger)
+	handler := api.NewWalletHandler(walletService, elasticLogger)
 	handler.InitRoutes()
 
 	// Remove expired idempotency history
 	go func() {
 		if err := walletService.RemoveExpiredIdempotencies(); err != nil {
-			logger.Fatal(err.Error())
+			elasticLogger.Error(err.Error(), nil)
 		}
 	}()
 

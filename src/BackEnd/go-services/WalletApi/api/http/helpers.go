@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"github.com/RezaEskandarii/ad-go-commons/logger"
-	"github.com/RezaEskandarii/ad-go-commons/toolkit"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 	"net/http"
@@ -39,7 +38,7 @@ func buildLogRequest(r *http.Request, statusCode int, error string) logger.Reque
 
 func logRequest(r *http.Request, err error, h *WalletHandler) {
 	logRequest := buildLogRequest(r, http.StatusBadRequest, err.Error())
-	h.logger.Error(toolkit.ToJSON(logRequest))
+	h.logger.Error(err.Error(), &logRequest)
 }
 
 func parsePaginationParams(r *http.Request) (int, int) {
@@ -56,7 +55,7 @@ func parsePaginationParams(r *http.Request) (int, int) {
 	return page, perPage
 }
 
-var secretKey = []byte(env_manager.Load("jwt_secret"))
+var secretKey = []byte(env_manager.GetString("jwt_secret"))
 
 // GetUserId extracts the user ID from the JWT token in the Authorization header
 func GetUserId(r *http.Request) (string, error) {

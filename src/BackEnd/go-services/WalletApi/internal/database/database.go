@@ -9,13 +9,13 @@ import (
 
 // GetPostgresDB retrieves a connection to the postgres base database using the provided context.
 func GetPostgresDB(ctx context.Context) (*sql.DB, error) {
-	cn := env_manager.Load("postgres_connection_string")
+	cn := env_manager.GetString("postgres_connection_string")
 	return getDB(cn)
 }
 
 // GetWalletApiDB retrieves a connection to the wallet api database using the provided context.
 func GetWalletApiDB(ctx context.Context) (*sql.DB, error) {
-	cn := env_manager.Load("wallet_api_connection_string")
+	cn := env_manager.GetString("wallet_api_connection_string")
 	return getDB(cn)
 }
 

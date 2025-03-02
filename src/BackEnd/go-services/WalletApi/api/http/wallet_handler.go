@@ -20,10 +20,10 @@ func NewWalletHandler(service services.WalletService, appLogger logger.AppLogger
 
 // InitRoutes initialize http routes
 func (h *WalletHandler) InitRoutes() {
-	http.HandleFunc("/api/v1/deposit", h.deposit)
-	http.HandleFunc("/api/v1/withdrawal", h.withdrawal)
-	http.HandleFunc("/api/v1/transactions", h.getTransactions)
-	http.HandleFunc("/api/v1/balance", h.getBalance)
+	http.HandleFunc("/api/v1/deposit", requestLoggerMiddleware(h.deposit, h.logger))
+	http.HandleFunc("/api/v1/withdrawal", requestLoggerMiddleware(h.withdrawal, h.logger))
+	http.HandleFunc("/api/v1/transactions", requestLoggerMiddleware(h.getTransactions, h.logger))
+	http.HandleFunc("/api/v1/balance", requestLoggerMiddleware(h.getBalance, h.logger))
 }
 
 type depositRequest struct {

@@ -21,7 +21,7 @@ func (s *TransactionServer) Register(service services.WalletService) {
 	s.service = service
 
 	// Load the wallet gRPC port from the environment
-	port := fmt.Sprintf(":%s", env_manager.Load("wallet_grpc_port"))
+	port := fmt.Sprintf(":%s", env_manager.GetString("wallet_grpc_port"))
 
 	// Listen for incoming gRPC connections on the specified port
 	lis, err := net.Listen("tcp", port)
