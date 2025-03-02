@@ -34,7 +34,7 @@ func Run(ctx context.Context) error {
 	// Load the wallet API port from the environment
 	port := env_manager.GetString("wallet_api_port")
 
-	elasticLogger, err := logger.NewElasticLogger(env_manager.GetString("elasticsearch_url"), "ebi")
+	elasticLogger, err := logger.NewElasticLogger(env_manager.GetString("elasticsearch_url"), "wallet-app")
 
 	if err != nil {
 		log.Fatal(err)

@@ -177,6 +177,7 @@ services:
       vault_address: ${VAULT_ADDRESS}
       app_port: ${EMAIL_SENDER_PORT}
       rabbitmq_addr: ${EMAIL_SENDER_RABBITMQ_URL}
+      elasticsearch_url: ${ELASTICSEARCH_SERVER_ADDR}
     networks:
       - advertisement_app_network
 
@@ -200,8 +201,9 @@ services:
       vault_address: ${THUMBNAIL_VAULT_ADDRESS}
       thumbnail_grpc_api_port_number: ${THUMBNAIL_GRPC_PORT}
       host_name: thumbnail-management.api
-      thumbnail_management_base_db: ${POSTGRES_BASE_CONNECTION_STRING}
-      thumbnail_management_full_db: ${THUMBNAIL_POSTGRES_FULL}
+      postgres_base_connection: ${POSTGRES_BASE_CONNECTION_STRING}
+      thumbnails_db_connection: ${THUMBNAIL_POSTGRES_FULL}
+      elasticsearch_url: ${ELASTICSEARCH_SERVER_ADDR}
 
   category-management.api:
     container_name: category-management.api
@@ -222,6 +224,7 @@ services:
       vault_token: ${VAULT_DEV_ROOT_TOKEN_ID}
       vault_address: ${VAULT_ADDRESS}
       port_number: ${CATEGORY_APP_PORT}
+      elasticsearch_url: ${ELASTICSEARCH_SERVER_ADDR}
 
   location-management.api:
     container_name: location-management.api
@@ -239,6 +242,7 @@ services:
       location_management_db_connection: ${LOCATION_POSTGRES_CONNECTION}
       location_app_port: ${LOCATION_APP_PORT}
       redis_server_address: ${REDIS_SERVER_ADDRESS}
+      elasticsearch_url: ${ELASTICSEARCH_SERVER_ADDR}
 
   wallet.api:
     container_name: wallet.api
@@ -255,6 +259,7 @@ services:
       jwt_secret: ${JWT_SECRET_KEY}
       wallet_api_port: ${WALLET_API_PORT}
       wallet_grpc_port: ${WALLET_GRPC_PORT}
+      elasticsearch_url: ${ELASTICSEARCH_SERVER_ADDR}
 
   api-gateway.api:
     container_name: api-gateway.api

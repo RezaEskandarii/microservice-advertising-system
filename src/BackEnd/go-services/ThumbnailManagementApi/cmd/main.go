@@ -1,24 +1,33 @@
 package main
 
 import (
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
+	logger2 "github.com/RezaEskandarii/ad-go-commons/logger"
 	_ "github.com/lib/pq"
 	"log"
 	"strconv"
 	"thumbnail-management/cmd/application"
-	"thumbnail-management/pkg/env_manager"
 )
 
 func main() {
 
 	app := application.New()
-	portNumberStr := env_manager.LoadEnv("thumbnail_grpc_api_port_number")
+	logger, err := logger2.NewElasticLogger(env_manager.GetString("elasticsearch_url"), "thumbnail-app")
 
-	portNumber, err := strconv.ParseInt(portNumberStr, 10, 64)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	// go registerOnServiceRegistry(portNumber)
-	app.Run(portNumber)
+
+	portNumberStr := env_manager.GetString("thumbnail_grpc_api_port_number")
+	portNumber, err := strconv.ParseInt(portNumberStr, 10, 64)
+
+	if err != nil {
+		logger.Error(err.Error(), nil)
+	}
+
+	if err := app.Run(portNumber); err != nil {
+		logger.Error(err.Error(), nil)
+	}
 }
 
 // RegisterOnServiceRegistry registers service address on service discovery address

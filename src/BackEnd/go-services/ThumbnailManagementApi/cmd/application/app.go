@@ -4,12 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"log"
 	"thumbnail-management/grpc"
 	"thumbnail-management/internal/database"
 	"thumbnail-management/internal/repositories"
 	"thumbnail-management/internal/services"
-	"thumbnail-management/pkg/env_manager"
 )
 
 type App struct {
@@ -21,35 +21,39 @@ func New() *App {
 
 var (
 	thumbnailService       *services.ThumbnailService
-	objectStorageAddr      = env_manager.Load("object_storage_address")
-	objectStorageAccessKey = env_manager.Load("object_storage_access_key")
-	objectStorageSecretKey = env_manager.Load("object_storage_secret_key")
+	objectStorageAddr      = env_manager.GetString("object_storage_address")
+	objectStorageAccessKey = env_manager.GetString("object_storage_access_key")
+	objectStorageSecretKey = env_manager.GetString("object_storage_secret_key")
 )
 
-func (a App) Run(portNumber int64) {
+func (a App) Run(portNumber int64) error {
 
 	dbName := "advertisement_thumbnails"
 
-	baseSdn := env_manager.Load("thumbnail_management_db")
-	fullSdn := env_manager.Load("thumbnail_management_db")
+	postgresURL := env_manager.GetString("postgres_base_connection")
+	thumbnailsDBURL := env_manager.GetString("thumbnails_db_connection")
 
-	a.createDatabase(dbName, baseSdn)
+	if err := a.createDatabase(dbName, postgresURL); err != nil {
+		return err
+	}
 
 	// Connect to PostgreSQL
-	db, err := sql.Open("postgres", fullSdn)
+	db, err := sql.Open("postgres", thumbnailsDBURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	a.createThumbnailsTable(db)
+	if err := a.createThumbnailsTable(db); err != nil {
+		return err
+	}
 
 	fs := grpc.NewFileServer()
 
 	// Initialize the storage manager
 	sm, err := services.NewStorageManager(objectStorageAddr, objectStorageAccessKey, objectStorageSecretKey)
 	if err != nil {
-		// panic(err.Error())
+		return err
 	}
 
 	// Initialize the database
@@ -62,6 +66,7 @@ func (a App) Run(portNumber int64) {
 
 	fs.Register(fmt.Sprintf("%d", portNumber), thumbnailService)
 
+	return nil
 }
 
 // createDatabase is a method that connects to a PostgreSQL database and creates a new database if it doesn't already exist.

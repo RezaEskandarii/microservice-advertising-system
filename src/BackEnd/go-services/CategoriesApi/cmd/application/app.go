@@ -5,9 +5,9 @@ import (
 	"category-management/config"
 	"category-management/internal/repositories"
 	"category-management/internal/services"
-	"category-management/pkg/env_manager"
 	"database/sql"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"github.com/redis/go-redis/v9"
 	"log"
 	"net/http"
@@ -26,7 +26,7 @@ func (a App) Run(portNumber string) {
 		log.Fatal(err)
 	}
 
-	dbURL := env_manager.Load("categories_db_connection")
+	dbURL := env_manager.GetString("categories_db_connection")
 	// Connect to PostgreSQL
 	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
@@ -41,7 +41,7 @@ func (a App) Run(portNumber string) {
 	categoryRepo := repositories.NewCategoryPostgresRepository(db)
 
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: env_manager.Load("redis_server_address"),
+		Addr: env_manager.GetString("redis_server_address"),
 	})
 
 	categoryService := services.NewCategoryService(categoryRepo, redisClient)
@@ -61,7 +61,7 @@ func (a App) Run(portNumber string) {
 
 func (a App) createDatabase(dbName string) error {
 
-	dbURL := env_manager.Load("postgres_base_connection")
+	dbURL := env_manager.GetString("postgres_base_connection")
 	// Connect to db
 	db, err := sql.Open("postgres", dbURL)
 	if err != nil {

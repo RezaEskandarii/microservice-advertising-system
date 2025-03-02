@@ -15,6 +15,7 @@ require (
 require (
 	github.com/DataDog/datadog-go v4.8.2+incompatible // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
+	github.com/RezaEskandarii/ad-go-commons v1.0.7 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/aws/aws-sdk-go v1.44.289 // indirect
