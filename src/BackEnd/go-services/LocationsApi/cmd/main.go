@@ -1,14 +1,14 @@
 package main
 
 import (
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"location-management/cmd/application"
-	"location-management/pkg/env_manager"
 	"log"
 )
 
 func main() {
 	//Get the port number from the environment variable
-	port := env_manager.GetFromDotENV("location_app_port")
+	port := env_manager.GetString("location_app_port")
 
 	//Run the application
 	if err := application.Run(port); err != nil {

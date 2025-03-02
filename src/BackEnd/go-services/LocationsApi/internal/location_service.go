@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	_ "github.com/lib/pq"
 	"github.com/redis/go-redis/v9"
 	"io"
 	"time"
 
 	"location-management/internal/models"
-	"location-management/pkg/env_manager"
 	"log"
 	"os"
 )
@@ -43,7 +43,7 @@ func NewLocationService(db *sql.DB, redisClient *redis.Client) *LocationServiceI
 // CreateDB creates the database if it does not exist.
 func (s *LocationServiceImpl) CreateDB() error {
 
-	dbURL := env_manager.GetFromDotENV("postgres_base_connection")
+	dbURL := env_manager.GetString("postgres_base_connection")
 
 	// Connect to db
 	db, err := sql.Open("postgres", dbURL)
@@ -72,7 +72,7 @@ func (s *LocationServiceImpl) CreateDB() error {
 
 // CreateTables creates necessary tables in the database.
 func (s *LocationServiceImpl) CreateTables() error {
-	dbURL := env_manager.GetFromDotENV("postgres_base_connection")
+	dbURL := env_manager.GetString("postgres_base_connection")
 
 	db, err := sql.Open("postgres", dbURL)
 	if err != nil {

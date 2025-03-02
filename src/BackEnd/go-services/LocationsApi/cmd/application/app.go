@@ -3,10 +3,10 @@ package application
 import (
 	"database/sql"
 	"fmt"
+	"github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"github.com/redis/go-redis/v9"
 	"location-management/api/handlers"
 	"location-management/internal"
-	"location-management/pkg/env_manager"
 	"log"
 	"net/http"
 )
@@ -16,7 +16,7 @@ import (
 // and starting the HTTP server.
 func Run(portNumber string) error {
 	// Get the db connection string from the environment variable
-	dbURL := env_manager.GetFromDotENV("location_management_db_connection")
+	dbURL := env_manager.GetString("location_management_db_connection")
 
 	// Connect to the PostgreSQL database
 	db, err := sql.Open("postgres", dbURL)
@@ -27,7 +27,7 @@ func Run(portNumber string) error {
 	defer db.Close() // Close the database connection when the function exits
 
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: env_manager.GetFromDotENV("redis_server_address"),
+		Addr: env_manager.GetString("redis_server_address"),
 	})
 
 	// Create a new LocationService instance to manage location data
