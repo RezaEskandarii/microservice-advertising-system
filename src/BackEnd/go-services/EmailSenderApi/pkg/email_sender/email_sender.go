@@ -1,12 +1,32 @@
 package email_sender
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"net/mail"
+)
 
 type SendEmailRequest struct {
 	Subject    string  `json:"title"`
 	Body       string  `json:"body"`
 	To         string  `json:"to"`
 	Attachment *[]byte `json:"attachment"`
+}
+
+func (r SendEmailRequest) Validate() error {
+	if r.To == "" {
+		return errors.New("recipient email is required")
+	}
+	if _, err := mail.ParseAddress(r.To); err != nil {
+		return fmt.Errorf("invalid email format: %v", err)
+	}
+	if r.Subject == "" {
+		return errors.New("subject is required")
+	}
+	if r.Body == "" {
+		return errors.New("body is required")
+	}
+	return nil
 }
 
 type EmailSender interface {
@@ -18,6 +38,10 @@ type EmailSenderImpl struct {
 }
 
 func (receiver EmailSenderImpl) Send(request SendEmailRequest) error {
-	fmt.Println(request)
+	if err := request.Validate(); err != nil {
+		return err
+	}
+	// TODO: Implement actual email sending logic
+	fmt.Printf("Sending email to %s with subject: %s\n", request.To, request.Subject)
 	return nil
 }
