@@ -36,7 +36,6 @@ The system consists of several microservices:
    - Notification system
 
 4. **Thumbnail Management API** (GoLang)
-   - Image processing and optimization
    - Object storage integration
    - Thumbnail generation
 
@@ -48,7 +47,6 @@ The system consists of several microservices:
 6. **Location Management API** (GoLang)
    - Geographic data management
    - Location-based services
-   - Regional targeting
 
 7. **Wallet API** (GoLang)
    - Payment processing
