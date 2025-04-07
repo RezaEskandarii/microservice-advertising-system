@@ -2,15 +2,13 @@ package services
 
 import (
 	"errors"
-	"testing"
-	"time"
-	"wallet-api/internal/models"
-	"wallet-api/internal/repositories"
-
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/genproto/googleapis/type/decimal"
+	"testing"
+	"time"
+	"wallet-api/internal/models"
 )
 
 // MockWalletRepository is a mock implementation of WalletRepository
@@ -176,12 +174,12 @@ func TestWalletService_GetTransactions(t *testing.T) {
 	service := NewWalletService(mockRepo)
 
 	tests := []struct {
-		name           string
-		userID         string
-		page           int
-		perPage        int
-		mockSetup      func()
-		expectedError  error
+		name          string
+		userID        string
+		page          int
+		perPage       int
+		mockSetup     func()
+		expectedError error
 	}{
 		{
 			name:    "successful retrieval",
@@ -192,10 +190,10 @@ func TestWalletService_GetTransactions(t *testing.T) {
 				mockRepo.On("GetTransactions", "user123", 1, 10).Return(
 					models.PaginatedData[models.Transaction]{
 						Data:       []models.Transaction{},
-						Total:      0,
+						TotalItems: 0,
 						Page:       1,
 						PerPage:    10,
-						TotalPages: 0,
+						PagesTotal: 0,
 					}, nil)
 			},
 			expectedError: nil,
@@ -217,10 +215,10 @@ func TestWalletService_GetTransactions(t *testing.T) {
 				mockRepo.On("GetTransactions", "user123", 1, 10).Return(
 					models.PaginatedData[models.Transaction]{
 						Data:       []models.Transaction{},
-						Total:      0,
+						TotalItems: 0,
 						Page:       1,
 						PerPage:    10,
-						TotalPages: 0,
+						PagesTotal: 0,
 					}, nil)
 			},
 			expectedError: nil,
@@ -333,4 +331,4 @@ func TestWalletService_GetTransactionsReport(t *testing.T) {
 			mockRepo.AssertExpectations(t)
 		})
 	}
-} 
+}

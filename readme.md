@@ -1,94 +1,180 @@
-# Online Advertisement Website - Docker Compose Setup
+# Microservice Advertising System
 
-This repository contains the Docker Compose setup for an online advertisement website built with microservices architecture using C# (with CQRS pattern) and Golang. The project utilizes various technologies and services such as PostgreSQL, RabbitMQ, Vault, Consul, Minio, Elasticsearch, Kibana, Redis, and multiple microservices written in C#(ASP.NET Core) and Golang.
+A modern, scalable online advertising platform built with microservices architecture, combining the power of .NET Core and GoLang services. This system provides a complete solution for managing advertisements, user identities, categories, locations, and more.
 
-## Prerequisites
+## 🚀 Features
+
+- **Microservices Architecture**: Distributed system design for scalability and maintainability
+- **Multi-language Support**: Services built with both .NET Core and GoLang
+- **CQRS Pattern**: Command Query Responsibility Segregation for optimized data operations
+- **Service Discovery**: Using Consul for dynamic service registration and discovery
+- **Secret Management**: Secure handling of sensitive data with HashiCorp Vault
+- **Message Queue**: Asynchronous communication using RabbitMQ
+- **Search Capabilities**: Full-text search powered by Elasticsearch
+- **Monitoring**: Comprehensive monitoring with Prometheus and Grafana
+- **Object Storage**: File storage using MinIO
+- **Caching**: Redis for high-performance caching
+- **API Gateway**: Centralized request routing and management
+
+## 🏗️ Architecture
+
+The system consists of several microservices:
+
+1. **Identity Management API** (.NET Core)
+   - User authentication and authorization
+   - JWT token management
+   - User profile management
+
+2. **Advertisement Management API** (.NET Core)
+   - Core advertisement functionality
+   - Ad creation, modification, and deletion
+   - Search and filtering capabilities
+
+3. **Email Sender API** (GoLang)
+   - Asynchronous email processing
+   - Email template management
+   - Notification system
+
+4. **Thumbnail Management API** (GoLang)
+   - Image processing and optimization
+   - Object storage integration
+   - Thumbnail generation
+
+5. **Category Management API** (GoLang)
+   - Category hierarchy management
+   - Caching layer for performance
+   - Category-based filtering
+
+6. **Location Management API** (GoLang)
+   - Geographic data management
+   - Location-based services
+   - Regional targeting
+
+7. **Wallet API** (GoLang)
+   - Payment processing
+   - Transaction management
+   - Balance tracking
+
+## 🛠️ Prerequisites
+
 - Docker
 - Docker Compose
+- Git
 
-## Services
+## 🚀 Getting Started
 
-### PostgreSQL
-- Image: `postgres:latest`
-- Default database: `postgres`
-- Username: `postgres`
-- Password: `123456`
+### Docker Setup
 
-### RabbitMQ
-- Image: `rabbitmq:management`
-- Ports: `5672` (AMQP) and `15672` (Management UI)
-- Default username: `guest`
-- Default password: `guest`
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/RezaEskandarii/microservice-advertising-system.git
+   cd microservice-advertising-system
+   ```
 
-### Vault
-- Image: `hashicorp/vault:latest`
-- Development root token: `58ec2667-a9f4-455b-b89b-914fe565b7ea`
+2. **Environment Setup**
+   - Navigate to the deployment directory:
+     ```bash
+     cd deployment
+     ```
+   - The `.env` file contains all necessary environment variables. Make sure it's properly configured.
+   - Default credentials and ports are pre-configured in the `.env` file:
+     - PostgreSQL: port 5432
+     - RabbitMQ: ports 5672 (AMQP) and 15672 (Management UI)
+     - Consul: port 8500
+     - MinIO: port 9000
+     - Elasticsearch: ports 9200 and 9300
+     - Kibana: port 5601
+     - Redis: port 6379
+     - API Gateway: port 5009
 
-### Consul
-- Image: `hashicorp/consul:latest`
-- Development mode enabled
-- Accessible at `http://localhost:8500`
+3. **Start the Services**
+   ```bash
+   # Start all services in detached mode
+   docker-compose up -d
 
-### Minio
-- Image: `minio/minio`
-- Accessible at `http://localhost:9000`
-- Username: `minioadmin`
-- Password: `minioadmin`
+   # To view logs of all services
+   docker-compose logs -f
 
-### Elasticsearch
-- Image: `docker.elastic.co/elasticsearch/elasticsearch:7.15.2`
-- Accessible at `http://localhost:9200` (HTTP) and `9300` (TCP transport)
+   # To view logs of a specific service
+   docker-compose logs -f [service-name]
+   ```
 
-### Kibana
-- Image: `docker.elastic.co/kibana/kibana:7.4.0`
-- Accessible at `http://localhost:5601`
-- Dependency: Elasticsearch
+4. **Verify Services**
+   ```bash
+   # Check running containers
+   docker-compose ps
 
-### Redis
-- Image: `redis:latest`
+   # Check service health
+   curl http://localhost:8500/v1/health/service/[service-name]
+   ```
 
-### Identity Management API
-- Dockerfile: `./IdentityManagement/Dockerfile`
-- Port: `5004`
-- Dependencies: PostgreSQL, Vault, Consul
+5. **Access the Services**
+   - API Gateway: `http://localhost:5009`
+   - RabbitMQ Management: `http://localhost:15672` (default credentials: guest/guest)
+   - Consul UI: `http://localhost:8500`
+   - Kibana: `http://localhost:5601`
+   - Grafana: `http://localhost:3000` (default credentials: admin/admin)
+   - MinIO: `http://localhost:9000` (default credentials: minioadmin/minioadmin)
+   - Elasticsearch: `http://localhost:9200`
 
-### Advertisement Management API
-- Dockerfile: `./AdvertisementManagement/Dockerfile`
-- Port: `5006`
-- Dependencies: PostgreSQL, Vault, Consul, Elasticsearch
+6. **Stop Services**
+   ```bash
+   # Stop all services
+   docker-compose down
 
-### Email Sender API
-- Dockerfile: `./EmailSender/Dockerfile`
-- Port: `5007`
-- Dependencies: Vault, Consul, RabbitMQ
+   # Stop and remove volumes
+   docker-compose down -v
+   ```
 
-### Thumbnail Management API
-- Dockerfile: `./ThumbnailManagement/Dockerfile`
-- Port: `5002`
-- Dependencies: Minio, PostgreSQL, Vault, Consul
+7. **Troubleshooting**
+   - If services fail to start, check logs:
+     ```bash
+     docker-compose logs [service-name]
+     ```
+   - To restart a specific service:
+     ```bash
+     docker-compose restart [service-name]
+     ```
+   - To rebuild and restart a service:
+     ```bash
+     docker-compose up -d --build [service-name]
+     ```
 
-### Category Management API
-- Dockerfile: `./CategoryManagement/Dockerfile`
-- Dependencies: PostgreSQL, Vault, Consul
+## 📊 Monitoring
 
-### Location Management API
-- Dockerfile: `./LocationManagement/Dockerfile`
-- Port: `5010`
-- Dependencies: PostgreSQL, Vault
+The system includes comprehensive monitoring capabilities:
 
-### API Gateway Application API
-- Dockerfile: `./ApiGateway/Dockerfile`
-- Port: `5009`
-- Dependencies: Vault, PostgreSQL, Identity Management API, Category Management API, Location Management API, Advertisement Management API
+- **Prometheus**: Metrics collection
+- **Grafana**: Visualization and dashboards
+- **Elasticsearch & Kibana**: Log aggregation and analysis
 
-## Usage
-1. Clone this repository.
-2. Navigate to the project directory in your terminal.
-3. Run `docker-compose up -d` to start all services in detached mode.
-4. Access the project via `http://localhost:5009` once the services are up and running.
+## 🔒 Security
 
-## Contributing
-Contributions are welcome! If you find any issues or want to contribute enhancements, feel free to open a pull request.
+- JWT-based authentication
+- HashiCorp Vault for secret management
+- Secure communication between services
+- Role-based access control
 
-## License
-This project is licensed under the [MIT License](LICENSE).
+## 🧪 Testing
+
+The project includes:
+- Load testing scripts in the `load-tests` directory
+- Postman collection for API testing
+- Integration tests for each service
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📞 Support
+
+For support, please open an issue in the repository or contact the maintainers.

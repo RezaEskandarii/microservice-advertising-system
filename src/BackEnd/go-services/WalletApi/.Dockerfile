@@ -1,17 +1,21 @@
-FROM golang:1.21.0
+FROM golang:1.21.0 AS builder
 
-WORKDIR /WalletApiApp
+WORKDIR /app
 
 COPY go.mod go.sum ./
-
 RUN go mod download
 
 COPY . .
+RUN go build -o wallet-api ./cmd/main.go
 
-RUN go build ./cmd/main.go
+FROM alpine:latest
 
-EXPOSE 5005
+WORKDIR /app
 
-EXPOSE 6000
+USER walletuser
 
-CMD ["./main"]
+COPY --from=builder /app/wallet-api .
+
+EXPOSE 5005 6000
+
+CMD ["./wallet-api"]

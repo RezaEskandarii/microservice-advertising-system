@@ -25,7 +25,7 @@ func Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	defer db.Close() // Close the database connection when the function returns
+	defer db.Close()
 
 	// Create a new wallet repository and service
 	walletRepository := repositories.NewPostgreSQLRepository(db)
