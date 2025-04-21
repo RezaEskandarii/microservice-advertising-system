@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/mail"
+	"strings"
 )
 
 type SendEmailRequest struct {
@@ -14,19 +15,32 @@ type SendEmailRequest struct {
 }
 
 func (r SendEmailRequest) Validate() error {
+	var errorMessages []string
+
 	if r.To == "" {
-		return errors.New("recipient email is required")
+		errorMessages = append(errorMessages, "recipient email is required")
+	} else if !isValidEmail(r.To) {
+		errorMessages = append(errorMessages, fmt.Sprintf("invalid email format: %v", err))
 	}
-	if _, err := mail.ParseAddress(r.To); err != nil {
-		return fmt.Errorf("invalid email format: %v", err)
-	}
+
 	if r.Subject == "" {
-		return errors.New("subject is required")
+		errorMessages = append(errorMessages, "subject is required")
 	}
+
 	if r.Body == "" {
-		return errors.New("body is required")
+		errorMessages = append(errorMessages, "body is required")
 	}
+
+	if len(errorMessages) > 0 {
+		return errors.New("Email validation errors:\n - " + strings.Join(errorMessages, "\n - "))
+	}
+
 	return nil
+}
+
+func isValidEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
 type EmailSender interface {
