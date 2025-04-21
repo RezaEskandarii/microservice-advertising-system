@@ -20,7 +20,7 @@ func (r SendEmailRequest) Validate() error {
 	if r.To == "" {
 		errorMessages = append(errorMessages, "recipient email is required")
 	} else if !isValidEmail(r.To) {
-		errorMessages = append(errorMessages, fmt.Sprintf("invalid email format: %v", err))
+		errorMessages = append(errorMessages, fmt.Sprintf("invalid email format: %v", r.To))
 	}
 
 	if r.Subject == "" {
