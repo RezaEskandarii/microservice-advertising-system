@@ -60,13 +60,13 @@ func (q *QueueManager) Listen() {
 
 	// Declare the exchange
 	err = ch.ExchangeDeclare(
-		"ad_events", // exchange name
-		"topic",     // exchange type
-		true,        // durable
-		false,       // auto-deleted
-		false,       // internal
-		false,       // no-wait
-		nil,         // arguments
+		"ad_events",
+		"topic",
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		log.Fatalf("Failed to declare the exchange: %s", err)
@@ -74,12 +74,12 @@ func (q *QueueManager) Listen() {
 
 	// Declare the queue
 	declaredQueue, err := ch.QueueDeclare(
-		"email_queue", // queue name
-		true,          // durable
-		false,         // auto-deleted
-		false,         // exclusive
-		false,         // no-wait
-		nil,           // arguments
+		"email_queue",
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		log.Fatalf("Failed to declare the queue: %s", err)
@@ -87,11 +87,11 @@ func (q *QueueManager) Listen() {
 
 	// Bind the queue to the exchange
 	err = ch.QueueBind(
-		declaredQueue.Name,               // queue name
-		"ad_events.OnAdvertisementAdded", // routing key
-		"ad_events",                      // exchange name
-		false,                            // no-wait
-		nil,                              // arguments
+		declaredQueue.Name,
+		"ad_events.OnAdvertisementAdded",
+		"ad_events",
+		false,
+		nil,
 	)
 	if err != nil {
 		log.Fatalf("Failed to bind the queue: %s", err)
@@ -99,13 +99,13 @@ func (q *QueueManager) Listen() {
 
 	// Consume messages from the queue
 	msgs, err := ch.Consume(
-		declaredQueue.Name, // queue name
-		"",                 // consumer name
-		true,               // auto-ack
-		false,              // exclusive
-		false,              // no-local
-		false,              // no-wait
-		nil,                // arguments
+		declaredQueue.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		log.Fatalf("Failed to register a consumer: %s", err)
