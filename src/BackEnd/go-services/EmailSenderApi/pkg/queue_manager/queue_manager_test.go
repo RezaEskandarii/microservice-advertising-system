@@ -101,4 +101,4 @@ func TestQueueManager_DeclareQueue(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to declare queue: %v", err)
 	}
-} 
+}

@@ -1,11 +1,11 @@
 package queue_manager
 
 import (
-	"category-management/internal/models"
-	"category-management/pkg/email_sender"
-	"category-management/pkg/env_manager"
+	"email-sender/internal/models"
+	"email-sender/pkg/email_sender"
 	"encoding/json"
 	"fmt"
+	env "github.com/RezaEskandarii/ad-go-commons/env_manager"
 	"github.com/streadway/amqp"
 	"log"
 	"strconv"
@@ -40,7 +40,7 @@ func (q *QueueManager) Listen() {
 	fmt.Println("start to listen to events")
 
 	// RabbitMQ connection string
-	rabbitMqAddr := env_manager.Load("rabbitmq_addr")
+	rabbitMqAddr := env.GetString("rabbitmq_addr")
 
 	// Connect to RabbitMQ
 	conn, err := amqp.Dial(rabbitMqAddr)

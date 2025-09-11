@@ -1,8 +1,8 @@
 package application
 
 import (
-	"category-management/pkg/email_sender"
-	"category-management/pkg/queue_manager"
+	"email-sender/pkg/email_sender"
+	"email-sender/pkg/queue_manager"
 	"fmt"
 	"log"
 	"net/http"
